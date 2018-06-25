@@ -1,0 +1,143 @@
+<html>
+<head>
+    <title>KaM-Online Game-Server test page</title>
+
+    <style type="text/css">
+        .commands {
+            display: inline-block;
+            vertical-align: top;
+            width: 49%;
+        }
+
+        .lists {
+            display: inline-block;
+            vertical-align: top;
+            width: 49%;
+        }
+
+        .view-list-info {
+            display: none;
+            position: absolute;
+            z-index: 100;
+            width: 100%;
+            top: 0;
+            left: 30px;
+            background: #4C575D;
+            color: white;
+            padding: 10px;
+        }
+
+        .view-list-info-item {
+            display: inline-block;
+            width: 30%;
+        }
+
+        .view-list {
+            position: relative;
+        }
+
+        .view-list:hover .view-list-info {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="commands">
+    <h4>Connect</h4>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value="player-1"/>
+    <button onclick="connectWs();return;">Connect</button><br />
+
+    <h4>Buildings</h4>
+    <select id="building-type" name="view-list-type">
+        <option value="storehouse">Storehouse</option>
+        <option value="schoolhouse">Schoolhouse</option>
+    </select>
+    <button onclick="createBuilding();return;">Create Building</button>
+</div>
+
+<div class="lists">
+    <div>
+        <h4>Buildings:</h4>
+        <div id="buildings"></div>
+    </div>
+
+    <div>
+        <h4>Characters:</h4>
+        <div id="characters"></div>
+    </div>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script type="text/javascript">
+        let socket;
+        let token;
+
+        const connectWs = () => {
+            token = `${document.querySelector('#username').value}-token`;
+
+            if (socket) {
+                socket.disconnect();
+            }
+
+            socket = io('http://localhost:9001', {
+                query: {
+                    username: document.querySelector('#username').value,
+                    token: token
+                }
+            });
+
+            socket.on('connect', () => {
+                document.querySelector('#buildings').innerHTML = '';
+            });
+
+            socket.on('building.update', function (data) {
+                const id = `building-${data._id}`;
+                let div = document.createElement('div');
+                let content = document.createElement('div');
+
+                if (document.querySelector(`#${id}`)) {
+                    div = document.querySelector(`#${id}`);
+                }
+
+                div.setAttribute('id', id);
+                div.setAttribute('class', 'view-list');
+                div.innerHTML = `${data.type} (${data.currentHealth}/${data.maxHealth}) (${data.position.x} / ${data.position.y} / ${data.position.z})`;
+
+                let output = '';
+
+                if ('storehouse' === data.type) {
+                    for (let property in data.data.resources) {
+                        const value = data.data.resources[property].store;
+
+                        output += `<div class="view-list-info-item">${property}: ${value}</div>`;
+                    }
+                } else {
+                    for (let property in data.data) {
+                        const value = data.data[property];
+
+                        output += `<div class="view-list-info-item">${property}: ${value}</div>`;
+                    }
+                }
+
+                content.innerHTML = output;
+                content.setAttribute('class', 'view-list-info');
+                div.appendChild(content);
+                document.querySelector('#buildings').appendChild(div);
+            });
+        };
+
+        const createBuilding = () => {
+            socket.emit('building.create', {
+                token: token,
+                type: document.querySelector('#building-type').value
+            });
+
+            socket.emit('characters.create', {
+                token: token,
+                type: document.querySelector('#building-type').value
+            });
+        };
+    </script>
+</body>
+</html>

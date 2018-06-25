@@ -1,0 +1,31 @@
+export interface ResourceInterface {
+    treeTrunks: any;
+    stones: any;
+    timber: any;
+    ironOre: any;
+    goldOre: any;
+    coal: any;
+    iron: any;
+    gold: any;
+    wine: any;
+    corn: any;
+    loaves: any;
+    flour: any;
+    leather: any;
+    sausages: any;
+    pigs: any;
+    skins: any;
+    woodenShield: any;
+    longShield: any;
+    leatherArmor: any;
+    ironAmament: any;
+    handAxe: any;
+    sword: any;
+    lance: any;
+    pike: any;
+    longbow: any;
+    crossbow: any;
+    horses: any;
+    fish: any;
+    [key: string]: any;
+}
