@@ -4,7 +4,6 @@ import Player from "../Player";
 import CostComponent from "../Components/CostComponent";
 import HealthComponent from "../Components/HealthComponent";
 import TransportJob from "../Jobs/types/TransportJob";
-import jobStore from "../Jobs/jobStore";
 
 /**
  * Base class for all Buildings.
@@ -18,11 +17,12 @@ export default abstract class Building {
 
     private _healt: HealthComponent;
 
-    public _player: Player;
+    protected _player: Player;
 
     public _cost: CostComponent;
 
-    protected constructor(position: PositionInterface) {
+    protected constructor(player: Player, position: PositionInterface) {
+        this._player = player;
         this._position = new PositionComponent(position);
     }
 
@@ -39,12 +39,19 @@ export default abstract class Building {
      */
     protected addJobs() {
         for (let count = 0; count < this._cost.cost.stone; count++) {
-            jobStore.addJob(new TransportJob('stone'));
+            this._player.jobStore.addJob(new TransportJob(this._player, 'stone'));
         }
 
         for (let count = 0; count < this._cost.cost.timber; count++) {
-            jobStore.addJob(new TransportJob('timber'));
+            this._player.jobStore.addJob(new TransportJob(this._player, 'timber'));
         }
+
+        setInterval(() => {
+        this._player.jobStore.getFreeJobByType('transport')
+            .then((job) => {
+                console.log(job);
+            });
+        }, 1000);
     }
 
     protected addHealtComponent(alreadyBuilt: boolean = false) {
@@ -90,10 +97,6 @@ export default abstract class Building {
 
     get player(): Player {
         return this._player;
-    }
-
-    set player(value: Player) {
-        this._player = value;
     }
 
     get healt(): HealthComponent {

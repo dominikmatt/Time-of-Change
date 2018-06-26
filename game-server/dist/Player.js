@@ -5,15 +5,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BuildingFactory_1 = __importDefault(require("./Buildings/BuildingFactory"));
 const BuildBuildingCommand_1 = __importDefault(require("./Commands/BuildBuildingCommand"));
-const jobStore_1 = __importDefault(require("./Jobs/jobStore"));
+const JobStore_1 = __importDefault(require("./Jobs/JobStore"));
 const Redis_1 = __importDefault(require("./Redis"));
+const Core_1 = __importDefault(require("./Core"));
 class Player {
     constructor(name, token) {
         this.buildings = [];
         this._name = name;
         this._token = token;
-        this._database = new Redis_1.default(this);
-        this._database.hset('players', this._name, this._token, false);
+        this._db = new Redis_1.default(Object.keys(Core_1.default.players).length + 1);
+        this._jobStore = new JobStore_1.default(this);
+        this._db.flushdb()
+            .then(() => console.log('database cleared'))
+            .catch((error) => { throw new Error(error); });
+        Core_1.default.db.hset(`players:${this._token}`, 'name', this._name);
+        Core_1.default.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core_1.default.players).length === 0);
     }
     initializeTown() {
         /** @var Storehouse storehouse */
@@ -37,7 +43,7 @@ class Player {
         this.buildings.forEach((building) => {
             building.update();
         });
-        jobStore_1.default.update();
+        this._jobStore.update();
     }
     /**
      * Add a new building to the buildings list.
@@ -60,8 +66,11 @@ class Player {
     set wsSocket(value) {
         this._wsSocket = value;
     }
-    get database() {
-        return this._database;
+    get jobStore() {
+        return this._jobStore;
+    }
+    get db() {
+        return this._db;
     }
 }
 exports.default = Player;

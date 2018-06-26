@@ -1,12 +1,27 @@
+import {v1 as uuidv1} from "uuid";
+import uuid = require("uuid");
+import Player from "../Player";
+
 export default class Job {
+    protected readonly _id: string = uuidv1();
     protected readonly _type: string;
 
     private _inProgress: boolean = false;
 
     private _isFinished: boolean = true;
 
+    protected readonly _player: Player;
+
+    constructor(player: Player) {
+        this._player = player;
+    }
+
     public getType(): string {
         return this._type;
+    }
+
+    public addToDb(): void {
+        throw new Error('Job: Implement addToDb method.');
     }
 
     public startJob() {
@@ -19,5 +34,9 @@ export default class Job {
 
     get isFinished(): boolean {
         return this._isFinished;
+    }
+
+    get id(): string {
+        return this._id;
     }
 }

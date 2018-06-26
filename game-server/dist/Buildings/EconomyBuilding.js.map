@@ -1,1 +1,1 @@
-{"version":3,"file":"EconomyBuilding.js","sourceRoot":"","sources":["../../src/Buildings/EconomyBuilding.ts"],"names":[],"mappings":";;;;;AAAA,0DAAkC;AAGlC;;GAEG;AACH,qBAA8C,SAAQ,kBAAQ;IAC1D,YAAY,QAA2B;QACnC,KAAK,CAAC,QAAQ,CAAC,CAAC;IACpB,CAAC;CACJ;AAJD,kCAIC"}
+{"version":3,"file":"EconomyBuilding.js","sourceRoot":"","sources":["../../src/Buildings/EconomyBuilding.ts"],"names":[],"mappings":";;;;;AAAA,0DAAkC;AAIlC;;GAEG;AACH,qBAA8C,SAAQ,kBAAQ;IAC1D,YAAY,MAAc,EAAE,QAA2B;QACnD,KAAK,CAAC,MAAM,EAAE,QAAQ,CAAC,CAAC;IAC5B,CAAC;CACJ;AAJD,kCAIC"}

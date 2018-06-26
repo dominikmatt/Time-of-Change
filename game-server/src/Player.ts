@@ -2,8 +2,9 @@ import BuildingFactory from "./Buildings/BuildingFactory";
 import Building from "./Buildings/Building";
 import BuildBuildingCommand from "./Commands/BuildBuildingCommand";
 import Storehouse from "./Buildings/types/Storehouse";
-import jobStore from "./Jobs/jobStore";
+import jobStore, {default as JobStore} from "./Jobs/JobStore";
 import Redis from "./Redis";
+import Core from "./Core";
 
 export default class Player {
     private readonly _name: string;
@@ -11,19 +12,27 @@ export default class Player {
     private readonly _token: string;
 
     private buildings: Array<Building> = [];
+    private readonly _jobStore: JobStore;
+
+    private readonly _db: Redis;
 
     /**
      * socket.io Socket.
      */
     private _wsSocket: any;
-    private readonly _database: Redis;
 
     constructor(name: string, token: string) {
         this._name = name;
         this._token = token;
-        this._database = new Redis(this);
+        this._db = new Redis(Object.keys(Core.players).length + 1);
+        this._jobStore = new JobStore(this);
 
-        this._database.hset('players', this._name, this._token, false);
+        this._db.flushdb()
+            .then(() => console.log('database cleared'))
+            .catch((error) => { throw new Error(error); });
+
+        Core.db.hset(`players:${this._token}`, 'name', this._name, );
+        Core.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core.players).length === 0);
     }
 
     public initializeTown() {
@@ -52,7 +61,7 @@ export default class Player {
             building.update();
         });
 
-        jobStore.update();
+        this._jobStore.update();
     }
 
     /**
@@ -82,7 +91,11 @@ export default class Player {
         this._wsSocket = value;
     }
 
-    get database(): Redis {
-        return this._database;
+    get jobStore(): JobStore {
+        return this._jobStore;
+    }
+
+    get db(): Redis {
+        return this._db;
     }
 };

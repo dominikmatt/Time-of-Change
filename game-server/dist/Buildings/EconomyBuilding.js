@@ -8,8 +8,8 @@ const Building_1 = __importDefault(require("./Building"));
  * Economy Buildings are buildings to store and produce date for the economy.
  */
 class EconomyBuilding extends Building_1.default {
-    constructor(position) {
-        super(position);
+    constructor(player, position) {
+        super(player, position);
     }
 }
 exports.default = EconomyBuilding;

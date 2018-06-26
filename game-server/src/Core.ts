@@ -1,6 +1,7 @@
 ///<reference path="Player.ts"/>
 import {Tick} from "./GameLoop";
 import Player from "./Player";
+import Redis from "./Redis";
 
 interface PlayerObject {
     [key: string]: Player;
@@ -14,6 +15,14 @@ class Core {
     private static instance: Core;
     private _currentTick: Tick;
     private _players: PlayerObject = {};
+    private readonly _db: Redis;
+
+    constructor() {
+        this._db = new Redis(0);
+        this._db.flushdb()
+            .then(() => console.log('database cleared'))
+            .catch((error) => { throw new Error(error); });
+    }
 
     addPlayer(player: Player) {
         this._players[player.token] = player;
@@ -29,6 +38,10 @@ class Core {
 
     get players(): object {
         return this._players;
+    }
+
+    get db(): Redis {
+        return this._db;
     }
 
     public static get Instance() {

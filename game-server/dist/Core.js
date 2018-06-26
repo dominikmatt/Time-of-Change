@@ -1,5 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const Redis_1 = __importDefault(require("./Redis"));
 ;
 /**
  * The Core Class stores all data like the current tick, settings and instances of the Game.
@@ -8,6 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class Core {
     constructor() {
         this._players = {};
+        this._db = new Redis_1.default(0);
+        this._db.flushdb()
+            .then(() => console.log('database cleared'))
+            .catch((error) => { throw new Error(error); });
     }
     addPlayer(player) {
         this._players[player.token] = player;
@@ -20,6 +28,9 @@ class Core {
     }
     get players() {
         return this._players;
+    }
+    get db() {
+        return this._db;
     }
     static get Instance() {
         return this.instance || (this.instance = new this());

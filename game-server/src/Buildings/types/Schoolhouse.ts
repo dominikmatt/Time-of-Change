@@ -2,6 +2,7 @@ import EconomyBuilding from "../EconomyBuilding";
 import BuildingInterface from "../BuildingInterface";
 import CostComponent from "../../Components/CostComponent";
 import {PositionInterface} from "../../Components/PositionComponent";
+import Player from "../../Player";
 
 /**
  * The storehouse will store all Resources from the player.
@@ -11,8 +12,8 @@ export default class Schoolhouse extends EconomyBuilding implements BuildingInte
 
     private _currentGoldStore: number = 0;
 
-    constructor(position: PositionInterface, alreadyBuilt: boolean = false) {
-        super(position);
+    constructor(player: Player, position: PositionInterface, alreadyBuilt: boolean = false) {
+        super(player, position);
 
         this._cost = new CostComponent({
             timber: 6,

@@ -9,8 +9,8 @@ const CostComponent_1 = __importDefault(require("../../Components/CostComponent"
  * The storehouse will store all Resources from the player.
  */
 class Schoolhouse extends EconomyBuilding_1.default {
-    constructor(position, alreadyBuilt = false) {
-        super(position);
+    constructor(player, position, alreadyBuilt = false) {
+        super(player, position);
         this._maxGoldStore = 5;
         this._currentGoldStore = 0;
         this._cost = new CostComponent_1.default({

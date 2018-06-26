@@ -7,13 +7,13 @@ const uuid_1 = require("uuid");
 const PositionComponent_1 = require("../Components/PositionComponent");
 const HealthComponent_1 = __importDefault(require("../Components/HealthComponent"));
 const TransportJob_1 = __importDefault(require("../Jobs/types/TransportJob"));
-const jobStore_1 = __importDefault(require("../Jobs/jobStore"));
 /**
  * Base class for all Buildings.
  */
 class Building {
-    constructor(position) {
+    constructor(player, position) {
         this._id = uuid_1.v1();
+        this._player = player;
         this._position = new PositionComponent_1.PositionComponent(position);
     }
     build(alreadyBuilt = false) {
@@ -27,11 +27,17 @@ class Building {
      */
     addJobs() {
         for (let count = 0; count < this._cost.cost.stone; count++) {
-            jobStore_1.default.addJob(new TransportJob_1.default('stone'));
+            this._player.jobStore.addJob(new TransportJob_1.default(this._player, 'stone'));
         }
         for (let count = 0; count < this._cost.cost.timber; count++) {
-            jobStore_1.default.addJob(new TransportJob_1.default('timber'));
+            this._player.jobStore.addJob(new TransportJob_1.default(this._player, 'timber'));
         }
+        setInterval(() => {
+            this._player.jobStore.getFreeJobByType('transport')
+                .then((job) => {
+                console.log(job);
+            });
+        }, 1000);
     }
     addHealtComponent(alreadyBuilt = false) {
         this._healt = new HealthComponent_1.default(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
@@ -70,9 +76,6 @@ class Building {
     }
     get player() {
         return this._player;
-    }
-    set player(value) {
-        this._player = value;
     }
     get healt() {
         return this._healt;

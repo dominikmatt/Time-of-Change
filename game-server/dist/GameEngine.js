@@ -16,4 +16,4 @@ class GameEngine {
     }
 }
 exports.default = GameEngine.Instance;
-//# sourceMappingURL=GameEngine.js.map
+//# sourceMappingURL=gameEngine.js.map

@@ -3,6 +3,7 @@ import BuildingInterface from "../BuildingInterface";
 import CostComponent from "../../Components/CostComponent";
 import {ResourceInterface as AllResourceInterface} from "../../Interfaces/Resources";
 import {PositionInterface} from "../../Components/PositionComponent";
+import Player from "../../Player";
 
 interface ResourceItemInterface {
     store: number;
@@ -160,8 +161,8 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
         }
     };
 
-    constructor(position: PositionInterface, alreadyBuilt: boolean = false) {
-        super(position);
+    constructor(player: Player, position: PositionInterface, alreadyBuilt: boolean = false) {
+        super(player, position);
 
         this._cost = new CostComponent({
             timber: 6,
