@@ -12,7 +12,7 @@ class TransportJob extends Job_1.default {
         this._resourceType = '';
         this._character = null;
         this._isCharacterWalking = false;
-        this._isCharacterAtTarget = false;
+        this._isCharacterAtStart = false;
         this._resourceType = resourceType;
         this._startPosition = startPosition;
         this._character = character;
@@ -27,13 +27,23 @@ class TransportJob extends Job_1.default {
         });
     }
     update() {
-        if (!this._isCharacterWalking && !this._isCharacterAtTarget) {
-            console.log(Map_1.default.findRunnablePath(this._character.position.position, this._startPosition));
+        if (!this._isCharacterWalking && !this._isCharacterAtStart) {
+            this._path = Map_1.default.findRunnablePath(this._character.position.position, this._startPosition);
             this._isCharacterWalking = true;
         }
+        else if (this._isCharacterWalking) {
+            const next = this._path.shift();
+            if (next) {
+                this._character.position.position = {
+                    x: next[0],
+                    z: next[1]
+                };
+            }
+        }
         if (this._character.position.x === this._startPosition.x &&
-            this._character.position.z !== this._startPosition.z) {
-            console.log('at position');
+            this._character.position.z === this._startPosition.z) {
+            this._isCharacterAtStart = true;
+            this._isCharacterWalking = false;
         }
     }
 }

@@ -132,7 +132,7 @@ class Storehouse extends EconomyBuilding_1.default {
         };
         this._cost = new CostComponent_1.default({
             timber: 6,
-            stone: 5
+            stones: 5
         });
         this.build(alreadyBuilt);
     }
@@ -148,6 +148,10 @@ class Storehouse extends EconomyBuilding_1.default {
         return {
             resources: this._resources
         };
+    }
+    getResourceCountByType(resourceType) {
+        console.log(resourceType);
+        return this._resources[resourceType].store;
     }
 }
 exports.default = Storehouse;

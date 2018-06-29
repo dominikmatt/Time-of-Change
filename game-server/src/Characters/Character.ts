@@ -10,9 +10,9 @@ export default class Character {
     protected readonly _player: Player;
     private _position: PositionComponent;
     protected _job?: Job = null;
+    protected _walkTarget: number[][];
 
     constructor(player: Player) {
-        console.log('create character');
         this._player = player;
         this._position = new PositionComponent({
             x: 2,
@@ -42,6 +42,12 @@ export default class Character {
     }
 
     update() {
+        if (null === this._job) {
+            this.findJob();
+        } else {
+            this._job.update();
+        }
+
         this._player.wsSocket.emit('character.update', {
             _id: this._id,
             type: this.getType(),
@@ -53,12 +59,6 @@ export default class Character {
             type: this.getType(),
             position: this._position.position
         });
-
-        if (null === this._job) {
-            this.findJob();
-        } else {
-            this._job.update();
-        }
     }
 
     get position(): PositionComponent {

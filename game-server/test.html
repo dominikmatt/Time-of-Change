@@ -200,6 +200,7 @@
         });
 
         socket.on('character.update.position', function(data) {
+            console.log(data.position);
             const id = `map-character-${data._id}`;
             let div;
 
@@ -212,8 +213,8 @@
 
             div.setAttribute('id', id);
             div.setAttribute('class', 'map-character');
-            div.style.left = (data.position.x * 40) + 10 + 'px';
-            div.style.top = (data.position.z * 40) + 10 + 'px';
+            div.style.left = (data.position.z * 40) + 10 + 'px';
+            div.style.top = (data.position.x * 40) + 10 + 'px';
             div.innerHTML = `${data.type}`;
         });
 

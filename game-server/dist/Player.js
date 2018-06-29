@@ -10,14 +10,16 @@ const Redis_1 = __importDefault(require("./Redis"));
 const Core_1 = __importDefault(require("./Core"));
 const GetMapDataCommand_1 = __importDefault(require("./Commands/GetMapDataCommand"));
 const CreateCharacterCommand_1 = __importDefault(require("./Commands/CreateCharacterCommand"));
+const BuildingManager_1 = __importDefault(require("./Buildings/BuildingManager"));
 class Player {
     constructor(name, token) {
-        this.buildings = [];
+        this._buildings = [];
         this._characters = [];
         this._name = name;
         this._token = token;
         this._db = new Redis_1.default(Object.keys(Core_1.default.players).length + 1);
         this._jobStore = new JobStore_1.default(this);
+        this._buildingManager = new BuildingManager_1.default(this);
         this._db.flushdb()
             .then(() => console.log('database cleared'))
             .catch((error) => { throw new Error(error); });
@@ -45,7 +47,7 @@ class Player {
         new CreateCharacterCommand_1.default(this);
     }
     update() {
-        this.buildings.forEach((building) => {
+        this._buildings.forEach((building) => {
             building.update();
         });
         this._characters.forEach((character) => {
@@ -59,7 +61,7 @@ class Player {
      * @param {Building} building
      */
     addBuilding(building) {
-        this.buildings.push(building);
+        this._buildings.push(building);
         return building;
     }
     /**
@@ -86,6 +88,12 @@ class Player {
     }
     get db() {
         return this._db;
+    }
+    get buildings() {
+        return this._buildings;
+    }
+    get buildingManager() {
+        return this._buildingManager;
     }
 }
 exports.default = Player;

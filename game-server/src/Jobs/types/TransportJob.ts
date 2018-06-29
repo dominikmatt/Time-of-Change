@@ -9,9 +9,10 @@ export default class TransportJob extends Job implements JobInterface {
     protected readonly _type: string = 'transport';
     private readonly _resourceType: string = '';
     private readonly _startPosition: PositionInterface;
+    private _path: number[][];
     private readonly _character?: Character = null;
     private _isCharacterWalking: boolean = false;
-    private _isCharacterAtTarget: boolean = false;
+    private _isCharacterAtStart: boolean = false;
 
     constructor(player: Player, startPosition: PositionInterface, resourceType: string, character?: Character) {
         super(player);
@@ -32,16 +33,26 @@ export default class TransportJob extends Job implements JobInterface {
     }
 
     public update(): void {
-        if (!this._isCharacterWalking && !this._isCharacterAtTarget) {
-            console.log(Map.findRunnablePath(this._character.position.position, this._startPosition));
+        if (!this._isCharacterWalking && !this._isCharacterAtStart) {
+            this._path = Map.findRunnablePath(this._character.position.position, this._startPosition);
 
             this._isCharacterWalking = true;
+        } else if (this._isCharacterWalking) {
+            const next = this._path.shift();
+
+            if (next) {
+                this._character.position.position = {
+                    x: next[0],
+                    z: next[1]
+                };
+            }
         }
 
         if (this._character.position.x === this._startPosition.x &&
-            this._character.position.z !== this._startPosition.z
+            this._character.position.z === this._startPosition.z
         ) {
-            console.log('at position');
+            this._isCharacterAtStart = true;
+            this._isCharacterWalking = false;
         }
     }
 }

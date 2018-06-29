@@ -22,7 +22,7 @@ export default class Schoolhouse extends EconomyBuilding implements BuildingInte
 
         this._cost = new CostComponent({
             timber: 6,
-            stone: 5
+            stones: 5
         });
 
         this.build(alreadyBuilt);

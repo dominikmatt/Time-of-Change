@@ -55,8 +55,8 @@ class Building {
      * This method will create all transport jobs to the jobs store.
      */
     addJobs() {
-        for (let count = 0; count < this._cost.cost.stone; count++) {
-            this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'stone'));
+        for (let count = 0; count < this._cost.cost.stones; count++) {
+            this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'stones'));
         }
         for (let count = 0; count < this._cost.cost.timber; count++) {
             this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'timber'));

@@ -10,7 +10,6 @@ class Character {
     constructor(player) {
         this._id = uuid_1.v1();
         this._job = null;
-        console.log('create character');
         this._player = player;
         this._position = new PositionComponent_1.PositionComponent({
             x: 2,
@@ -36,6 +35,12 @@ class Character {
         throw new Error('Character: Implement "findJob" method.');
     }
     update() {
+        if (null === this._job) {
+            this.findJob();
+        }
+        else {
+            this._job.update();
+        }
         this._player.wsSocket.emit('character.update', {
             _id: this._id,
             type: this.getType(),
@@ -46,12 +51,6 @@ class Character {
             type: this.getType(),
             position: this._position.position
         });
-        if (null === this._job) {
-            this.findJob();
-        }
-        else {
-            this._job.update();
-        }
     }
     get position() {
         return this._position;

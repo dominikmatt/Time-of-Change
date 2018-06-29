@@ -77,8 +77,8 @@ export default abstract class Building {
      * This method will create all transport jobs to the jobs store.
      */
     protected addJobs() {
-        for (let count = 0; count < this._cost.cost.stone; count++) {
-            this._player.jobStore.addJob(new TransportJob(this._player, this.doorPosition, 'stone'));
+        for (let count = 0; count < this._cost.cost.stones; count++) {
+            this._player.jobStore.addJob(new TransportJob(this._player, this.doorPosition, 'stones'));
         }
 
         for (let count = 0; count < this._cost.cost.timber; count++) {
@@ -93,7 +93,7 @@ export default abstract class Building {
     /**
      * Returns building type as a string.
      */
-    protected getType (): string {
+    public getType (): string {
         throw new Error('Building: Add getType and return your type as a string.')
     }
 

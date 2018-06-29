@@ -1,5 +1,5 @@
 import BuildingFactory from "./Buildings/BuildingFactory";
-import Building from "./Buildings/Building";
+import Building, {default as Building} from "./Buildings/Building";
 import BuildBuildingCommand from "./Commands/BuildBuildingCommand";
 import Storehouse from "./Buildings/types/Storehouse";
 import JobStore from "./Jobs/JobStore";
@@ -8,15 +8,17 @@ import Core from "./Core";
 import GetMapDataCommand from "./Commands/GetMapDataCommand";
 import CreateCharacterCommand from "./Commands/CreateCharacterCommand";
 import Character from "./Characters/Character";
+import BuildingManager from "./Buildings/BuildingManager";
 
 export default class Player {
     private readonly _name: string;
 
     private readonly _token: string;
 
-    private buildings: Array<Building> = [];
+    private _buildings: Array<Building> = [];
     private _characters: Array<Character> = [];
     private readonly _jobStore: JobStore;
+    private readonly _buildingManager: BuildingManager;
 
     private readonly _db: Redis;
 
@@ -30,6 +32,7 @@ export default class Player {
         this._token = token;
         this._db = new Redis(Object.keys(Core.players).length + 1);
         this._jobStore = new JobStore(this);
+        this._buildingManager = new BuildingManager(this);
 
         this._db.flushdb()
             .then(() => console.log('database cleared'))
@@ -63,7 +66,7 @@ export default class Player {
     }
 
     public update() {
-        this.buildings.forEach((building: Building) => {
+        this._buildings.forEach((building: Building) => {
             building.update();
         });
 
@@ -80,7 +83,7 @@ export default class Player {
      * @param {Building} building
      */
     public addBuilding(building: Building): any {
-        this.buildings.push(building);
+        this._buildings.push(building);
 
         return building;
     }
@@ -116,5 +119,13 @@ export default class Player {
 
     get db(): Redis {
         return this._db;
+    }
+
+    get buildings(): Array<Building> {
+        return this._buildings;
+    }
+
+    get buildingManager(): BuildingManager {
+        return this._buildingManager;
     }
 };
