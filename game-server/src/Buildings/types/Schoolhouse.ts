@@ -10,6 +10,11 @@ import Player from "../../Player";
 export default class Schoolhouse extends EconomyBuilding implements BuildingInterface {
     private readonly _maxGoldStore: number = 5;
 
+    readonly _matrix: number[][] = [
+        [1,1,1],
+        [1,2,1]
+    ];
+
     private _currentGoldStore: number = 0;
 
     constructor(player: Player, position: PositionInterface, alreadyBuilt: boolean = false) {

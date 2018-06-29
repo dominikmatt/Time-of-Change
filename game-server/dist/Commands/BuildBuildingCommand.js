@@ -13,9 +13,11 @@ class BuildBuildingCommand extends Command_1.default {
         return 'building.create';
     }
     execute(req) {
-        console.log('create on player: ', this.player.name);
         // TOD: Create Building store.
-        this.player.addBuilding(BuildingFactory_1.default(req.type, { x: 0, y: 0, z: 0 }, this.player, false));
+        this.player.addBuilding(BuildingFactory_1.default(req.type, {
+            x: parseInt(req.position.x),
+            z: parseInt(req.position.z)
+        }, this.player, false));
     }
 }
 exports.default = BuildBuildingCommand;

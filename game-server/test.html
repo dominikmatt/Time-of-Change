@@ -39,6 +39,42 @@
         .view-list:hover .view-list-info {
             display: block;
         }
+
+        .map {
+            position: relative;
+            width: 430px;
+            font-size: 0;
+        }
+
+        .map-item {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: green;
+            outline: 1px solid #D0D0D0;
+            font-size: 10px;
+        }
+
+        .map-item.has-building {
+            background-color: red;
+        }
+
+        .map-item.has-tree {
+            background-image: url('./test-assets/tree-icon.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .map-character {
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background-color: #000066;
+            transition: all 0.9s;
+        }
     </style>
 </head>
 <body>
@@ -47,14 +83,33 @@
     <h4>Connect</h4>
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" value="player-1"/>
-    <button onclick="connectWs();return;">Connect</button><br />
+    <button onclick="connectWs();return;">Connect</button>
+    <br/>
 
-    <h4>Buildings</h4>
-    <select id="building-type" name="view-list-type">
-        <option value="storehouse">Storehouse</option>
-        <option value="schoolhouse">Schoolhouse</option>
-    </select>
-    <button onclick="createBuilding();return;">Create Building</button>
+    <div>
+        <h4>Buildings</h4>
+        <label for="building-coord-x">x:</label>
+        <input type="number" min="1" max="10" name="building-coord-x" id="building-coord-x" value="6"/>
+
+        <label for="building-coord-z">z:</label>
+        <input type="number" min="1" max="10" name="building-coord-z" id="building-coord-z" value="6"/>
+
+        <select id="building-type" name="view-list-type">
+            <option value="storehouse">Storehouse</option>
+            <option value="schoolhouse">Schoolhouse</option>
+        </select>
+        <button onclick="createBuilding();return;">Create Building</button>
+    </div>
+    <br />
+
+    <div>
+        <h4>Characters</h4>
+        <select id="character-type" name="view-list-type">
+            <option value="serf">Serf</option>
+            <option value="laborer">Laborer</option>
+        </select>
+        <button onclick="createCharacter();return;">Create Character</button>
+    </div>
 </div>
 
 <div class="lists">
@@ -68,76 +123,154 @@
         <div id="characters"></div>
     </div>
 </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-    <script type="text/javascript">
-        let socket;
-        let token;
 
-        const connectWs = () => {
-            token = `${document.querySelector('#username').value}-token`;
+<div id="map" class="map"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+<script type="text/javascript">
+    let socket;
+    let token;
 
-            if (socket) {
-                socket.disconnect();
+    const connectWs = () => {
+        token = `${document.querySelector('#username').value}-token`;
+
+        if (socket) {
+            socket.disconnect();
+        }
+
+        socket = io('http://localhost:9001', {
+                query: {
+                username: document.querySelector('#username').value,
+                token: token
+            }
+        });
+
+        socket.on('connect', () => {
+            document.querySelector('#buildings').innerHTML = '';
+            document.querySelector('#characters').innerHTML = '';
+        });
+
+        socket.on('building.update', function(data) {
+            const id = `building-${data._id}`;
+            let div = document.createElement('div');
+            let content = document.createElement('div');
+
+            if (document.querySelector(`#${id}`)) {
+                div = document.querySelector(`#${id}`);
             }
 
-            socket = io('http://localhost:9001', {
-                query: {
-                    username: document.querySelector('#username').value,
-                    token: token
+            div.setAttribute('id', id);
+            div.setAttribute('class', 'view-list');
+            div.innerHTML = `${data.type} (${data.currentHealth}/${data.maxHealth}) (${data.position.x} / ${data.position.z})`;
+
+            let output = '';
+
+            if ('storehouse' === data.type) {
+                for (let property in data.data.resources) {
+                    const value = data.data.resources[property].store;
+
+                    output += `<div class="view-list-info-item">${property}: ${value}</div>`;
                 }
-            });
+            } else {
+                for (let property in data.data) {
+                    const value = data.data[property];
 
-            socket.on('connect', () => {
-                document.querySelector('#buildings').innerHTML = '';
-            });
+                    output += `<div class="view-list-info-item">${property}: ${value}</div>`;
+                }
+            }
 
-            socket.on('building.update', function (data) {
-                const id = `building-${data._id}`;
+            content.innerHTML = output;
+            content.setAttribute('class', 'view-list-info');
+            div.appendChild(content);
+            document.querySelector('#buildings').appendChild(div);
+        });
+
+        socket.on('character.update', function(data) {
+            const id = `character-${data._id}`;
+            let div = document.createElement('div');
+
+            if (document.querySelector(`#${id}`)) {
+                div = document.querySelector(`#${id}`);
+            }
+
+            div.setAttribute('id', id);
+            div.setAttribute('class', 'view-list');
+            div.innerHTML = `${data.type}`;
+
+            document.querySelector('#characters').appendChild(div);
+        });
+
+        socket.on('character.update.position', function(data) {
+            const id = `map-character-${data._id}`;
+            let div;
+
+            if (document.querySelector(`#${id}`)) {
+                div = document.querySelector(`#${id}`);
+            } else {
+                div = document.createElement('div');
+                document.querySelector('#map').appendChild(div);
+            }
+
+            div.setAttribute('id', id);
+            div.setAttribute('class', 'map-character');
+            div.style.left = (data.position.x * 40) + 10 + 'px';
+            div.style.top = (data.position.z * 40) + 10 + 'px';
+            div.innerHTML = `${data.type}`;
+        });
+
+        socket.on('map.update', function(data) {
+            const id = `map-item-${data.x}-${data.z}`;
+            const div = document.querySelector(`#${id}`);
+
+            if (data.building) {
+                div.classList.add('has-building');
+            }
+
+            if (data.hasTree && 'true' === data.hasTree) {
+                div.classList.add('has-tree');
+            }
+        });
+
+        setTimeout(socket.emit('map.data'), 500);
+    };
+
+    const createBuilding = () => {
+        socket.emit('building.create', {
+            token: token,
+            type: document.querySelector('#building-type').value,
+            position: {
+                x: document.querySelector('#building-coord-x').value,
+                z: document.querySelector('#building-coord-z').value
+            }
+        });
+    };
+
+    const createCharacter = () => {
+        socket.emit('character.create', {
+            token: token,
+            type: document.querySelector('#character-type').value,
+        });
+    };
+
+    const createMap = () => {
+        const xMax = 10;
+        const zMax = 10;
+        const map = document.querySelector('#map');
+
+        for (let x = 0; x < xMax; x++) {
+            for (let z = 0; z < zMax; z++) {
                 let div = document.createElement('div');
-                let content = document.createElement('div');
 
-                if (document.querySelector(`#${id}`)) {
-                    div = document.querySelector(`#${id}`);
-                }
+                div.setAttribute('id', `map-item-${x}-${z}`);
+                div.setAttribute('class', `map-item`);
+                div.innerText = `${x}/${z}`;
 
-                div.setAttribute('id', id);
-                div.setAttribute('class', 'view-list');
-                div.innerHTML = `${data.type} (${data.currentHealth}/${data.maxHealth}) (${data.position.x} / ${data.position.y} / ${data.position.z})`;
+                map.appendChild(div);
+            }
+        }
+    };
 
-                let output = '';
+    createMap();
 
-                if ('storehouse' === data.type) {
-                    for (let property in data.data.resources) {
-                        const value = data.data.resources[property].store;
-
-                        output += `<div class="view-list-info-item">${property}: ${value}</div>`;
-                    }
-                } else {
-                    for (let property in data.data) {
-                        const value = data.data[property];
-
-                        output += `<div class="view-list-info-item">${property}: ${value}</div>`;
-                    }
-                }
-
-                content.innerHTML = output;
-                content.setAttribute('class', 'view-list-info');
-                div.appendChild(content);
-                document.querySelector('#buildings').appendChild(div);
-            });
-        };
-
-        const createBuilding = () => {
-            socket.emit('building.create', {
-                token: token,
-                type: document.querySelector('#building-type').value
-            });
-
-            socket.emit('characters.create', {
-                token: token,
-                type: document.querySelector('#building-type').value
-            });
-        };
-    </script>
+</script>
 </body>
 </html>

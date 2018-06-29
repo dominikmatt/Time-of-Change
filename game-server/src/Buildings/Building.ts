@@ -4,6 +4,8 @@ import Player from "../Player";
 import CostComponent from "../Components/CostComponent";
 import HealthComponent from "../Components/HealthComponent";
 import TransportJob from "../Jobs/types/TransportJob";
+import Core from "../Core";
+import Map from "../Map/Map";
 
 /**
  * Base class for all Buildings.
@@ -21,13 +23,21 @@ export default abstract class Building {
 
     public _cost: CostComponent;
 
+    readonly _matrix: number[][];
+    public doorPosition: PositionInterface;
+
     protected constructor(player: Player, position: PositionInterface) {
         this._player = player;
         this._position = new PositionComponent(position);
     }
 
+    /**
+     * Perpare start of building.
+     */
     protected build(alreadyBuilt: boolean = false) {
         this.addHealtComponent(alreadyBuilt);
+
+        this.updateMap();
 
         if (!alreadyBuilt) {
             this.addJobs();
@@ -35,23 +45,45 @@ export default abstract class Building {
     }
 
     /**
+     * Update map field when building starts build.
+     */
+    protected updateMap() {
+        const startPosition = this._position.position;
+
+        this._matrix.forEach((yRow: number[], x: number) => {
+            x = x + startPosition.x;
+
+            yRow.forEach((type: number, z: number) => {
+                z = z + startPosition.z;
+
+                Map.updateCoordinate(x, z, {
+                    runnable: type === 2,
+                    building: this._id,
+                    hasTree: false
+                });
+
+                // Set door position;
+                if (2 === type) {
+                    this.doorPosition = {
+                        x: x,
+                        z: z
+                    };
+                }
+            });
+        });
+    }
+
+    /**
      * This method will create all transport jobs to the jobs store.
      */
     protected addJobs() {
         for (let count = 0; count < this._cost.cost.stone; count++) {
-            this._player.jobStore.addJob(new TransportJob(this._player, 'stone'));
+            this._player.jobStore.addJob(new TransportJob(this._player, this.doorPosition, 'stone'));
         }
 
         for (let count = 0; count < this._cost.cost.timber; count++) {
-            this._player.jobStore.addJob(new TransportJob(this._player, 'timber'));
+            this._player.jobStore.addJob(new TransportJob(this._player, this.doorPosition, 'timber'));
         }
-
-        setInterval(() => {
-        this._player.jobStore.getFreeJobByType('transport')
-            .then((job) => {
-                console.log(job);
-            });
-        }, 1000);
     }
 
     protected addHealtComponent(alreadyBuilt: boolean = false) {
@@ -59,9 +91,7 @@ export default abstract class Building {
     }
 
     /**
-     * Returns type as a string.
-     *
-     * @return {string}
+     * Returns building type as a string.
      */
     protected getType (): string {
         throw new Error('Building: Add getType and return your type as a string.')
@@ -69,8 +99,6 @@ export default abstract class Building {
 
     /**
      * Returns all building specific data as a object.
-     *
-     * @return {object}
      */
     protected getBuildingData (): object {
         throw new Error('Building: Add getBuildingData and return your building specific data as a object.')
@@ -83,7 +111,8 @@ export default abstract class Building {
             position: this.position.position,
             data: this.getBuildingData(),
             currentHealth: this.healt.currentHealth,
-            maxHealth: this.healt.maxHealth
+            maxHealth: this.healt.maxHealth,
+            matrix: this._matrix
         });
     }
 

@@ -5,24 +5,15 @@ class JobStore {
         this._player = player;
     }
     addJob(job) {
-        this._player.db.sadd(`jobs:${job.getType()}`, job.id);
-        this._player.db.hset(`job:${job.id}`, '_id', job.id);
-        this._player.db.hset(`job:${job.id}`, 'type', job.getType());
-        this._player.db.hset(`job:${job.id}`, 'player', this._player.token);
-        job.addToDb();
+        this._player.db.rpush(`jobs:${job.getType()}`, job.toJSON());
         // Remove job from ram.
         job = null;
     }
     getFreeJobByType(jobType) {
         return new Promise((resolve, reject) => {
-            this._player.db.spop(`jobs:${jobType}`)
-                .then((id) => {
-                const key = `job:${id}`;
-                this._player.db.hgetall(key)
-                    .then((data) => {
-                    resolve(data);
-                });
-                this._player.db.del(key);
+            this._player.db.lpop(`jobs:${jobType}`)
+                .then((data) => {
+                resolve(JSON.parse(data));
             })
                 .catch((error) => {
                 throw new Error(error);
@@ -33,4 +24,4 @@ class JobStore {
     }
 }
 exports.default = JobStore;
-//# sourceMappingURL=jobStore.js.map
+//# sourceMappingURL=JobStore.js.map

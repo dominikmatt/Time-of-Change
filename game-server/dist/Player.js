@@ -8,9 +8,12 @@ const BuildBuildingCommand_1 = __importDefault(require("./Commands/BuildBuilding
 const JobStore_1 = __importDefault(require("./Jobs/JobStore"));
 const Redis_1 = __importDefault(require("./Redis"));
 const Core_1 = __importDefault(require("./Core"));
+const GetMapDataCommand_1 = __importDefault(require("./Commands/GetMapDataCommand"));
+const CreateCharacterCommand_1 = __importDefault(require("./Commands/CreateCharacterCommand"));
 class Player {
     constructor(name, token) {
         this.buildings = [];
+        this._characters = [];
         this._name = name;
         this._token = token;
         this._db = new Redis_1.default(Object.keys(Core_1.default.players).length + 1);
@@ -23,7 +26,7 @@ class Player {
     }
     initializeTown() {
         /** @var Storehouse storehouse */
-        const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 10, y: 0, z: 0 }, this, true));
+        const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 3, z: 3 }, this, true));
         storehouse.addResources({
             stones: 60,
             timber: 50,
@@ -38,10 +41,15 @@ class Player {
      */
     listenWs() {
         new BuildBuildingCommand_1.default(this);
+        new GetMapDataCommand_1.default(this);
+        new CreateCharacterCommand_1.default(this);
     }
     update() {
         this.buildings.forEach((building) => {
             building.update();
+        });
+        this._characters.forEach((character) => {
+            character.update();
         });
         this._jobStore.update();
     }
@@ -53,6 +61,13 @@ class Player {
     addBuilding(building) {
         this.buildings.push(building);
         return building;
+    }
+    /**
+     * Add a new building to the buildings list.
+     */
+    addCharacter(character) {
+        this._characters.push(character);
+        return character;
     }
     get name() {
         return this._name;

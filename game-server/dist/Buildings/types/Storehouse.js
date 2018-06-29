@@ -11,6 +11,11 @@ const CostComponent_1 = __importDefault(require("../../Components/CostComponent"
 class Storehouse extends EconomyBuilding_1.default {
     constructor(player, position, alreadyBuilt = false) {
         super(player, position);
+        this._matrix = [
+            [1, 1, 1],
+            [1, 1, 1],
+            [1, 2, 1],
+        ];
         this._resources = {
             treeTrunks: {
                 store: 0,

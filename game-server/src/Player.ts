@@ -2,9 +2,12 @@ import BuildingFactory from "./Buildings/BuildingFactory";
 import Building from "./Buildings/Building";
 import BuildBuildingCommand from "./Commands/BuildBuildingCommand";
 import Storehouse from "./Buildings/types/Storehouse";
-import jobStore, {default as JobStore} from "./Jobs/JobStore";
+import JobStore from "./Jobs/JobStore";
 import Redis from "./Redis";
 import Core from "./Core";
+import GetMapDataCommand from "./Commands/GetMapDataCommand";
+import CreateCharacterCommand from "./Commands/CreateCharacterCommand";
+import Character from "./Characters/Character";
 
 export default class Player {
     private readonly _name: string;
@@ -12,6 +15,7 @@ export default class Player {
     private readonly _token: string;
 
     private buildings: Array<Building> = [];
+    private _characters: Array<Character> = [];
     private readonly _jobStore: JobStore;
 
     private readonly _db: Redis;
@@ -37,7 +41,7 @@ export default class Player {
 
     public initializeTown() {
         /** @var Storehouse storehouse */
-        const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 10, y: 0, z: 0}, this, true));
+        const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 3, z: 3}, this, true));
 
         storehouse.addResources({
             stones: 60,
@@ -54,11 +58,17 @@ export default class Player {
      */
     public listenWs() {
         new BuildBuildingCommand(this);
+        new GetMapDataCommand(this);
+        new CreateCharacterCommand(this);
     }
 
     public update() {
         this.buildings.forEach((building: Building) => {
             building.update();
+        });
+
+        this._characters.forEach((character: Character) => {
+            character.update();
         });
 
         this._jobStore.update();
@@ -73,6 +83,15 @@ export default class Player {
         this.buildings.push(building);
 
         return building;
+    }
+
+    /**
+     * Add a new building to the buildings list.
+     */
+    public addCharacter(character: Character): any {
+        this._characters.push(character);
+
+        return character;
     }
 
     get name(): string {

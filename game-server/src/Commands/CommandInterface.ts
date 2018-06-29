@@ -1,5 +1,5 @@
 export interface RequestInterface {
-    [key:string]: string;
+    [key:string]: any;
 };
 
 export interface CommandInterface {

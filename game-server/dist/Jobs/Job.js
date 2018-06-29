@@ -14,6 +14,12 @@ class Job {
     addToDb() {
         throw new Error('Job: Implement addToDb method.');
     }
+    toJSON() {
+        throw new Error('Job: Implement toJSON method.');
+    }
+    update() {
+        throw new Error('Job: Implement update method.');
+    }
     startJob() {
         this._inProgress = true;
     }

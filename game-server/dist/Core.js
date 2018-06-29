@@ -20,6 +20,12 @@ class Core {
     addPlayer(player) {
         this._players[player.token] = player;
     }
+    emitAll(event, value) {
+        Object.keys(this._players).forEach((playerKey) => {
+            const player = this._players[playerKey];
+            player.wsSocket.emit(event, value);
+        });
+    }
     get currentTick() {
         return this._currentTick;
     }

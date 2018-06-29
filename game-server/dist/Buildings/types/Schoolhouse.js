@@ -12,6 +12,10 @@ class Schoolhouse extends EconomyBuilding_1.default {
     constructor(player, position, alreadyBuilt = false) {
         super(player, position);
         this._maxGoldStore = 5;
+        this._matrix = [
+            [1, 1, 1],
+            [1, 2, 1]
+        ];
         this._currentGoldStore = 0;
         this._cost = new CostComponent_1.default({
             timber: 6,

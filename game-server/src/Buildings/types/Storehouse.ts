@@ -46,6 +46,12 @@ interface ResourceInterface extends AllResourceInterface {
  * The storehouse will store all Resources from the player.
  */
 export default class Storehouse extends EconomyBuilding implements BuildingInterface {
+    readonly _matrix: number[][] = [
+        [1,1,1],
+        [1,1,1],
+        [1,2,1],
+    ];
+
     private _resources: ResourceInterface = {
         treeTrunks: {
             store: 0,

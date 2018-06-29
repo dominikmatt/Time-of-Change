@@ -1,6 +1,5 @@
 export interface PositionInterface {
     x: number;
-    y: number;
     z: number;
     [key: string]: number
 };
@@ -8,7 +7,6 @@ export interface PositionInterface {
 export class PositionComponent {
     private _position: PositionInterface = {
         x: 0,
-        y: 0,
         z: 0
     };
 

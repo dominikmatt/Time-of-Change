@@ -4,6 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const redis_1 = __importDefault(require("redis"));
+/**
+ * This is a wrapping class for redis to implement Promise callbacks.
+ */
 class Redis {
     constructor(index) {
         this.connect(index);
@@ -25,11 +28,27 @@ class Redis {
             });
         });
     }
+    set(key, value) {
+        this._client.set(key, value);
+    }
     hset(key, field, value) {
         this._client.hset(key, field, value);
     }
+    rpush(key, value) {
+        this._client.rpush(key, value);
+    }
     sadd(key, value) {
         this._client.sadd(key, value);
+    }
+    lpop(key) {
+        return new Promise((resolve, reject) => {
+            this._client.lpop(key, (error, value) => {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(value);
+            });
+        });
     }
     spop(key) {
         return new Promise((resolve, reject) => {
@@ -84,8 +103,8 @@ class Redis {
             });
         });
     }
-    subscribe(key) {
-        this._client.subscribe(key);
+    subscribe(key, callback) {
+        this._client.subscribe(key, callback);
     }
     publish(key, value) {
         this._client.publish(key, value);

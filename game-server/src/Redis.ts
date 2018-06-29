@@ -1,6 +1,8 @@
-import redis from 'redis';
-import Core from "./Core";
+import redis from "redis";
 
+/**
+ * This is a wrapping class for redis to implement Promise callbacks.
+ */
 export default class Redis {
     private _client: any;
 
@@ -29,12 +31,32 @@ export default class Redis {
         });
     }
 
+    public set(key: string, value: any) {
+        this._client.set(key, value);
+    }
+
     public hset(key: string, field: string, value: any) {
         this._client.hset(key, field, value);
     }
 
+    public rpush(key: string, value: any) {
+        this._client.rpush(key, value);
+    }
+
     public sadd(key: string, value: any) {
         this._client.sadd(key, value);
+    }
+
+    public lpop(key: string) {
+        return new Promise((resolve, reject) => {
+            this._client.lpop(key, (error: any, value: any) => {
+                if (error) {
+                    return reject(error);
+                }
+
+                return resolve(value);
+            });
+        });
     }
 
     public spop(key: string) {
@@ -100,8 +122,8 @@ export default class Redis {
         });
     }
 
-    public subscribe(key: string) {
-        this._client.subscribe(key);
+    public subscribe(key: string, callback: Function) {
+        this._client.subscribe(key, callback);
     }
 
     public publish(key: string, value: any) {

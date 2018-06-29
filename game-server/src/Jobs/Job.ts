@@ -24,6 +24,14 @@ export default class Job {
         throw new Error('Job: Implement addToDb method.');
     }
 
+    public toJSON(): void {
+        throw new Error('Job: Implement toJSON method.');
+    }
+
+    public update(): void {
+        throw new Error('Job: Implement update method.');
+    }
+
     public startJob() {
         this._inProgress = true;
     }
