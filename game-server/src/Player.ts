@@ -1,5 +1,5 @@
 import BuildingFactory from "./Buildings/BuildingFactory";
-import Building, {default as Building} from "./Buildings/Building";
+import Building from "./Buildings/Building";
 import BuildBuildingCommand from "./Commands/BuildBuildingCommand";
 import Storehouse from "./Buildings/types/Storehouse";
 import JobStore from "./Jobs/JobStore";

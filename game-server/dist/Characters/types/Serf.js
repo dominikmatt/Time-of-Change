@@ -15,12 +15,14 @@ class Serf extends Character_1.default {
     findJob() {
         this._player.jobStore.getFreeJobByType('transport')
             .then((job) => {
-            const building = this._player.buildingManager.findStorehouseWithResource(job.resourceType);
-            let startPosition = job.startPosition;
-            if (building) {
-                startPosition = building.doorPosition;
+            // No Storehouse found with resource append job to job-list.
+            if (null === job) {
+                return;
             }
-            this._job = new TransportJob_1.default(this._player, startPosition, job.resourceType, this);
+            const building = this._player.buildingManager.findStorehouseWithResource(job.resourceType);
+            const targetBuilding = this._player.buildingManager.findBuildingById(job.targetBuilding);
+            let startPosition = job.startPosition;
+            this._job = new TransportJob_1.default(this._player, building.doorPosition, job.resourceType, targetBuilding, this, building);
             this._walkTarget = startPosition;
             // No Storehouse found with resource append job to job-list.
             if (!building) {

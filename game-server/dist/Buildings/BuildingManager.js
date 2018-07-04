@@ -13,6 +13,12 @@ class BuildingManager {
         });
         return building;
     }
+    findBuildingById(id) {
+        const building = this._player.buildings.find((building) => {
+            return id === building.id;
+        });
+        return building;
+    }
 }
 exports.default = BuildingManager;
 //# sourceMappingURL=BuildingManager.js.map

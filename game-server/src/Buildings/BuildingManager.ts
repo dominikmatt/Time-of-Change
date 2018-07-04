@@ -9,13 +9,21 @@ export default class BuildingManager {
         this._player = player;
     }
 
-    public findStorehouseWithResource(resourceType: string): Building {
-        const building = this._player.buildings.find((building: Building) => {
+    public findStorehouseWithResource(resourceType: string): Storehouse {
+        const building = this._player.buildings.find((building: Building): boolean => {
             if ('storehouse' === (<Storehouse>building).getType()) {
                 const stones = (<Storehouse>building).getResourceCountByType(resourceType);
 
                 return 0 < stones;
             }
+        });
+
+        return (<Storehouse>building);
+    }
+
+    public findBuildingById(id: string): Building {
+        const building = this._player.buildings.find((building: Building): boolean => {
+            return id === building.id;
         });
 
         return building;

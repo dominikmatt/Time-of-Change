@@ -150,8 +150,14 @@ class Storehouse extends EconomyBuilding_1.default {
         };
     }
     getResourceCountByType(resourceType) {
-        console.log(resourceType);
         return this._resources[resourceType].store;
+    }
+    takeOutResource(resourceType) {
+        if (0 < this._resources[resourceType].store) {
+            this._resources[resourceType].store--;
+            return true;
+        }
+        return false;
     }
 }
 exports.default = Storehouse;

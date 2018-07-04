@@ -11,7 +11,7 @@ import Map from "../Map/Map";
  * Base class for all Buildings.
  */
 export default abstract class Building {
-    protected _id: string =  uuidv1();
+    private readonly _id: string =  uuidv1();
 
     protected character: any; // TODO: Change to Character.
 
@@ -25,6 +25,11 @@ export default abstract class Building {
 
     readonly _matrix: number[][];
     public doorPosition: PositionInterface;
+
+    private _buildResources: object = {
+       stones: 0,
+       timber: 0
+    };
 
     protected constructor(player: Player, position: PositionInterface) {
         this._player = player;
@@ -40,7 +45,7 @@ export default abstract class Building {
         this.updateMap();
 
         if (!alreadyBuilt) {
-            this.addJobs();
+            this.addTransportJobs();
         }
     }
 
@@ -76,14 +81,22 @@ export default abstract class Building {
     /**
      * This method will create all transport jobs to the jobs store.
      */
-    protected addJobs() {
+    protected addTransportJobs() {
         for (let count = 0; count < this._cost.cost.stones; count++) {
-            this._player.jobStore.addJob(new TransportJob(this._player, this.doorPosition, 'stones'));
+            this._player.jobStore.addJob(new TransportJob(this._player, this.doorPosition, 'stones', this));
         }
 
         for (let count = 0; count < this._cost.cost.timber; count++) {
-            this._player.jobStore.addJob(new TransportJob(this._player, this.doorPosition, 'timber'));
+            this._player.jobStore.addJob(new TransportJob(this._player, this.doorPosition, 'timber', this));
         }
+    }
+
+    /**
+     * This method will create all transport jobs to the jobs store.
+     */
+    protected addBuildJob() {
+        this._player.jobStore.addJob(new BuildJ(this._player, this.doorPosition, 'stones', this));
+
     }
 
     protected addHealtComponent(alreadyBuilt: boolean = false) {
@@ -116,6 +129,10 @@ export default abstract class Building {
         });
     }
 
+    public addBuildResource(type: string) {
+        (<any>this._buildResources)[type]++;
+    }
+
     get position(): PositionComponent {
         return this._position;
     }
@@ -130,5 +147,9 @@ export default abstract class Building {
 
     get healt(): HealthComponent {
         return this._healt;
+    }
+
+    get id(): string {
+        return this._id;
     }
 }

@@ -28,7 +28,7 @@ export default class Schoolhouse extends EconomyBuilding implements BuildingInte
         this.build(alreadyBuilt);
     }
 
-    protected getType() {
+    public getType() {
         return 'schoolhouse';
     }
 

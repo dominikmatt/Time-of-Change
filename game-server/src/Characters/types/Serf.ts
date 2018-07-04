@@ -1,6 +1,8 @@
 import Character from "../Character";
 import CharacterInterface from "../CharacterInterface";
 import TransportJob from "../../Jobs/types/TransportJob";
+import Storehouse from "../../Buildings/types/Storehouse";
+import Building from "../../Buildings/Building";
 
 export default class Serf extends Character implements CharacterInterface {
     public getType(): string {
@@ -14,14 +16,23 @@ export default class Serf extends Character implements CharacterInterface {
     protected findJob() {
         this._player.jobStore.getFreeJobByType('transport')
             .then((job: any) => {
-                const building = this._player.buildingManager.findStorehouseWithResource(job.resourceType);
-                let startPosition = job.startPosition;
-
-                if (building) {
-                    startPosition = building.doorPosition;
+                // No Storehouse found with resource append job to job-list.
+                if (null === job) {
+                    return;
                 }
 
-                this._job = new TransportJob(this._player, startPosition, job.resourceType, this);
+                const building: Storehouse = this._player.buildingManager.findStorehouseWithResource(job.resourceType);
+                const targetBuilding: Building = this._player.buildingManager.findBuildingById(job.targetBuilding);
+                let startPosition = job.startPosition;
+
+                this._job = new TransportJob(
+                    this._player,
+                    building.doorPosition,
+                    job.resourceType,
+                    targetBuilding,
+                    this,
+                    building
+                );
                 this._walkTarget = startPosition;
 
                 // No Storehouse found with resource append job to job-list.

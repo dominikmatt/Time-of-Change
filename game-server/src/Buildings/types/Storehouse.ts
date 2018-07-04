@@ -195,7 +195,16 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
     }
 
     public getResourceCountByType(resourceType: string): number {
-        console.log(resourceType);
         return this._resources[resourceType].store;
+    }
+
+    public takeOutResource(resourceType: string): boolean {
+        if (0 < this._resources[resourceType].store) {
+            this._resources[resourceType].store--;
+
+            return true;
+        }
+
+        return false;
     }
 }

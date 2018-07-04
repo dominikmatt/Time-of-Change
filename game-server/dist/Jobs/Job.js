@@ -6,6 +6,7 @@ class Job {
         this._id = uuid_1.v1();
         this._inProgress = false;
         this._isFinished = true;
+        this._currentStep = 0;
         this._player = player;
     }
     getType() {

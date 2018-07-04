@@ -14,6 +14,10 @@ const Map_1 = __importDefault(require("../Map/Map"));
 class Building {
     constructor(player, position) {
         this._id = uuid_1.v1();
+        this._buildResources = {
+            stones: 0,
+            timber: 0
+        };
         this._player = player;
         this._position = new PositionComponent_1.PositionComponent(position);
     }
@@ -24,7 +28,7 @@ class Building {
         this.addHealtComponent(alreadyBuilt);
         this.updateMap();
         if (!alreadyBuilt) {
-            this.addJobs();
+            this.addTransportJobs();
         }
     }
     /**
@@ -54,13 +58,19 @@ class Building {
     /**
      * This method will create all transport jobs to the jobs store.
      */
-    addJobs() {
+    addTransportJobs() {
         for (let count = 0; count < this._cost.cost.stones; count++) {
-            this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'stones'));
+            this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'stones', this));
         }
         for (let count = 0; count < this._cost.cost.timber; count++) {
-            this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'timber'));
+            this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'timber', this));
         }
+    }
+    /**
+     * This method will create all transport jobs to the jobs store.
+     */
+    addBuildJob() {
+        this._player.jobStore.addJob(new BuildJ(this._player, this.doorPosition, 'stones', this));
     }
     addHealtComponent(alreadyBuilt = false) {
         this._healt = new HealthComponent_1.default(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
@@ -88,6 +98,9 @@ class Building {
             matrix: this._matrix
         });
     }
+    addBuildResource(type) {
+        this._buildResources[type]++;
+    }
     get position() {
         return this._position;
     }
@@ -99,6 +112,9 @@ class Building {
     }
     get healt() {
         return this._healt;
+    }
+    get id() {
+        return this._id;
     }
 }
 exports.default = Building;
