@@ -8,6 +8,7 @@ const PositionComponent_1 = require("../Components/PositionComponent");
 const HealthComponent_1 = __importDefault(require("../Components/HealthComponent"));
 const TransportJob_1 = __importDefault(require("../Jobs/types/TransportJob"));
 const Map_1 = __importDefault(require("../Map/Map"));
+const BuildJob_1 = __importDefault(require("../Jobs/types/BuildJob"));
 /**
  * Base class for all Buildings.
  */
@@ -70,7 +71,7 @@ class Building {
      * This method will create all transport jobs to the jobs store.
      */
     addBuildJob() {
-        this._player.jobStore.addJob(new BuildJ(this._player, this.doorPosition, 'stones', this));
+        this._player.jobStore.addJob(new BuildJob_1.default(this._player, this));
     }
     addHealtComponent(alreadyBuilt = false) {
         this._healt = new HealthComponent_1.default(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
@@ -100,6 +101,10 @@ class Building {
     }
     addBuildResource(type) {
         this._buildResources[type]++;
+        this.addBuildJob();
+    }
+    increaseHealt() {
+        this._healt.currentHealth += 50;
     }
     get position() {
         return this._position;

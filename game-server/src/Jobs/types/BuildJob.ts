@@ -8,9 +8,11 @@ import Storehouse from "../../Buildings/types/Storehouse";
 import Building from "../../Buildings/Building";
 
 export default class BuildJob extends Job implements JobInterface {
-    protected readonly _type: string = 'transport';
+    protected readonly _type: string = 'build';
     private readonly _targetBuilding: Building;
     private readonly _character?: Character = null;
+    private _isCharacterWalking: boolean = false;
+    private _isCharacterAtStart: boolean = false;
 
     constructor(
         player: Player,
@@ -34,7 +36,35 @@ export default class BuildJob extends Job implements JobInterface {
     }
 
     public update(): void {
+        switch (this._currentStep) {
+            case 0:
+                if (!this._isCharacterWalking && !this._isCharacterAtStart) {
+                    const path = Map.findRunnablePath(
+                        this._character.position.position,
+                        this._targetBuilding.doorPosition
+                    );
 
+                    this._character.walkByPath(path);
+                    this._isCharacterWalking = true;
 
+                    this._currentStep++;
+                }
+                break;
+            case 1:
+                if (this._character.position.x === this._targetBuilding.doorPosition.x &&
+                    this._character.position.z === this._targetBuilding.doorPosition.z
+                ) {
+                    this._isCharacterAtStart = true;
+                    this._isCharacterWalking = false;
+
+                    setTimeout(() => {
+                        this._currentStep++;
+                    }, 5000);
+                }
+                break;
+            case 2:
+                this._targetBuilding.increaseHealt();
+                this._character.job = null;
+                break;
     }
 }

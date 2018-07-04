@@ -4,8 +4,8 @@ import Player from "../Player";
 import CostComponent from "../Components/CostComponent";
 import HealthComponent from "../Components/HealthComponent";
 import TransportJob from "../Jobs/types/TransportJob";
-import Core from "../Core";
 import Map from "../Map/Map";
+import BuildJob from "../Jobs/types/BuildJob";
 
 /**
  * Base class for all Buildings.
@@ -95,7 +95,7 @@ export default abstract class Building {
      * This method will create all transport jobs to the jobs store.
      */
     protected addBuildJob() {
-        this._player.jobStore.addJob(new BuildJ(this._player, this.doorPosition, 'stones', this));
+        this._player.jobStore.addJob(new BuildJob(this._player, this));
 
     }
 
@@ -131,6 +131,12 @@ export default abstract class Building {
 
     public addBuildResource(type: string) {
         (<any>this._buildResources)[type]++;
+
+        this.addBuildJob();
+    }
+
+    public increaseHealt() {
+        this._healt.currentHealth += 50;
     }
 
     get position(): PositionComponent {
