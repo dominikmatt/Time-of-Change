@@ -10,7 +10,8 @@ class Character {
     constructor(player) {
         this._id = uuid_1.v1();
         this._job = null;
-        console.log('create character');
+        this._currentPath = [];
+        this._walkDelta = 0;
         this._player = player;
         this._position = new PositionComponent_1.PositionComponent({
             x: 2,
@@ -36,6 +37,26 @@ class Character {
         throw new Error('Character: Implement "findJob" method.');
     }
     update() {
+        if (null === this._job) {
+            this.findJob();
+        }
+        else {
+            this._job.update();
+        }
+        // Do walk - ever second to the next field.
+        if (0 < this._currentPath.length) {
+            this._walkDelta += Core_1.default.currentTick.delta;
+            if (1 <= this._walkDelta) {
+                const next = this._currentPath.shift();
+                if (next) {
+                    this.position.position = {
+                        x: next[0],
+                        z: next[1]
+                    };
+                }
+                this._walkDelta = 0;
+            }
+        }
         this._player.wsSocket.emit('character.update', {
             _id: this._id,
             type: this.getType(),
@@ -46,15 +67,16 @@ class Character {
             type: this.getType(),
             position: this._position.position
         });
-        if (null === this._job) {
-            this.findJob();
-        }
-        else {
-            this._job.update();
-        }
+    }
+    walkByPath(path) {
+        this._currentPath = path;
+        this._walkDelta = 0;
     }
     get position() {
         return this._position;
+    }
+    set job(value) {
+        this._job = value;
     }
 }
 exports.default = Character;

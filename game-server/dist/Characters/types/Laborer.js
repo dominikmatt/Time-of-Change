@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Character_1 = __importDefault(require("../Character"));
-const TransportJob_1 = __importDefault(require("../../Jobs/types/TransportJob"));
+const BuildJob_1 = __importDefault(require("../../Jobs/types/BuildJob"));
 class Laborer extends Character_1.default {
     getType() {
         return 'laborer';
@@ -13,10 +13,14 @@ class Laborer extends Character_1.default {
         return {};
     }
     findJob() {
-        this._player.jobStore.getFreeJobByType('laborer')
-            .then((jobJSON) => {
-            const job = JSON.parse(jobJSON);
-            this._job = new TransportJob_1.default(this._player, job.startPosition, job.resourceType, this);
+        this._player.jobStore.getFreeJobByType('build')
+            .then((job) => {
+            // No Storehouse found with resource append job to job-list.
+            if (null === job) {
+                return;
+            }
+            const targetBuilding = this._player.buildingManager.findBuildingById(job.targetBuilding);
+            this._job = new BuildJob_1.default(this._player, targetBuilding, this);
         });
     }
 }

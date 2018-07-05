@@ -10,6 +10,8 @@ export default class Job {
 
     private _isFinished: boolean = true;
 
+    protected _currentStep: number = 0;
+
     protected readonly _player: Player;
 
     constructor(player: Player) {

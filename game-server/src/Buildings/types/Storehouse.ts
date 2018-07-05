@@ -172,7 +172,7 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
 
         this._cost = new CostComponent({
             timber: 6,
-            stone: 5
+            stones: 5
         });
 
         this.build(alreadyBuilt);
@@ -184,7 +184,7 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
         }
     }
 
-    protected getType() {
+    public getType() {
         return 'storehouse';
     }
 
@@ -192,5 +192,19 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
         return {
             resources: this._resources
         }
+    }
+
+    public getResourceCountByType(resourceType: string): number {
+        return this._resources[resourceType].store;
+    }
+
+    public takeOutResource(resourceType: string): boolean {
+        if (0 < this._resources[resourceType].store) {
+            this._resources[resourceType].store--;
+
+            return true;
+        }
+
+        return false;
     }
 }

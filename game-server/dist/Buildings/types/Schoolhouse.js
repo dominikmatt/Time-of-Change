@@ -19,7 +19,7 @@ class Schoolhouse extends EconomyBuilding_1.default {
         this._currentGoldStore = 0;
         this._cost = new CostComponent_1.default({
             timber: 6,
-            stone: 5
+            stones: 5
         });
         this.build(alreadyBuilt);
     }

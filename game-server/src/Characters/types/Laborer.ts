@@ -1,6 +1,7 @@
 import Character from "../Character";
 import CharacterInterface from "../CharacterInterface";
-import TransportJob from "../../Jobs/types/TransportJob";
+import BuildJob from "../../Jobs/types/BuildJob";
+import Building from "../../Buildings/Building";
 
 export default class Laborer extends Character implements CharacterInterface {
     public getType(): string {
@@ -12,11 +13,17 @@ export default class Laborer extends Character implements CharacterInterface {
     }
 
     protected findJob() {
-        this._player.jobStore.getFreeJobByType('laborer')
-            .then((jobJSON: string) => {
-                const job: any = JSON.parse(jobJSON);
+        this._player.jobStore.getFreeJobByType('build')
+            .then((job: any) => {
+                // No Storehouse found with resource append job to job-list.
+                if (null === job) {
+                    return;
+                }
 
-                this._job = new TransportJob(this._player, job.startPosition, job.resourceType, this);
+                const targetBuilding: Building = this._player.buildingManager.findBuildingById(job.targetBuilding);
+
+
+                this._job = new BuildJob(this._player, targetBuilding, this);
             });
     }
 }

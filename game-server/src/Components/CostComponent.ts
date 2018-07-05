@@ -1,6 +1,6 @@
 interface CostInterface {
     timber: number;
-    stone: number;
+    stones: number;
     gold: number;
     [key: string]: number
 };
@@ -10,7 +10,7 @@ const healthMultiplicator = 50;
 export default class CostComponent {
     private readonly _cost: CostInterface = {
         timber: 0,
-        stone: 0,
+        stones: 0,
         gold: 0
     };
 
@@ -19,7 +19,7 @@ export default class CostComponent {
     }
 
     public getHealth(): number {
-        const health = (this._cost.timber + this._cost.stone) * healthMultiplicator;
+        const health = (this._cost.timber + this._cost.stones) * healthMultiplicator;
 
         return health;
     }

@@ -6,13 +6,13 @@ class CostComponent {
     constructor(cost = {}) {
         this._cost = {
             timber: 0,
-            stone: 0,
+            stones: 0,
             gold: 0
         };
         this._cost = Object.assign(this._cost, cost);
     }
     getHealth() {
-        const health = (this._cost.timber + this._cost.stone) * healthMultiplicator;
+        const health = (this._cost.timber + this._cost.stones) * healthMultiplicator;
         return health;
     }
     get cost() {
