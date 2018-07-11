@@ -3,13 +3,13 @@ import Terrain from "./Terrain";
 
 let instance: Game = null;
 
-class Game {
+export class Game {
     private _canvas: HTMLCanvasElement;
     private _engine: BABYLON.Engine;
     private _scene: BABYLON.Scene;
     private _terrain: Terrain;
 
-    public static getInstance() {
+    public static getInstance(): Game {
         if (null === instance) {
             instance = new Game();
         }
@@ -26,19 +26,17 @@ class Game {
         const scene = new BABYLON.Scene(engine);
         this._scene = scene;
 
+        this._engine.enableOfflineSupport = false;
         // This creates and positions a free camera (non-mesh)
         const camera: BABYLON.FreeCamera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-        // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-        const light: BABYLON.Light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-
         // This targets the camera to scene origin
         camera.setTarget(BABYLON.Vector3.Zero());
 
         // This attaches the camera to the canvas
         camera.attachControl(canvas, true);
 
-        // Default intensity is 1. Let's dim the light a small amount
-        light.intensity = 0.7;
+        var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0, 10, 0), scene);
+        light.diffuse = new BABYLON.Color3(1, 1, 1);
 
         this._terrain = new Terrain(this);
     }
@@ -69,4 +67,6 @@ class Game {
     }
 }
 
-export default Game.getInstance();
+const game: Game = Game.getInstance();
+
+export default game;

@@ -1,3 +1,3 @@
-import Game from "./Game";
+import game from "./Game";
 
-Game.initialize(document.getElementById('render-canvas') as HTMLCanvasElement);
+game.initialize(document.getElementById('render-canvas') as HTMLCanvasElement);
