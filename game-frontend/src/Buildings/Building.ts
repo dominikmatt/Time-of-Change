@@ -1,4 +1,4 @@
-import {Game} from "../Game";
+import {default as game, Game} from "../Game";
 import PositionInterface from "../interfaces/PositionInterface";
 
 export default class Building {
@@ -11,8 +11,7 @@ export default class Building {
         z: -1
     };
 
-    constructor(game: Game, position: PositionInterface) {
-        this._game = game;
+    constructor(position: PositionInterface) {
         this._position = position;
 
         this.load();
@@ -23,7 +22,7 @@ export default class Building {
             null,
             'assets/buildings/',
             'storehouse.babylon',
-            this._game.scene)
+            game.gameScene.scene)
             .then((result) => {
                 this._mesh = result.meshes[0];
                 this.setPosition();
@@ -32,7 +31,21 @@ export default class Building {
 
     private setPosition() {
         this._mesh.position = BABYLON.Vector3.Zero();
-        this._mesh.position.x = this._position.x + this._positionFixture.x;
-        this._mesh.position.z = -(this._position.z) + this._positionFixture.z;
+        this._mesh.position.x = this._position.x;
+        this._mesh.position.z = this._position.z;
+    }
+
+    public setHealt(currentHealth: number, maxHealth: number) {
+        if (!this._mesh) {
+            return;
+        }
+
+        if (maxHealth === 0 ) {
+            maxHealth = 1;
+        }
+
+        console.log(currentHealth);
+
+        this._mesh.position.y = currentHealth/maxHealth - 1;
     }
 }

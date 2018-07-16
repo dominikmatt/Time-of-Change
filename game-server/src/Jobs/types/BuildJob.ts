@@ -66,5 +66,6 @@ export default class BuildJob extends Job implements JobInterface {
                 this._targetBuilding.increaseHealt();
                 this._character.job = null;
                 break;
+        }
     }
 }

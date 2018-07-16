@@ -42,7 +42,7 @@
 
         .map {
             position: relative;
-            width: 430px;
+            width: 670px;
             font-size: 0;
         }
 
@@ -219,6 +219,7 @@
         });
 
         socket.on('map.update', function(data) {
+            console.log('update');
             const id = `map-item-${data.x}-${data.z}`;
             const div = document.querySelector(`#${id}`);
 
@@ -253,8 +254,8 @@
     };
 
     const createMap = () => {
-        const xMax = 10;
-        const zMax = 10;
+        const xMax = 16;
+        const zMax = 16;
         const map = document.querySelector('#map');
 
         for (let x = 0; x < xMax; x++) {

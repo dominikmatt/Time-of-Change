@@ -1,3 +1,12 @@
 import game from "./Game";
+import connectionService from "./services/connection";
+import MapUpdateCommand from "./Commands/MapUpdateCommand";
+import BuildingUpdateCommand from "./Commands/BuildingUpdateCommand";
 
-game.initialize(document.getElementById('render-canvas') as HTMLCanvasElement);
+connectionService
+    .connect()
+    .then(() => {
+        game.initialize();
+        new MapUpdateCommand();
+        new BuildingUpdateCommand();
+    });

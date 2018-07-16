@@ -8,9 +8,9 @@ class Map {
 
     private readonly _mapGenerator: MapGenerator;
 
-    private _xMax: number = 10;
+    private _xMax: number = 16;
 
-    private _zMax: number = 10;
+    private _zMax: number = 16;
 
     private _streetMatrix: number[][] = [];
 

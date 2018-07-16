@@ -1,28 +1,46 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Building_1 = require("./Buildings/Building");
+const Game_1 = require("./Game");
+const connection_1 = require("./services/connection");
+const BABYLON = require("babylonjs");
 class Terrain {
-    constructor(game) {
-        this._game = game;
-        BABYLON.SceneLoader.ImportMesh('', 'maps/flat/', 'flat.babylon', this._game.scene, (meshes, x, materials) => {
-            console.log(meshes);
-            meshes.forEach((mesh) => {
-                mesh.position.x = mesh.scaling.x;
-                mesh.position.z = -(mesh.scaling.z);
-                mesh.rotation.y = Math.PI / 2;
-                mesh.material.wireframe = false;
-            });
+    constructor() {
+        this._game = Game_1.default;
+        BABYLON.SceneLoader.ImportMesh('', 'maps/flat/', 'flat.babylon', this._game.gameScene.scene, (meshes) => {
+            this._mesh = meshes[0];
+            this._mesh.position.x = 0;
+            this._mesh.position.z = 0;
+            this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));
+            this._mesh.material.wireframe = true;
+            this.generateHeightData();
+            connection_1.default.socket.emit('map.data');
         });
-        const building = new Building_1.default(this._game, {
-            x: 5,
-            y: 0,
-            z: 5,
-        });
-        const building1 = new Building_1.default(this._game, {
-            x: 9,
-            y: 0,
-            z: 9,
-        });
+    }
+    /**
+     * Generate the height data of the map.
+     * TODO: Move it to a helper class and store it to a json file.
+     */
+    generateHeightData() {
+        const heightData = {};
+        const positions = this._mesh.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+        for (let i = 0; i < positions.length; i += 3) {
+            const x = Math.round(positions[i]);
+            const y = positions[i + 1];
+            const z = Math.round(positions[i + 2]);
+            if (!heightData[x]) {
+                heightData[x] = {};
+            }
+            heightData[x][z] = y;
+        }
+        this._heightData = heightData;
+    }
+    /**
+     * Returns the height of given coordinate.
+     *
+     * @return {number}
+     */
+    getHeight(x, z) {
+        return (this._heightData[x][z] + this._heightData[x + 1][z + 1] + this._heightData[x][z + 1] + this._heightData[x + 1][z]) / 4;
     }
 }
 exports.default = Terrain;

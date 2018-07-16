@@ -19,6 +19,8 @@ class GetMapDataCommand extends Command_1.default {
             for (let z = 0; z < Map_1.default.zMax; z++) {
                 Core_1.default.db.hgetall(`map:[${x},${z}]`)
                     .then((mapData) => {
+                    mapData.x = parseInt(mapData.x);
+                    mapData.z = parseInt(mapData.z);
                     this.player.wsSocket.emit('map.update', mapData);
                 });
             }
