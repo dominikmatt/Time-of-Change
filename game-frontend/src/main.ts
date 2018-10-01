@@ -1,4 +1,4 @@
-import {app, BrowserWindow} from "electron";
+import {app, BrowserWindow, protocol} from "electron";
 import * as path from "path";
 import * as url from "url";
 
@@ -12,7 +12,6 @@ function createWindow() {
     });
 
     mainWindow.maximize();
-
 
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
