@@ -2,8 +2,14 @@
 
 ### building.create
 
-##### Parameters
+#### Parameters
 
 | Parameter     | Required      | Type   | Description           |
 | ------------- |:-------------:|:------:|:----------------------|
 | type          | true          | string | Type name of building |
+
+### map.data
+
+#### Parameters
+
+**No parameters needed**
