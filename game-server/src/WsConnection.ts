@@ -12,7 +12,7 @@ interface QueryInterface {
     [key: string]: string;
 };
 
-app.listen(9001);
+app.listen(9100);
 
 /**
  * Check if connectiondata like token and username has been set on the connection request.
@@ -34,6 +34,7 @@ io.use((socket: Socket, next: Function) => {
  * Create a new player or connect to the given player-instance.
  */
 io.on('connection', (socket: any) => {
+    console.log('connected');
     const query: QueryInterface = socket.handshake.query;
     const token: string = query.token;
 
@@ -52,4 +53,8 @@ io.on('connection', (socket: any) => {
     newPlayer.wsSocket = socket;
     newPlayer.listenWs();
     newPlayer.initializeTown();
+
+    socket.on('disconnect', function () {
+        console.log('disconnected');
+    });
 });

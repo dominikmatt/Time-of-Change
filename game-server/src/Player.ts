@@ -9,6 +9,7 @@ import GetMapDataCommand from "./Commands/GetMapDataCommand";
 import CreateCharacterCommand from "./Commands/CreateCharacterCommand";
 import Character from "./Characters/Character";
 import BuildingManager from "./Buildings/BuildingManager";
+import CharacterFactory from "./Characters/CharacterFactory";
 
 export default class Player {
     private readonly _name: string;
@@ -44,6 +45,7 @@ export default class Player {
 
     public initializeTown() {
         /** @var Storehouse storehouse */
+        const hero: Character = this.addCharacter(CharacterFactory('hero', this));
         const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 3, z: 3}, this, true));
 
         storehouse.addResources({

@@ -137,7 +137,7 @@
             socket.disconnect();
         }
 
-        socket = io('http://localhost:9001', {
+        socket = io('http://127.0.0.1:9100', {
                 query: {
                 username: document.querySelector('#username').value,
                 token: token

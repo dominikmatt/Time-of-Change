@@ -71,7 +71,8 @@ export default class Character {
         this._player.wsSocket.emit('character.update', {
             _id: this._id,
             type: this.getType(),
-            data: this.getCharacterData()
+            data: this.getCharacterData(),
+            position: this.position.position,
         });
 
         Core.emitAll('character.update.position', {

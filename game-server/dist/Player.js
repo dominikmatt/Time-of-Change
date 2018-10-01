@@ -11,6 +11,7 @@ const Core_1 = __importDefault(require("./Core"));
 const GetMapDataCommand_1 = __importDefault(require("./Commands/GetMapDataCommand"));
 const CreateCharacterCommand_1 = __importDefault(require("./Commands/CreateCharacterCommand"));
 const BuildingManager_1 = __importDefault(require("./Buildings/BuildingManager"));
+const CharacterFactory_1 = __importDefault(require("./Characters/CharacterFactory"));
 class Player {
     constructor(name, token) {
         this._buildings = [];
@@ -28,6 +29,7 @@ class Player {
     }
     initializeTown() {
         /** @var Storehouse storehouse */
+        const hero = this.addCharacter(CharacterFactory_1.default('hero', this));
         const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 3, z: 3 }, this, true));
         storehouse.addResources({
             stones: 60,
