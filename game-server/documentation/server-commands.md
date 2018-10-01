@@ -5,7 +5,20 @@ This command is thrown when a building has been updated.
 
 ##### Parameters
 - Full building information.
-    - id
-    - Position
-    - type
-    - …
+
+| Parameter     | Required      | Type              | Description           |
+| ------------- |:-------------:|:-----------------:|:----------------------|
+| id            | true          | int               | unique id of building |
+| Position      | true          | PositionInterface | Position on map       |
+| type          | true          | string            | Type of building      |
+    
+### map.update
+This command is thrown when a map coordinate has been changed.
+
+#### Parameters
+
+| Parameter     | Required      | Type    | Description                 |
+| ------------- |:-------------:|:-------:|:----------------------------|
+| x             | true          | int     | x coordinate                |
+| y             | true          | int     | y coordinate                |
+| hasTree       | true          | boolean | has this coordinate a tree? |
