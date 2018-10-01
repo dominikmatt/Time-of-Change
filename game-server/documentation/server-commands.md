@@ -22,3 +22,16 @@ This command is thrown when a map coordinate has been changed.
 | x             | true          | int     | x coordinate                |
 | y             | true          | int     | y coordinate                |
 | hasTree       | true          | boolean | has this coordinate a tree? |
+
+
+### character.update
+This command is thrown when a character has been updated.
+
+##### Parameters
+- Full character information.
+
+| Parameter     | Required      | Type              | Description           |
+| ------------- |:-------------:|:-----------------:|:----------------------|
+| id            | true          | int               | unique id of building |
+| Position      | true          | PositionInterface | Position on map       |
+| type          | true          | string            | Type of building      |
