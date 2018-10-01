@@ -9,7 +9,6 @@
     "node": ">=10.5.0"
   },
   "scripts": {
-    "prestart": "source $HOME/.nvm/nvm.sh; nvm use",
     "start": "node -v; nodemon dist/index.js"
   },
   "dependencies": {

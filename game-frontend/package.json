@@ -12,9 +12,10 @@
   "author": "Dominik Matt <mail@matt-dominik.at>",
   "license": "ISC",
   "dependencies": {
+    "@types/socket.io-client": "^1.4.32",
     "babylonjs": "^3.1.1",
     "socket.io": "^2.1.1",
-    "socket.io-client": "latest"
+    "socket.io-client": "^2.1.1"
   },
   "devDependencies": {
     "typescript": "^2.6.2",

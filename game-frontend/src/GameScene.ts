@@ -2,7 +2,7 @@ import * as BABYLON from 'babylonjs';
 import Terrain from "./Terrain";
 import connectionService from "./services/connection";
 
-export default class    GameScene {
+export default class GameScene {
     private _canvas: HTMLCanvasElement;
     private _engine: BABYLON.Engine;
     private _scene: BABYLON.Scene;
@@ -63,6 +63,7 @@ export default class    GameScene {
                 .then((result) => {
                     const mesh = result.meshes[0];
 
+                    console.log(data);
                     mesh.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
                     mesh.position = BABYLON.Vector3.Zero();
                     mesh.position.x = data.x + 0.5;
@@ -82,5 +83,9 @@ export default class    GameScene {
 
     get canvas(): HTMLCanvasElement {
         return this._canvas;
+    }
+
+    get terrain(): Terrain {
+        return this._terrain;
     }
 }

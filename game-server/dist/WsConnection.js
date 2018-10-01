@@ -10,7 +10,7 @@ const socket_io_1 = __importDefault(require("socket.io"));
 const app = http_1.default.createServer(() => { });
 const io = socket_io_1.default(app);
 ;
-app.listen(9001);
+app.listen(9100);
 /**
  * Check if connectiondata like token and username has been set on the connection request.
  */
@@ -30,6 +30,7 @@ io.use((socket, next) => {
  * Create a new player or connect to the given player-instance.
  */
 io.on('connection', (socket) => {
+    console.log('connected');
     const query = socket.handshake.query;
     const token = query.token;
     // Player is already connected set the new socket to player and bind listeners.
@@ -44,5 +45,8 @@ io.on('connection', (socket) => {
     newPlayer.wsSocket = socket;
     newPlayer.listenWs();
     newPlayer.initializeTown();
+    socket.on('disconnect', function () {
+        console.log('disconnected');
+    });
 });
 //# sourceMappingURL=WsConnection.js.map

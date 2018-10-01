@@ -3,6 +3,7 @@ import Player from "../Player";
 import Serf from "./types/Serf";
 import Laborer from "./types/Laborer";
 import Character from "./Character";
+import Hero from "./types/Hero";
 
 interface CharacterMapping {
     [key:string]: any;
@@ -10,7 +11,8 @@ interface CharacterMapping {
 
 const characterMapping: CharacterMapping = {
     serf: Serf,
-    laborer: Laborer
+    laborer: Laborer,
+    hero: Hero,
 };
 
 /**
