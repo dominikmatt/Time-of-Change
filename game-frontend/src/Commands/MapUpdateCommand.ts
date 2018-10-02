@@ -11,7 +11,6 @@ export default class MapUpdateCommand extends Command {
     }
 
     execute(req: RequestInterface) {
-        // TOD: Create Building store.
         game.gameScene.updateCoordinate(req);
     }
 }
