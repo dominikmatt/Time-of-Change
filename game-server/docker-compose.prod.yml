@@ -12,7 +12,7 @@ services:
       - REDIS_HOST=redis
     depends_on:
      - redis
-    restart: always
+    restart: no
     command: "npm run start:prod"
 
   redis:
