@@ -13,11 +13,10 @@ export default class Building {
     constructor(position: PositionInterface) {
         this._position = position;
 
-        setTimeout(this.load.bind(this), 1000);
+        this.load();
     }
 
     private load() {
-
         BABYLON.SceneLoader.ImportMeshAsync(
             null,
             'assets/buildings/',
@@ -43,10 +42,10 @@ export default class Building {
             return;
         }
 
-        if (maxHealth === 0 ) {
+        if (maxHealth === 0) {
             maxHealth = 1;
         }
 
-        this._mesh.position.y = game.gameScene.terrain.getHeight(this._position.x, this._position.z) + (currentHealth/maxHealth - 1);
+        this._mesh.position.y = game.gameScene.terrain.getHeight(this._position.x, this._position.z) + (currentHealth / maxHealth - 1);
     }
 }

@@ -9,7 +9,7 @@ class Building {
             z: -1
         };
         this._position = position;
-        setTimeout(this.load.bind(this), 1000);
+        this.load();
     }
     load() {
         BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/buildings/', 'schoolhouse.babylon', Game_1.default.gameScene.scene)
