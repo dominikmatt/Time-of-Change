@@ -22,7 +22,9 @@ class Map {
      * Returns an array with all coordinates from start-position to the target.
      */
     findRunnablePath(start, target) {
-        const finder = new pathfinding_1.default.AStarFinder();
+        const finder = new pathfinding_1.default.AStarFinder({
+        //allowDiagonal: true
+        });
         const path = finder.findPath(start.x, start.z, target.x, target.z, this._runnableGrid.clone());
         return path;
     }

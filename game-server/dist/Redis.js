@@ -12,7 +12,9 @@ class Redis {
         this.connect(index);
     }
     connect(index) {
-        this._client = redis_1.default.createClient();
+        this._client = redis_1.default.createClient({
+            host: process.env.REDIS_HOST
+        });
         this._client.select(index);
         this._client.on('error', (error) => {
             throw new Error(error);

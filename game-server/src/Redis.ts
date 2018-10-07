@@ -11,7 +11,9 @@ export default class Redis {
     }
 
     private connect(index: number) {
-        this._client = redis.createClient();
+        this._client = redis.createClient({
+            host: process.env.REDIS_HOST
+        });
         this._client.select(index);
 
         this._client.on('error', (error: string) => {

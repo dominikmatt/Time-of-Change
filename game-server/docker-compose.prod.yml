@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: ""
+      dockerfile: Dockerfile
+    ports:
+     - "9100:9100"
+    volumes:
+     - ./dist:/usr/src/game-server/dist
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+     - redis
+    restart: always
+    command: "npm run start:prod"
+
+  redis:
+    image: redis:alpine
