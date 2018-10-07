@@ -24,14 +24,14 @@ export default class Character {
     }
 
     private load() {
-        console.log('load');
         BABYLON.SceneLoader.ImportMeshAsync(
             null,
-            'assets/',
-            'character.babylon',
+            'assets/characters/',
+            'Ballbot.babylon',
             game.gameScene.scene)
             .then((result) => {
                 this._mesh = result.meshes[0];
+                this._mesh.scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
                 this.setPosition();
             });
     }
@@ -55,8 +55,6 @@ export default class Character {
         if (maxHealth === 0 ) {
             maxHealth = 1;
         }
-
-        console.log(currentHealth);
 
         this._mesh.position.y = currentHealth/maxHealth - 1;
     }

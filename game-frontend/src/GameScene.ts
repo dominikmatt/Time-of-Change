@@ -63,7 +63,6 @@ export default class GameScene {
                 .then((result) => {
                     const mesh = result.meshes[0];
 
-                    console.log(data);
                     mesh.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
                     mesh.position = BABYLON.Vector3.Zero();
                     mesh.position.x = data.x + 0.5;

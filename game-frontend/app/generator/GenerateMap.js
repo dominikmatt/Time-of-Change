@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Game_1 = require("./Game");
-const connection_1 = require("./services/connection");
-const BABYLON = require("babylonjs");
-class Terrain {
+const Game_1 = require("../Game");
+const connection_1 = require("../services/connection");
+class GenerateMap {
     constructor() {
         this._game = Game_1.default;
         BABYLON.SceneLoader.ImportMesh('', 'maps/flat/', 'flat.babylon', this._game.gameScene.scene, (meshes) => {
@@ -18,7 +17,6 @@ class Terrain {
     }
     /**
      * Generate the height data of the map.
-     * TODO: Move it to a helper class and store it to a json file.
      */
     generateHeightData() {
         const heightData = {};
@@ -34,23 +32,6 @@ class Terrain {
         }
         this._heightData = heightData;
     }
-    /**
-     * Returns the height of given coordinate.
-     *
-     * @return {number}
-     */
-    getHeight(x, z) {
-        let heightData = [
-            this._heightData[x][z],
-            this._heightData[x + 1][z + 1],
-            this._heightData[x][z + 1],
-            this._heightData[x + 1][z]
-        ];
-        heightData = heightData.filter((height) => {
-            return 0 === height || height;
-        });
-        return heightData.reduce((p, c) => p + c, 0) / heightData.length;
-    }
 }
-exports.default = Terrain;
-//# sourceMappingURL=Terrain.js.map
+exports.default = GenerateMap;
+//# sourceMappingURL=GenerateMap.js.map

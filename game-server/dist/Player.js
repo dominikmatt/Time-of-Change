@@ -30,7 +30,7 @@ class Player {
     initializeTown() {
         /** @var Storehouse storehouse */
         const hero = this.addCharacter(CharacterFactory_1.default('hero', this));
-        const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 5, z: 5 }, this, true));
+        const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 3, z: 3 }, this, true));
         storehouse.addResources({
             stones: 60,
             timber: 50,
