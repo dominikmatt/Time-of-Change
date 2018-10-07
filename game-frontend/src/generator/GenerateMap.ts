@@ -1,9 +1,7 @@
-import Building from "./Buildings/Building";
-import game, {Game} from "./Game";
-import connectionService from "./services/connection";
-import * as BABYLON from "babylonjs";
+import game, {Game} from "../Game";
+import connectionService from "../services/connection";
 
-export default class Terrain {
+export default class GenerateMap {
     private readonly _game: Game;
     private _mesh: BABYLON.AbstractMesh;
     private _heightData: any;
@@ -31,7 +29,6 @@ export default class Terrain {
 
     /**
      * Generate the height data of the map.
-     * TODO: Move it to a helper class and store it to a json file.
      */
     private generateHeightData() {
         const heightData: any = {};
@@ -51,25 +48,5 @@ export default class Terrain {
         }
 
         this._heightData = heightData;
-    }
-
-    /**
-     * Returns the height of given coordinate.
-     *
-     * @return {number}
-     */
-    public getHeight(x: number, z: number): number {
-        let heightData: number[] = [
-            this._heightData[x][z],
-            this._heightData[x+1][z+1],
-            this._heightData[x][z+1],
-            this._heightData[x+1][z]
-        ];
-
-        heightData = heightData.filter((height?: number): any => {
-            return 0 === height || height;
-        });
-
-        return heightData.reduce( ( p: number, c: number ) => p + c, 0 ) / heightData.length;
     }
 }

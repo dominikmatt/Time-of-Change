@@ -32,7 +32,9 @@ class Map {
      * Returns an array with all coordinates from start-position to the target.
      */
     public findRunnablePath(start: PositionInterface, target: PositionInterface): number[][] {
-        const finder = new PF.AStarFinder();
+        const finder = new PF.AStarFinder({
+            //allowDiagonal: true
+        });
         const path = finder.findPath(
             start.x,
             start.z,
