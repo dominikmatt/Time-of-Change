@@ -7,8 +7,11 @@ let mainWindow: Electron.BrowserWindow;
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
+        titleBarStyle: 'hidden',
         height: 600,
         width: 800,
+        show: true,
+        icon: path.join(__dirname, '../assets/icons/64x64.png'),
     });
 
     mainWindow.maximize();

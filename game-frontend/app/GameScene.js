@@ -26,7 +26,6 @@ class GameScene {
         camera.setTarget(BABYLON.Vector3.Zero());
         //Set the ellipsoid around the camera (e.g. your player's size)
         camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
-        BABYLON.MeshBuilder.CreateBox("myBox", { height: 5, width: 0.5, depth: 0.5 }, scene);
         // This attaches the camera to the canvas
         camera.attachControl(canvas, true);
         var light = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, -1, 0), scene);
@@ -36,7 +35,7 @@ class GameScene {
     }
     updateCoordinate(data) {
         if ('true' === data.hasTree) {
-            BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/terrain/', 'tree001.babylon', this._scene)
+            BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/terrain/', 'tree001.babylon', this._scene)
                 .then((result) => {
                 const mesh = result.meshes[0];
                 mesh.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);

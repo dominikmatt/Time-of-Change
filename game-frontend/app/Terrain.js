@@ -6,7 +6,7 @@ const BABYLON = require("babylonjs");
 class Terrain {
     constructor() {
         this._game = Game_1.default;
-        BABYLON.SceneLoader.ImportMesh('', 'maps/flat/', 'flat.babylon', this._game.gameScene.scene, (meshes) => {
+        BABYLON.SceneLoader.ImportMesh('', 'assets/models/maps/flat/', 'flat.babylon', this._game.gameScene.scene, (meshes) => {
             this._mesh = meshes[0];
             this._mesh.position.x = 0;
             this._mesh.position.z = 0;
@@ -40,6 +40,10 @@ class Terrain {
      * @return {number}
      */
     getHeight(x, z) {
+        if (!this._heightData[x])
+            this._heightData[x] = [];
+        if (!this._heightData[x + 1])
+            this._heightData[x] = [];
         let heightData = [
             this._heightData[x][z],
             this._heightData[x + 1][z + 1],

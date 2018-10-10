@@ -1,0 +1,1 @@
+{"version":3,"file":"BuildBuilding.js","sourceRoot":"","sources":["../../src/Buildings/BuildBuilding.ts"],"names":[],"mappings":";;AAAA,uEAAgE;AAEhE;IACI;QACI,6BAAmB,CAAC,WAAW,CAAC,IAAI,CAAC,qBAAqB,CAAC,IAAI,CAAC,IAAI,CAAC,CAAC,CAAC;IAC3E,CAAC;IAED,qBAAqB;QACjB,OAAO,CAAC,GAAG,CAAC,uBAAuB,CAAC,CAAC;IACzC,CAAC;CACJ"}

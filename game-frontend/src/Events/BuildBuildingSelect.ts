@@ -1,5 +1,3 @@
-import {Game} from "../Game";
-
 let instance: BuildBuildingSelect = null;
 
 class BuildBuildingSelect extends EventsAbstract{

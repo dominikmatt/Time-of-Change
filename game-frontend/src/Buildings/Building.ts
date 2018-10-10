@@ -19,7 +19,7 @@ export default class Building {
     private load() {
         BABYLON.SceneLoader.ImportMeshAsync(
             null,
-            'assets/buildings/',
+            'assets/models/buildings/',
             'schoolhouse.babylon',
             game.gameScene.scene)
             .then((result) => {
