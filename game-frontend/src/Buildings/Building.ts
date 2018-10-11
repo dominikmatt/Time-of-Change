@@ -1,5 +1,6 @@
 import {default as game} from "../Game";
 import PositionInterface from "../interfaces/PositionInterface";
+import buildingMapping from "./buildingMapping";
 
 export default class Building {
     private readonly _position: PositionInterface;
@@ -9,21 +10,24 @@ export default class Building {
         y: 0,
         z: -1
     };
+    protected asset: string = '';
+    private _key: string;
 
-    constructor(position: PositionInterface) {
+    constructor(position: PositionInterface, key: string) {
         this._position = position;
-
+        this._key = key;
         this.load();
     }
 
     private load() {
         BABYLON.SceneLoader.ImportMeshAsync(
             null,
-            'assets/buildings/',
-            'schoolhouse.babylon',
+            'assets/models/buildings/',
+            buildingMapping[this._key].asset,
             game.gameScene.scene)
             .then((result) => {
                 this._mesh = result.meshes[0];
+                this._mesh.checkCollisions = true;
 
                 this.setPosition();
             });

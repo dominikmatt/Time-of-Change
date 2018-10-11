@@ -16,7 +16,7 @@ class Character {
         this.setPosition();
     }
     load() {
-        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/characters/', 'Ballbot.babylon', Game_1.default.gameScene.scene)
+        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/characters/', 'Ballbot.babylon', Game_1.default.gameScene.scene)
             .then((result) => {
             this._mesh = result.meshes[0];
             this._mesh.scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);

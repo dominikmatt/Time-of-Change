@@ -26,7 +26,7 @@ export default class Character {
     private load() {
         BABYLON.SceneLoader.ImportMeshAsync(
             null,
-            'assets/characters/',
+            'assets/models/characters/',
             'Ballbot.babylon',
             game.gameScene.scene)
             .then((result) => {

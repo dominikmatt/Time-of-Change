@@ -13,7 +13,7 @@ export default class Terrain {
 
         BABYLON.SceneLoader.ImportMesh(
             '',
-            'maps/flat/',
+            'assets/models/maps/flat/',
             'flat.babylon',
             this._game.gameScene.scene,
             (meshes) => {
@@ -59,6 +59,9 @@ export default class Terrain {
      * @return {number}
      */
     public getHeight(x: number, z: number): number {
+        if (!this._heightData[x]) this._heightData[x] = [];
+        if (!this._heightData[x+1]) this._heightData[x] = [];
+
         let heightData: number[] = [
             this._heightData[x][z],
             this._heightData[x+1][z+1],
@@ -71,5 +74,9 @@ export default class Terrain {
         });
 
         return heightData.reduce( ( p: number, c: number ) => p + c, 0 ) / heightData.length;
+    }
+
+    get mesh(): BABYLON.AbstractMesh {
+        return this._mesh;
     }
 }

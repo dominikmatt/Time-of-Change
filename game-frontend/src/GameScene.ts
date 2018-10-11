@@ -41,8 +41,6 @@ export default class GameScene {
         //Set the ellipsoid around the camera (e.g. your player's size)
         camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
 
-        BABYLON.MeshBuilder.CreateBox("myBox", {height: 5, width: 0.5, depth: 0.5}, scene);
-
         // This attaches the camera to the canvas
         camera.attachControl(canvas, true);
 
@@ -57,7 +55,7 @@ export default class GameScene {
         if ('true' === data.hasTree) {
             BABYLON.SceneLoader.ImportMeshAsync(
                 null,
-                'assets/terrain/',
+                'assets/models/terrain/',
                 'tree001.babylon',
                 this._scene)
                 .then((result) => {
