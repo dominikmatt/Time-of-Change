@@ -1,11 +1,11 @@
-class EventsAbstract {
+export default class EventsAbstract {
     protected callbacks: Function[] = [];
 
     /**
      * Executes all callbacks. Called by the Pagination.loadNextPage().
      */
-    trigger() {
-        this.callbacks.forEach((callback) => callback());
+    trigger(options: object) {
+        this.callbacks.forEach((callback) => callback(options));
     }
 
     /**

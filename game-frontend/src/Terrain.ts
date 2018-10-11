@@ -75,4 +75,8 @@ export default class Terrain {
 
         return heightData.reduce( ( p: number, c: number ) => p + c, 0 ) / heightData.length;
     }
+
+    get mesh(): BABYLON.AbstractMesh {
+        return this._mesh;
+    }
 }

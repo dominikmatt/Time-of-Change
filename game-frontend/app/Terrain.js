@@ -55,6 +55,9 @@ class Terrain {
         });
         return heightData.reduce((p, c) => p + c, 0) / heightData.length;
     }
+    get mesh() {
+        return this._mesh;
+    }
 }
 exports.default = Terrain;
 //# sourceMappingURL=Terrain.js.map

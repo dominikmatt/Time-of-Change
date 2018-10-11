@@ -4,14 +4,17 @@ import MapUpdateCommand from "./Commands/MapUpdateCommand";
 import BuildingUpdateCommand from "./Commands/BuildingUpdateCommand";
 import CharacterUpdateCommand from "./Commands/CharacterUpdateCommand";
 import GameUi from "./ui/GameUi";
+import {AddUserOptionsInterface, default as addUserEvent} from "./Events/AddUser";
 
-connectionService
-    .connect()
-    .then(() => {
-        game.initialize();
-        new MapUpdateCommand();
-        new BuildingUpdateCommand();
-        new CharacterUpdateCommand();
+new GameUi();
 
-        new GameUi();
-    });
+addUserEvent.addCallBack((options: AddUserOptionsInterface) => {
+        connectionService
+            .connect(options.username)
+            .then(() => {
+                game.initialize();
+                new MapUpdateCommand();
+                new BuildingUpdateCommand();
+                new CharacterUpdateCommand();
+            });
+});

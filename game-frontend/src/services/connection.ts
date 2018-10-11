@@ -13,13 +13,13 @@ class ConnectionService {
         return instance;
     }
 
-    public connect(): Promise<string> {
+    public connect(username: string): Promise<string> {
         return new Promise((resolve) => {
             console.info('ToC: Connected to game-server.')
             this._socket = io('http://127.0.0.1:9100', {
                 query: {
-                    username: 'player-1',
-                    token: 'player-1-token'
+                    username: username,
+                    token: `${username}-token`
                 }
             });
 

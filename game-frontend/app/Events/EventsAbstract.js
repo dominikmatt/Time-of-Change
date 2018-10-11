@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class EventsAbstract {
     constructor() {
         this.callbacks = [];
@@ -5,8 +7,8 @@ class EventsAbstract {
     /**
      * Executes all callbacks. Called by the Pagination.loadNextPage().
      */
-    trigger() {
-        this.callbacks.forEach((callback) => callback());
+    trigger(options) {
+        this.callbacks.forEach((callback) => callback(options));
     }
     /**
      * Adds one callback to the array.
@@ -17,4 +19,5 @@ class EventsAbstract {
         this.callbacks.push(callback);
     }
 }
+exports.default = EventsAbstract;
 //# sourceMappingURL=EventsAbstract.js.map
