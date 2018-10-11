@@ -70,7 +70,6 @@ export default class BuildBuildingSelect {
             this._mesh.position.y = 0;
             this._mesh.position.z = pickResult.pickedPoint.z;
 
-            console.log(this.pickResult.pickedMesh);
             if ('Plane' === this.pickResult.pickedMesh.name) {
                 this._buildable = true;
                 this._mesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
