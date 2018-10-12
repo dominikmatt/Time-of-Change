@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Game_1 = require("../../Game");
 const connection_1 = require("../../services/connection");
 const DOMEvent_1 = require("../../services/DOMEvent");
+const BuildingUpdateCommand_1 = require("../../Commands/BuildingUpdateCommand");
 class BuildBuildingSelect {
     constructor() {
         this.pickResult = null;
@@ -17,6 +18,8 @@ class BuildBuildingSelect {
         BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/buildings/', 'schoolhouse.babylon', Game_1.default.gameScene.scene)
             .then((result) => {
             this._mesh = result.meshes[0];
+            this._mesh.checkCollisions = true;
+            this._mesh.material.alpha = 0.4;
         });
     }
     /**
@@ -45,22 +48,25 @@ class BuildBuildingSelect {
         // We try to pick an object
         var pickResult = Game_1.default.gameScene.scene.pick(Game_1.default.gameScene.scene.pointerX, Game_1.default.gameScene.scene.pointerY);
         this._buildable = false;
-        if (pickResult) {
+        if (pickResult && pickResult.pickedPoint) {
             this.pickResult = pickResult;
-            this._mesh.material.alpha = 0.4;
             this._mesh.position.x = pickResult.pickedPoint.x;
             this._mesh.position.y = 0;
             this._mesh.position.z = pickResult.pickedPoint.z;
-            console.log(this.pickResult.pickedMesh);
-            if ('Plane' === this.pickResult.pickedMesh.name) {
-                this._buildable = true;
-                this._mesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-                this._mesh.material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-            }
-            else {
-                this._mesh.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-                this._mesh.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
-            }
+            Object.entries(BuildingUpdateCommand_1.builtBuildings).forEach((building) => {
+                console.log(building[1]._mesh);
+                if (this._mesh.intersectsMesh(building[1]._mesh, false)) {
+                    console.log('collision');
+                    this._mesh.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+                    this._mesh.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+                }
+                else {
+                    console.log('no collision');
+                    this._buildable = true;
+                    this._mesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+                    this._mesh.material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+                }
+            });
         }
     }
 }
