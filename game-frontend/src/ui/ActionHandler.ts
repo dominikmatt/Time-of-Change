@@ -1,6 +1,7 @@
 import BuildBuildingSelect from "./actions/BuildBuildingSelect";
 import CreateCharacter from "./actions/CreateCharacter";
 import {default as addUserEvent} from "./../Events/AddUser";
+import {use} from "builder-util";
 
 let instance: ActionHandler = null;
 
@@ -22,11 +23,15 @@ class ActionHandler {
                 const createCharacter = new CreateCharacter(element);
                 break;
             case 'addUser':
+                const usernameEl: HTMLInputElement = document.querySelector('#username');
+                const modalEl: HTMLElement = document.querySelector('.modal');
+                const backdropEl: HTMLElement = document.querySelector('.backdrop');
+
                 addUserEvent.trigger({
-                    username: document.querySelector('#username').value,
+                    username: usernameEl.value,
                 });
-                document.querySelector('.modal').style.display = 'none';
-                document.querySelector('.backdrop').style.display = 'none';
+                modalEl.style.display = 'none';
+                backdropEl.style.display = 'none';
                 break;
         }
     }

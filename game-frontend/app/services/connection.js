@@ -12,7 +12,7 @@ class ConnectionService {
     connect(username) {
         return new Promise((resolve) => {
             console.info('ToC: Connected to game-server.');
-            this._socket = io('http://127.0.0.1:9100', {
+            this._socket = io('http://159.69.209.25:9100', {
                 query: {
                     username: username,
                     token: `${username}-token`

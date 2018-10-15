@@ -49,19 +49,18 @@ class BuildBuildingSelect {
         var pickResult = Game_1.default.gameScene.scene.pick(Game_1.default.gameScene.scene.pointerX, Game_1.default.gameScene.scene.pointerY);
         this._buildable = false;
         if (pickResult && pickResult.pickedPoint) {
+            const obj = Object;
             this.pickResult = pickResult;
             this._mesh.position.x = pickResult.pickedPoint.x;
             this._mesh.position.y = 0;
             this._mesh.position.z = pickResult.pickedPoint.z;
-            Object.entries(BuildingUpdateCommand_1.builtBuildings).forEach((building) => {
-                console.log(building[1]._mesh);
-                if (this._mesh.intersectsMesh(building[1]._mesh, false)) {
-                    console.log('collision');
+            obj.entries(BuildingUpdateCommand_1.builtBuildings).forEach((buildings) => {
+                const mesh = buildings[1]._mesh;
+                if (this._mesh.intersectsMesh(mesh, false)) {
                     this._mesh.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
                     this._mesh.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
                 }
                 else {
-                    console.log('no collision');
                     this._buildable = true;
                     this._mesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
                     this._mesh.material.diffuseColor = new BABYLON.Color3(0, 0, 0);
