@@ -23,7 +23,6 @@ class Building {
         });
     }
     setPosition() {
-        console.log(Game_1.default.gameScene.terrain.getHeight(this._position.x, this._position.z));
         this._mesh.position = BABYLON.Vector3.Zero();
         this._mesh.position.x = this._position.x;
         this._mesh.position.y = Game_1.default.gameScene.terrain.getHeight(this._position.x, this._position.z);

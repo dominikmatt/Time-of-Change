@@ -34,7 +34,6 @@ export default class Building {
     }
 
     private setPosition() {
-        console.log(game.gameScene.terrain.getHeight(this._position.x, this._position.z));
         this._mesh.position = BABYLON.Vector3.Zero();
         this._mesh.position.x = this._position.x;
         this._mesh.position.y = game.gameScene.terrain.getHeight(this._position.x, this._position.z);
