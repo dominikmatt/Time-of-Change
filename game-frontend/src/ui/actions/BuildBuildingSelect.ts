@@ -5,6 +5,7 @@ import PickingInfo = BABYLON.PickingInfo;
 import Nullable = BABYLON.Nullable;
 import {builtBuildings} from "../../Commands/BuildingUpdateCommand";
 import AbstractMesh = BABYLON.AbstractMesh;
+import StandardMaterial = BABYLON.StandardMaterial;
 
 export default class BuildBuildingSelect {
     private pickResult: Nullable<PickingInfo>;
@@ -77,14 +78,15 @@ export default class BuildBuildingSelect {
 
             obj.entries(builtBuildings).forEach((buildings: any) => {
                 const mesh: AbstractMesh = buildings[1]._mesh;
+                const material: StandardMaterial = <StandardMaterial>this._mesh.material;
 
                 if (this._mesh.intersectsMesh(mesh , false)) {
-                    this._mesh.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-                    this._mesh.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+                    material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+                    material.diffuseColor = new BABYLON.Color3(1, 0, 0);
                 } else {
                     this._buildable = true;
-                    this._mesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-                    this._mesh.material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+                    material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+                    material.diffuseColor = new BABYLON.Color3(0, 0, 0);
                 }
             });
         }

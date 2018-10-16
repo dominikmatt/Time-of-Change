@@ -56,14 +56,15 @@ class BuildBuildingSelect {
             this._mesh.position.z = pickResult.pickedPoint.z;
             obj.entries(BuildingUpdateCommand_1.builtBuildings).forEach((buildings) => {
                 const mesh = buildings[1]._mesh;
+                const material = this._mesh.material;
                 if (this._mesh.intersectsMesh(mesh, false)) {
-                    this._mesh.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-                    this._mesh.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+                    material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+                    material.diffuseColor = new BABYLON.Color3(1, 0, 0);
                 }
                 else {
                     this._buildable = true;
-                    this._mesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-                    this._mesh.material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+                    material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+                    material.diffuseColor = new BABYLON.Color3(0, 0, 0);
                 }
             });
         }

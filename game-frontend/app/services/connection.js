@@ -11,11 +11,12 @@ class ConnectionService {
     }
     connect(username) {
         return new Promise((resolve) => {
-            console.info('ToC: Connected to game-server.');
-            this._socket = io('http://159.69.209.25:9100', {
+            console.info('ToC: Connected to game-server. https://tocgs-01.time-of-changes.com');
+            this._socket = io('https://tocgs-01.time-of-changes.com', {
+                secure: true,
                 query: {
                     username: username,
-                    token: `${username}-token`
+                    token: `${username}-tokenbla`
                 }
             });
             this._socket.on('connect', resolve);

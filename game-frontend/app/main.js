@@ -12,6 +12,9 @@ function createWindow() {
         width: 800,
         show: true,
         icon: path.join(__dirname, '../assets/icons/64x64.png'),
+        title: 'Time of Changes',
+        frame: false,
+        resizable: false
     });
     mainWindow.maximize();
     // and load the index.html of the app.
