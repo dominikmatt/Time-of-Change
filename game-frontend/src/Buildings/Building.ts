@@ -28,6 +28,10 @@ export default class Building {
             .then((result) => {
                 this._mesh = result.meshes[0];
                 this._mesh.checkCollisions = true;
+                this._mesh.metadata = {
+                    key: this._key,
+                    isBuilding: true
+                };
 
                 this.setPosition();
             });

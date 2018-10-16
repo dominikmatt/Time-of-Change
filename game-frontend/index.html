@@ -27,11 +27,7 @@
             bottom: 0;
             width: 200px;
             margin: 5px;
-            padding: 5px;
-            border-radius: 2px;
-            border: 1px solid rgb(3, 59, 94);
-            box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3);
-            background-color: rgba(11, 105, 163, 0.8);
+            background-image: url("./assets/ui/panel-background.jpg");
         }
 
         h3 {
@@ -46,11 +42,6 @@
             z-index: 100;
             top: 50%;
             left: 50%;
-            padding: 5px;
-            border-radius: 2px;
-            border: 1px solid rgb(3, 59, 94);
-            box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3);
-            background-color: rgba(11, 105, 163, 0.8);
             transform: translate(-50%, -50%);
         }
         .backdrop {
@@ -61,6 +52,58 @@
             background-color: rgba(11, 105, 163, 0.3);
             width: 100%;
             height: 100%;
+        }
+
+        .panel {
+            padding: 42px 30px 42px 30px;
+        }
+
+        .panel.is-hidden {
+            display: none;
+        }
+
+        .panel-left {
+            position: absolute;
+            z-index: 108;
+            left: 0;
+            top: 12px;
+            background-image: url("./assets/ui/panel-left.png");
+            background-repeat: repeat;
+            width: 20px;
+            height: calc(100% - 12px - 12px);
+        }
+
+        .panel-right {
+            position: absolute;
+            z-index: 108;
+            right: 0;
+            top: 12px;
+            background-image: url("./assets/ui/panel-right.png");
+            background-repeat: repeat;
+            width: 20px;
+            height: calc(100% - 12px - 12px);
+        }
+
+        .panel-top {
+            position: absolute;
+            z-index: 106;
+            left: 0;
+            top: 0;
+            background-image: url("./assets/ui/panel-top.png");
+            background-repeat: repeat;
+            width: 100%;
+            height: 22px;
+        }
+
+        .panel-bottom {
+            position: absolute;
+            z-index: 106;
+            left: 0;
+            bottom: 0;
+            background-image: url("./assets/ui/panel-bottom.png");
+            background-repeat: repeat;
+            width: 100%;
+            height: 22px;
         }
     </style>
 </head>
@@ -73,16 +116,35 @@
     <button data-ui-action="addUser">Anmelden</button>
 </div>
 
-<div class="ui-sidebar">
+<div class="ui-sidebar panel" data-panel-key="default">
+    <div class="panel-left"></div>
+    <div class="panel-top"></div>
+    <div class="panel-right"></div>
+    <div class="panel-bottom"></div>
     <h3>Baumenü</h3>
+    <button data-ui-action="buildBuildingSelect" data-type="schoolhouse">Schulgebäude</button>
+</div>
 
-    <button data-ui-action="buildBuildingSelect">Schulgebäude</button>
-    <h3>Ausbildung</h3>
+<div class="ui-sidebar panel is-hidden" data-panel-key="schoolhouse">
+    <div class="panel-left"></div>
+    <div class="panel-top"></div>
+    <div class="panel-right"></div>
+    <div class="panel-bottom"></div>
 
+    <h3>Schule</h3>
     <button data-ui-action="createCharacter" data-type="serf">Träger</button>
     <button data-ui-action="createCharacter" data-type="laborer">Bauarbeiter</button>
-
 </div>
+
+<div class="ui-sidebar panel is-hidden" data-panel-key="storehouse">
+    <div class="panel-left"></div>
+    <div class="panel-top"></div>
+    <div class="panel-right"></div>
+    <div class="panel-bottom"></div>
+
+    <h3>Lagerhaus</h3>
+</div>
+
 <script src="https://cdn.babylonjs.com/cannon.js"></script>
 <script src="https://cdn.babylonjs.com/Oimo.js"></script>
 <script>

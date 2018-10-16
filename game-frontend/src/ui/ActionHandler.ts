@@ -1,7 +1,6 @@
 import BuildBuildingSelect from "./actions/BuildBuildingSelect";
 import CreateCharacter from "./actions/CreateCharacter";
 import {default as addUserEvent} from "./../Events/AddUser";
-import {use} from "builder-util";
 
 let instance: ActionHandler = null;
 
