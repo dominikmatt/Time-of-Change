@@ -25,10 +25,6 @@ class ConnectionService {
             });
 
             this._socket.on('connect', resolve);
-
-            this._socket.on('connect_failed', (error) => {
-                console.log(error);
-            });
         });
     }
 
