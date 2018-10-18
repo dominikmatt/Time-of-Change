@@ -51,9 +51,9 @@ class BuildBuildingSelect {
         if (pickResult && pickResult.pickedPoint) {
             const obj = Object;
             this.pickResult = pickResult;
-            this._mesh.position.x = pickResult.pickedPoint.x;
+            this._mesh.position.x = pickResult.pickedPoint.x - 0.5;
             this._mesh.position.y = 0;
-            this._mesh.position.z = pickResult.pickedPoint.z;
+            this._mesh.position.z = pickResult.pickedPoint.z - 0.5;
             obj.entries(BuildingUpdateCommand_1.builtBuildings).forEach((buildings) => {
                 const mesh = buildings[1]._mesh;
                 const material = this._mesh.material;

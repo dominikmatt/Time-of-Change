@@ -5,9 +5,9 @@ const buildingMapping_1 = require("./buildingMapping");
 class Building {
     constructor(position, key) {
         this._positionFixture = {
-            x: 1,
+            x: 0,
             y: 0,
-            z: -1
+            z: 0
         };
         this.asset = '';
         this._position = position;
@@ -24,9 +24,9 @@ class Building {
     }
     setPosition() {
         this._mesh.position = BABYLON.Vector3.Zero();
-        this._mesh.position.x = this._position.x;
+        this._mesh.position.x = this._position.x - this._positionFixture.x;
         this._mesh.position.y = Game_1.default.gameScene.terrain.getHeight(this._position.x, this._position.z);
-        this._mesh.position.z = this._position.z;
+        this._mesh.position.z = this._position.z - this._positionFixture.z;
     }
     setHealt(currentHealth, maxHealth) {
         if (!this._mesh) {

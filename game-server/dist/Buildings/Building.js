@@ -9,6 +9,7 @@ const HealthComponent_1 = __importDefault(require("../Components/HealthComponent
 const TransportJob_1 = __importDefault(require("../Jobs/types/TransportJob"));
 const Map_1 = __importDefault(require("../Map/Map"));
 const BuildJob_1 = __importDefault(require("../Jobs/types/BuildJob"));
+const Core_1 = __importDefault(require("./../Core"));
 /**
  * Base class for all Buildings.
  */
@@ -44,7 +45,7 @@ class Building {
                 Map_1.default.updateCoordinate(x, z, {
                     runnable: type === 2,
                     building: this._id,
-                    hasTree: false
+                    hasTree: false,
                 });
                 // Set door position;
                 if (2 === type) {
@@ -89,7 +90,7 @@ class Building {
         throw new Error('Building: Add getBuildingData and return your building specific data as a object.');
     }
     update() {
-        this.player.wsSocket.emit('building.update', {
+        Core_1.default.emitAll('building.update', {
             _id: this._id,
             type: this.getType(),
             position: this.position.position,

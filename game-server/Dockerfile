@@ -7,3 +7,5 @@ WORKDIR /usr/src/game-server
 RUN npm install
 
 ENV REDIS_HOST=redis
+
+CMD ["npm", "run", "start:dev"]
