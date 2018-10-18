@@ -17,6 +17,7 @@ function createWindow() {
         resizable: false
     });
     mainWindow.maximize();
+    mainWindow.setFullScreen(true);
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, "../index.html"),
@@ -24,7 +25,7 @@ function createWindow() {
         slashes: true,
     }));
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
     // Emitted when the window is closed.
     mainWindow.on("closed", () => {
         // Dereference the window object, usually you would store windows

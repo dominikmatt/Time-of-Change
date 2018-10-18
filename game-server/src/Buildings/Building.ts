@@ -6,7 +6,7 @@ import HealthComponent from "../Components/HealthComponent";
 import TransportJob from "../Jobs/types/TransportJob";
 import Map from "../Map/Map";
 import BuildJob from "../Jobs/types/BuildJob";
-import core from "./../Core";
+import Core from "./../Core";
 
 /**
  * Base class for all Buildings.
@@ -119,7 +119,7 @@ export default abstract class Building {
     }
 
     update() {
-        core.emitAll('building.update', {
+        Core.emitAll('building.update', {
             _id: this._id,
             type: this.getType(),
             position: this.position.position,
