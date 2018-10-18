@@ -22,6 +22,9 @@ export default class Terrain {
                 this._mesh.position.z = 0;
                 this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));
                 this._mesh.material.wireframe = true;
+                this._mesh.metadata = {
+                    key: 'map',
+                };
 
                 this.generateHeightData();
 
