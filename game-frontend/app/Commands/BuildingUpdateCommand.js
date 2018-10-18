@@ -12,6 +12,7 @@ class BuildingUpdateCommand extends Command_1.default {
         return 'building.update';
     }
     execute(req) {
+        console.log(req);
         if (!exports.builtBuildings[req._id]) {
             exports.builtBuildings[req._id] = new buildingMapping_1.default[req.type](req.position);
         }

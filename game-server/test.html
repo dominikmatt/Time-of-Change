@@ -100,7 +100,7 @@
         </select>
         <button onclick="createBuilding();return;">Create Building</button>
     </div>
-    <br />
+    <br/>
 
     <div>
         <h4>Characters</h4>
@@ -138,11 +138,12 @@
         }
 
         socket = io('http://127.0.0.1:9100', {
-                query: {
+            query: {
                 username: document.querySelector('#username').value,
                 token: token
             }
         });
+
 
         socket.on('connect', () => {
             document.querySelector('#buildings').innerHTML = '';
@@ -150,6 +151,7 @@
         });
 
         socket.on('building.update', function(data) {
+            console.log(data);
             const id = `building-${data._id}`;
             let div = document.createElement('div');
             let content = document.createElement('div');

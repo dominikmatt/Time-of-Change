@@ -1,6 +1,7 @@
 version: '3.7'
 services:
     web:
+        image: domready/tocgs:0.0.1
         build:
             context: ""
             dockerfile: Dockerfile
@@ -10,14 +11,11 @@ services:
             - REDIS_HOST=redis
         restart: always
         command: "npm run start:dev"
-        networks:
-            - redis-network
+        volumes:
+            - ./dist:/usr/src/game-server/dist
+        depends_on:
+          - redis
 
     redis:
         image: redis:alpine
-        networks:
-            - redis-network
 
-networks:
-    redis-network:
-        driver: bridge

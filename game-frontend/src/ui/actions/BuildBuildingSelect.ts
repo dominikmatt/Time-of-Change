@@ -72,9 +72,9 @@ export default class BuildBuildingSelect {
             const obj = <any>Object;
             this.pickResult = pickResult;
 
-            this._mesh.position.x = pickResult.pickedPoint.x;
+            this._mesh.position.x = pickResult.pickedPoint.x - 0.5;
             this._mesh.position.y = 0;
-            this._mesh.position.z = pickResult.pickedPoint.z;
+            this._mesh.position.z = pickResult.pickedPoint.z - 0.5;
 
             obj.entries(builtBuildings).forEach((buildings: any) => {
                 const mesh: AbstractMesh = buildings[1]._mesh;

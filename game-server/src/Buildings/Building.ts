@@ -6,6 +6,7 @@ import HealthComponent from "../Components/HealthComponent";
 import TransportJob from "../Jobs/types/TransportJob";
 import Map from "../Map/Map";
 import BuildJob from "../Jobs/types/BuildJob";
+import Core from "./../Core";
 
 /**
  * Base class for all Buildings.
@@ -64,7 +65,7 @@ export default abstract class Building {
                 Map.updateCoordinate(x, z, {
                     runnable: type === 2,
                     building: this._id,
-                    hasTree: false
+                    hasTree: false,
                 });
 
                 // Set door position;
@@ -118,7 +119,7 @@ export default abstract class Building {
     }
 
     update() {
-        this.player.wsSocket.emit('building.update', {
+        Core.emitAll('building.update', {
             _id: this._id,
             type: this.getType(),
             position: this.position.position,
