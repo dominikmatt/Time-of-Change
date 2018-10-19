@@ -1,12 +1,12 @@
 {
   "name": "time-of-changes",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Time of Changes Game",
   "main": "./app/main.js",
   "scripts": {
     "build": "tsc",
-    "start": "electron ./app/main.js",
-    "dist": "build",
+    "start": "ELECTRON_ENV=developmen; electron ./app/main.js",
+    "dist": "ELECTRON_ENV=production; build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dominik Matt <mail@matt-dominik.at>",
