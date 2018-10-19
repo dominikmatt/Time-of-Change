@@ -27,7 +27,7 @@ class ConnectionService {
             this._socket.on('connect', resolve);
         });
     }
-w
+
     get socket(): SocketIOClient.Socket {
         return this._socket;
     }
