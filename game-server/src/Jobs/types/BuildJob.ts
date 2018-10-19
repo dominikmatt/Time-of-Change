@@ -58,12 +58,16 @@ export default class BuildJob extends Job implements JobInterface {
                     this._isCharacterWalking = false;
 
                     setTimeout(() => {
+                        if (1 !== this._currentStep) {
+                            return;
+                        }
+
                         this._currentStep++;
                     }, 5000);
                 }
                 break;
             case 2:
-                this._targetBuilding.increaseHealt();
+                this._targetBuilding.increaseHealth();
                 this._character.job = null;
                 break;
         }

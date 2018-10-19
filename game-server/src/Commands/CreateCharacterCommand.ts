@@ -13,6 +13,7 @@ export default class CreateCharacterCommand extends Command {
 
     execute(req: RequestInterface) {
         // TOD: Create Building store.
-        this.player.addCharacter(CharacterFactory(req.type, this.player));
+        console.log(req);
+        this.player.addCharacter(CharacterFactory(req.type, req.buildingId, this.player));
     }
 }

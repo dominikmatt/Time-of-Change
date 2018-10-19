@@ -1,4 +1,5 @@
 import connectionService from "../../services/connection";
+import panel from "../panel/panel";
 
 export default class CreateCharacter {
     constructor(element: HTMLElement) {
@@ -10,6 +11,7 @@ export default class CreateCharacter {
 
         connectionService.socket.emit('character.create', {
             type: type,
+            buildingId: panel.selectedBuildingId,
         });
     }
 }

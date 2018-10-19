@@ -11,7 +11,6 @@ export default class MapUpdateCommand extends Command {
     }
 
     execute(req: RequestInterface) {
-        console.log(req);
         game.gameScene.updateCoordinate(req);
     }
 }

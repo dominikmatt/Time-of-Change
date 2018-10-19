@@ -1,8 +1,10 @@
 import Player from "../Player";
 import {v1 as uuidv1} from "uuid";
-import {PositionComponent} from "../Components/PositionComponent";
+import {PositionComponent, PositionInterface} from "../Components/PositionComponent";
 import Core from "../Core";
 import Job from "../Jobs/Job";
+import Schoolhouse from "../Buildings/types/Schoolhouse";
+import Building from "../Buildings/Building";
 
 export default class Character {
     protected _id: string =  uuidv1();
@@ -14,12 +16,21 @@ export default class Character {
     protected _currentPath: number[][] = [];
     private _walkDelta: number = 0;
 
-    constructor(player: Player) {
-        this._player = player;
-        this._position = new PositionComponent({
+    constructor(player: Player, buildingId: string) {
+        let schoolhouse: Building;
+        let position: PositionInterface = {
             x: 2,
             z: 2
-        });
+        };
+
+        this._player = player;
+
+        if ('start' !== buildingId) {
+            schoolhouse = this._player.getBuildingById(buildingId);
+            position = schoolhouse.doorPosition;
+        }
+
+        this._position = new PositionComponent(position);
     }
 
     /**

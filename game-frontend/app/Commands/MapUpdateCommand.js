@@ -10,7 +10,6 @@ class MapUpdateCommand extends Command_1.default {
         return 'map.update';
     }
     execute(req) {
-        console.log(req);
         Game_1.default.gameScene.updateCoordinate(req);
     }
 }

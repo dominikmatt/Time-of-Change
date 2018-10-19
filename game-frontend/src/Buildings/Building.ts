@@ -12,8 +12,10 @@ export default class Building {
     };
     protected asset: string = '';
     private _key: string;
+    private _id: string;
 
-    constructor(position: PositionInterface, key: string) {
+    constructor(id: string, position: PositionInterface, key: string) {
+        this._id = id;
         this._position = position;
         this._key = key;
         this.load();
@@ -30,7 +32,9 @@ export default class Building {
                 this._mesh.checkCollisions = true;
                 this._mesh.metadata = {
                     key: this._key,
-                    isBuilding: true
+                    isBuilding: true,
+                    buildingId: this._id,
+                    isReady: false,
                 };
 
                 this.setPosition();
@@ -52,6 +56,8 @@ export default class Building {
         if (maxHealth === 0) {
             maxHealth = 1;
         }
+
+        this._mesh.metadata.isReady = currentHealth === maxHealth;
 
         this._mesh.position.y = game.gameScene.terrain.getHeight(this._position.x, this._position.z) + (currentHealth / maxHealth - 1);
     }

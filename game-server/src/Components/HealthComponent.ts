@@ -2,9 +2,9 @@ export default class HealthComponent {
     private readonly _maxHealth: number = 0;
     private _currentHealth: number = 0;
 
-    constructor(maxhealt: number, currentHealt: number = 0) {
-        this._maxHealth = maxhealt;
-        this._currentHealth = currentHealt;
+    constructor(maxhealth: number, currentHealth: number = 0) {
+        this._maxHealth = maxhealth;
+        this._currentHealth = currentHealth;
     }
 
     get maxHealth(): number {

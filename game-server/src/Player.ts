@@ -45,7 +45,10 @@ export default class Player {
 
     public initializeTown() {
         /** @var Storehouse storehouse */
-        const hero: Character = this.addCharacter(CharacterFactory('hero', this));
+        this.addCharacter(CharacterFactory('hero', 'start', this));
+        this.addCharacter(CharacterFactory('serf', 'start', this));
+        this.addCharacter(CharacterFactory('serf', 'start', this));
+        this.addCharacter(CharacterFactory('laborer', 'start', this));
         const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 3, z: 3}, this, true));
 
         storehouse.addResources({
@@ -88,6 +91,16 @@ export default class Player {
         this._buildings.push(building);
 
         return building;
+    }
+
+    public getBuildingById(buildingId: string): Building {
+        const buildings = this._buildings.filter((building: Building) => {
+            return buildingId === building.id;
+        });
+
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
     }
 
     /**

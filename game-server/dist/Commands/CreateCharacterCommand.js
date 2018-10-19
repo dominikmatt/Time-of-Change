@@ -14,7 +14,8 @@ class CreateCharacterCommand extends Command_1.default {
     }
     execute(req) {
         // TOD: Create Building store.
-        this.player.addCharacter(CharacterFactory_1.default(req.type, this.player));
+        console.log(req);
+        this.player.addCharacter(CharacterFactory_1.default(req.type, req.buildingId, this.player));
     }
 }
 exports.default = CreateCharacterCommand;

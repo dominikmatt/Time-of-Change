@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Building_1 = require("../Building");
 class Schoolhouse extends Building_1.default {
-    constructor(position) {
-        super(position, 'schoolhouse');
+    constructor(position, id) {
+        super(id, position, 'schoolhouse');
     }
 }
 Schoolhouse.asset = 'schoolhouse.babylon';

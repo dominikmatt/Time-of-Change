@@ -27,7 +27,7 @@ class Building {
      * Perpare start of building.
      */
     build(alreadyBuilt = false) {
-        this.addHealtComponent(alreadyBuilt);
+        this.addHealthComponent(alreadyBuilt);
         this.updateMap();
         if (!alreadyBuilt) {
             this.addTransportJobs();
@@ -74,8 +74,8 @@ class Building {
     addBuildJob() {
         this._player.jobStore.addJob(new BuildJob_1.default(this._player, this));
     }
-    addHealtComponent(alreadyBuilt = false) {
-        this._healt = new HealthComponent_1.default(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
+    addHealthComponent(alreadyBuilt = false) {
+        this._health = new HealthComponent_1.default(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
     }
     /**
      * Returns building type as a string.
@@ -95,8 +95,8 @@ class Building {
             type: this.getType(),
             position: this.position.position,
             data: this.getBuildingData(),
-            currentHealth: this.healt.currentHealth,
-            maxHealth: this.healt.maxHealth,
+            currentHealth: this.health.currentHealth,
+            maxHealth: this.health.maxHealth,
             matrix: this._matrix
         });
     }
@@ -104,8 +104,8 @@ class Building {
         this._buildResources[type]++;
         this.addBuildJob();
     }
-    increaseHealt() {
-        this._healt.currentHealth += 50;
+    increaseHealth() {
+        this._health.currentHealth += 50;
     }
     get position() {
         return this._position;
@@ -116,8 +116,8 @@ class Building {
     get player() {
         return this._player;
     }
-    get healt() {
-        return this._healt;
+    get health() {
+        return this._health;
     }
     get id() {
         return this._id;

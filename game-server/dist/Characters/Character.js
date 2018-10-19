@@ -7,16 +7,22 @@ const uuid_1 = require("uuid");
 const PositionComponent_1 = require("../Components/PositionComponent");
 const Core_1 = __importDefault(require("../Core"));
 class Character {
-    constructor(player) {
+    constructor(player, buildingId) {
         this._id = uuid_1.v1();
         this._job = null;
         this._currentPath = [];
         this._walkDelta = 0;
-        this._player = player;
-        this._position = new PositionComponent_1.PositionComponent({
+        let schoolhouse;
+        let position = {
             x: 2,
             z: 2
-        });
+        };
+        this._player = player;
+        if ('start' !== buildingId) {
+            schoolhouse = this._player.getBuildingById(buildingId);
+            position = schoolhouse.doorPosition;
+        }
+        this._position = new PositionComponent_1.PositionComponent(position);
     }
     /**
      * Returns all character specific data as a object.

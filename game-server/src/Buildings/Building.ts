@@ -18,7 +18,7 @@ export default abstract class Building {
 
     private _position: PositionComponent;
 
-    private _healt: HealthComponent;
+    private _health: HealthComponent;
 
     protected _player: Player;
 
@@ -41,7 +41,7 @@ export default abstract class Building {
      * Perpare start of building.
      */
     protected build(alreadyBuilt: boolean = false) {
-        this.addHealtComponent(alreadyBuilt);
+        this.addHealthComponent(alreadyBuilt);
 
         this.updateMap();
 
@@ -100,8 +100,8 @@ export default abstract class Building {
 
     }
 
-    protected addHealtComponent(alreadyBuilt: boolean = false) {
-        this._healt = new HealthComponent(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
+    protected addHealthComponent(alreadyBuilt: boolean = false) {
+        this._health = new HealthComponent(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
     }
 
     /**
@@ -124,8 +124,8 @@ export default abstract class Building {
             type: this.getType(),
             position: this.position.position,
             data: this.getBuildingData(),
-            currentHealth: this.healt.currentHealth,
-            maxHealth: this.healt.maxHealth,
+            currentHealth: this.health.currentHealth,
+            maxHealth: this.health.maxHealth,
             matrix: this._matrix
         });
     }
@@ -136,8 +136,8 @@ export default abstract class Building {
         this.addBuildJob();
     }
 
-    public increaseHealt() {
-        this._healt.currentHealth += 50;
+    public increaseHealth() {
+        this._health.currentHealth += 50;
     }
 
     get position(): PositionComponent {
@@ -152,8 +152,8 @@ export default abstract class Building {
         return this._player;
     }
 
-    get healt(): HealthComponent {
-        return this._healt;
+    get health(): HealthComponent {
+        return this._health;
     }
 
     get id(): string {

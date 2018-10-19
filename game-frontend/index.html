@@ -58,6 +58,18 @@
             padding: 42px 30px 42px 30px;
         }
 
+        .panel .not-ready-message {
+            display: none;
+        }
+
+        .panel.is-not-ready .not-ready-message {
+            display: block;
+        }
+
+        .panel.is-not-ready .panel-content {
+            display: none;
+        }
+
         .panel.is-hidden {
             display: none;
         }
@@ -126,14 +138,19 @@
 </div>
 
 <div class="ui-sidebar panel is-hidden" data-panel-key="schoolhouse">
+
     <div class="panel-left"></div>
     <div class="panel-top"></div>
     <div class="panel-right"></div>
     <div class="panel-bottom"></div>
 
-    <h3>Schule</h3>
-    <button data-ui-action="createCharacter" data-type="serf">Träger</button>
-    <button data-ui-action="createCharacter" data-type="laborer">Bauarbeiter</button>
+    <div class="panel-content">
+        <h3>Schule</h3>
+        <button data-ui-action="createCharacter" data-type="serf">Träger</button>
+        <button data-ui-action="createCharacter" data-type="laborer">Bauarbeiter</button>
+    </div>
+
+    <div class="not-ready-message">Bauarbeiten laufen...</div>
 </div>
 
 <div class="ui-sidebar panel is-hidden" data-panel-key="storehouse">

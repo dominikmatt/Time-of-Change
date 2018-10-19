@@ -151,7 +151,6 @@
         });
 
         socket.on('building.update', function(data) {
-            console.log(data);
             const id = `building-${data._id}`;
             let div = document.createElement('div');
             let content = document.createElement('div');
@@ -202,7 +201,6 @@
         });
 
         socket.on('character.update.position', function(data) {
-            console.log(data.position);
             const id = `map-character-${data._id}`;
             let div;
 
@@ -221,7 +219,6 @@
         });
 
         socket.on('map.update', function(data) {
-            console.log('update');
             const id = `map-item-${data.x}-${data.z}`;
             const div = document.querySelector(`#${id}`);
 

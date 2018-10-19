@@ -5,6 +5,9 @@ import game from "../../Game";
 let instance: Panel = null;
 
 class Panel {
+    private _selectedBuildingId: string;
+    private _selectedBuildingIsReady: boolean;
+
     public static getInstance(): Panel {
         if (null === instance) {
             instance = new this();
@@ -28,6 +31,8 @@ class Panel {
     onClick() {
         var pickResult = game.gameScene.scene.pick(game.gameScene.scene.pointerX, game.gameScene.scene.pointerY);
 
+        this.selectedBuildingIsReady = true;
+
         if (!pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
             return;
         }
@@ -36,11 +41,13 @@ class Panel {
 
         if (!pickResult.pickedMesh.metadata.isBuilding) {
             key = 'default';
+        } else {
+            this.selectedBuildingId = pickResult.pickedMesh.metadata.buildingId;
+            this.selectedBuildingIsReady = pickResult.pickedMesh.metadata.isReady;
         }
 
         this.hideAllPanels();
         this.showPanel(key);
-
     }
 
     onRightClick() {
@@ -49,14 +56,37 @@ class Panel {
     }
 
     showPanel(key: string) {
-        document.querySelector(`[data-panel-key="${key}"]`).classList.remove('is-hidden');
+        const element: HTMLElement = document.querySelector(`[data-panel-key="${key}"]`);
+
+        element.classList.remove('is-hidden');
+
+        if (false === this.selectedBuildingIsReady) {
+            element.classList.add('is-not-ready');
+        }
     }
 
     hideAllPanels() {
         document.querySelectorAll('[data-panel-key]')
             .forEach((element: HTMLElement) => {
-                element.classList.add('is-hidden')
+                element.classList.add('is-hidden');
+                element.classList.remove('is-not-ready');
             });
+    }
+
+    get selectedBuildingId(): string {
+        return this._selectedBuildingId;
+    }
+
+    set selectedBuildingId(selectedBuildingId: string) {
+        this._selectedBuildingId = selectedBuildingId;
+    }
+
+    get selectedBuildingIsReady(): boolean {
+        return this._selectedBuildingIsReady;
+    }
+
+    set selectedBuildingIsReady(value: boolean) {
+        this._selectedBuildingIsReady = value;
     }
 }
 

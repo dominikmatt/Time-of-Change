@@ -3,13 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Game_1 = require("../Game");
 const buildingMapping_1 = require("./buildingMapping");
 class Building {
-    constructor(position, key) {
+    constructor(id, position, key) {
         this._positionFixture = {
             x: 0,
             y: 0,
             z: 0
         };
         this.asset = '';
+        this._id = id;
         this._position = position;
         this._key = key;
         this.load();
@@ -21,7 +22,9 @@ class Building {
             this._mesh.checkCollisions = true;
             this._mesh.metadata = {
                 key: this._key,
-                isBuilding: true
+                isBuilding: true,
+                buildingId: this._id,
+                isReady: false,
             };
             this.setPosition();
         });
@@ -39,6 +42,7 @@ class Building {
         if (maxHealth === 0) {
             maxHealth = 1;
         }
+        this._mesh.metadata.isReady = currentHealth === maxHealth;
         this._mesh.position.y = Game_1.default.gameScene.terrain.getHeight(this._position.x, this._position.z) + (currentHealth / maxHealth - 1);
     }
 }
