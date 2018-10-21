@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const DOMEvent_1 = require("../../services/DOMEvent");
+const connection_1 = require("../../services/connection");
 const Game_1 = require("../../Game");
 let instance = null;
 class Panel {
@@ -21,39 +22,27 @@ class Panel {
      * This method open the correct panel when a house or some element with a action has been clicked.
      */
     onClick() {
+        if (!Game_1.default.gameScene) {
+            return;
+        }
         const pickResult = Game_1.default.gameScene.scene.pick(Game_1.default.gameScene.scene.pointerX, Game_1.default.gameScene.scene.pointerY);
-        this.selectedBuildingIsReady = true;
         if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
             return;
         }
-        let key = pickResult.pickedMesh.metadata.key;
-        if (!pickResult.pickedMesh.metadata.isBuilding) {
-            key = 'default';
-        }
-        else {
+        if (true === pickResult.pickedMesh.metadata.isBuilding) {
             this.selectedBuildingId = pickResult.pickedMesh.metadata.buildingId;
-            this.selectedBuildingIsReady = pickResult.pickedMesh.metadata.isReady;
+            connection_1.default.socket.emit('panel.building.selected', {
+                buildingId: this.selectedBuildingId,
+            });
         }
-        this.hideAllPanels();
-        this.showPanel(key);
     }
     onRightClick() {
-        this.hideAllPanels();
-        this.showPanel('default');
-    }
-    showPanel(key) {
-        const element = document.querySelector(`[data-panel-key="${key}"]`);
-        element.classList.remove('is-hidden');
-        if (false === this.selectedBuildingIsReady) {
-            element.classList.add('is-not-ready');
-        }
-    }
-    hideAllPanels() {
-        document.querySelectorAll('[data-panel-key]')
-            .forEach((element) => {
-            element.classList.add('is-hidden');
-            element.classList.remove('is-not-ready');
+        connection_1.default.socket.emit('panel.building.selected', {
+            buildingId: null,
         });
+    }
+    setContent(content) {
+        document.querySelector('.js-panel-content').innerHTML = content;
     }
     get selectedBuildingId() {
         return this._selectedBuildingId;

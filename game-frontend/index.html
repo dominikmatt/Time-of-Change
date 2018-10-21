@@ -128,38 +128,13 @@
     <button data-ui-action="addUser">Anmelden</button>
 </div>
 
-<div class="ui-sidebar panel" data-panel-key="default">
-    <div class="panel-left"></div>
-    <div class="panel-top"></div>
-    <div class="panel-right"></div>
-    <div class="panel-bottom"></div>
-    <h3>Baumenü</h3>
-    <button data-ui-action="buildBuildingSelect" data-type="schoolhouse">Schulgebäude</button>
-</div>
-
-<div class="ui-sidebar panel is-hidden" data-panel-key="schoolhouse">
-
+<div class="ui-sidebar panel">
     <div class="panel-left"></div>
     <div class="panel-top"></div>
     <div class="panel-right"></div>
     <div class="panel-bottom"></div>
 
-    <div class="panel-content">
-        <h3>Schule</h3>
-        <button data-ui-action="createCharacter" data-type="serf">Träger</button>
-        <button data-ui-action="createCharacter" data-type="laborer">Bauarbeiter</button>
-    </div>
-
-    <div class="not-ready-message">Bauarbeiten laufen...</div>
-</div>
-
-<div class="ui-sidebar panel is-hidden" data-panel-key="storehouse">
-    <div class="panel-left"></div>
-    <div class="panel-top"></div>
-    <div class="panel-right"></div>
-    <div class="panel-bottom"></div>
-
-    <h3>Lagerhaus</h3>
+    <div class="js-panel-content"></div>
 </div>
 
 <script src="https://cdn.babylonjs.com/cannon.js"></script>

@@ -1,0 +1,11 @@
+<% if (true === completelyBuilt) { %>
+    <br class="panel-content">
+        <h3>Lagerhaus</h3>
+
+        <% for (var key in resources) { %>
+            <%= key; %>: <%= resources[key].store; %></br>
+        <% } %>
+    </div>
+<% } else { %>
+    Baubarbeiten laufen...
+<% } %>

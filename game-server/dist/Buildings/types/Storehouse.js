@@ -159,6 +159,9 @@ class Storehouse extends EconomyBuilding_1.default {
         }
         return false;
     }
+    get resources() {
+        return this._resources;
+    }
 }
 exports.default = Storehouse;
 //# sourceMappingURL=Storehouse.js.map

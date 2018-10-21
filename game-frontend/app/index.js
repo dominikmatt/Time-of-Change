@@ -7,6 +7,7 @@ const BuildingUpdateCommand_1 = require("./Commands/BuildingUpdateCommand");
 const CharacterUpdateCommand_1 = require("./Commands/CharacterUpdateCommand");
 const GameUi_1 = require("./ui/GameUi");
 const AddUser_1 = require("./Events/AddUser");
+const PanelUpdateCommand_1 = require("./Commands/PanelUpdateCommand");
 new GameUi_1.default();
 AddUser_1.default.addCallBack((options) => {
     connection_1.default
@@ -16,6 +17,7 @@ AddUser_1.default.addCallBack((options) => {
         new MapUpdateCommand_1.default();
         new BuildingUpdateCommand_1.default();
         new CharacterUpdateCommand_1.default();
+        new PanelUpdateCommand_1.default();
     });
 });
 //# sourceMappingURL=index.js.map

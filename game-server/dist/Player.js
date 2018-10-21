@@ -12,6 +12,7 @@ const GetMapDataCommand_1 = __importDefault(require("./Commands/GetMapDataComman
 const CreateCharacterCommand_1 = __importDefault(require("./Commands/CreateCharacterCommand"));
 const BuildingManager_1 = __importDefault(require("./Buildings/BuildingManager"));
 const CharacterFactory_1 = __importDefault(require("./Characters/CharacterFactory"));
+const PanelBuildingSelected_1 = __importDefault(require("./Commands/PanelBuildingSelected"));
 class Player {
     constructor(name, token) {
         this._buildings = [];
@@ -23,7 +24,9 @@ class Player {
         this._buildingManager = new BuildingManager_1.default(this);
         this._db.flushdb()
             .then(() => console.log('database cleared'))
-            .catch((error) => { throw new Error(error); });
+            .catch((error) => {
+            throw new Error(error);
+        });
         Core_1.default.db.hset(`players:${this._token}`, 'name', this._name);
         Core_1.default.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core_1.default.players).length === 0);
     }
@@ -34,6 +37,7 @@ class Player {
         this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
         this.addCharacter(CharacterFactory_1.default('laborer', 'start', this));
         const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 3, z: 3 }, this, true));
+        const schoolhouse = this.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 3, z: 8 }, this, true));
         storehouse.addResources({
             stones: 60,
             timber: 50,
@@ -50,6 +54,7 @@ class Player {
         new BuildBuildingCommand_1.default(this);
         new GetMapDataCommand_1.default(this);
         new CreateCharacterCommand_1.default(this);
+        new PanelBuildingSelected_1.default(this);
     }
     update() {
         this._buildings.forEach((building) => {
@@ -76,6 +81,7 @@ class Player {
         if (0 < buildings.length) {
             return buildings[0];
         }
+        return null;
     }
     /**
      * Add a new building to the buildings list.

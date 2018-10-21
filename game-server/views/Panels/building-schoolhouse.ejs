@@ -1,0 +1,23 @@
+<% if (true === completelyBuilt) { %>
+    <div class="panel-content">
+        <h3>Schule</h3>
+
+        <% if (null !== runningQueue) { %>
+            <h5>In Ausbildung</h5>
+            <%= runningQueue %>
+        <% } %>
+
+        <h5>Wird ausgebildet</h5>
+        <% queue.forEach((type) => { %>
+            <%= type %><br/>
+        <% }) %>
+
+        <h5>Ausbilden</h5>
+        <button data-ui-action="createCharacter" data-type="serf">Träger</button>
+        <button data-ui-action="createCharacter" data-type="laborer">Bauarbeiter</button>
+    </div>
+
+
+<% } else { %>
+    Baubarbeiten laufen...
+<% } %>

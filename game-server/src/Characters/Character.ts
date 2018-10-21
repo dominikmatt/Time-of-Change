@@ -3,7 +3,6 @@ import {v1 as uuidv1} from "uuid";
 import {PositionComponent, PositionInterface} from "../Components/PositionComponent";
 import Core from "../Core";
 import Job from "../Jobs/Job";
-import Schoolhouse from "../Buildings/types/Schoolhouse";
 import Building from "../Buildings/Building";
 
 export default class Character {
