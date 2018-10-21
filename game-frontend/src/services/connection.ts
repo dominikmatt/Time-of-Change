@@ -1,4 +1,5 @@
 import * as io from 'socket.io-client';
+import config from "../configuration/config";
 
 let instance: ConnectionService;
 
@@ -15,9 +16,9 @@ class ConnectionService {
 
     public connect(username: string): Promise<string> {
         return new Promise((resolve) => {
-            console.info('ToC: Connected to game-server. https://tocgs-01.time-of-changes.com');
-            this._socket = io('http://127.0.0.1:9100', {
-                secure: false,
+            console.info(`ToC: Connected to game-server. ${config.get('connection').ws}`);
+            this._socket = io(config.get('connection').ws, {
+                secure: config.get('connection').ssl,
                 query: {
                     username: username,
                     token: `${username}-token`

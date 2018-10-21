@@ -21,9 +21,9 @@ class Panel {
      * This method open the correct panel when a house or some element with a action has been clicked.
      */
     onClick() {
-        var pickResult = Game_1.default.gameScene.scene.pick(Game_1.default.gameScene.scene.pointerX, Game_1.default.gameScene.scene.pointerY);
+        const pickResult = Game_1.default.gameScene.scene.pick(Game_1.default.gameScene.scene.pointerX, Game_1.default.gameScene.scene.pointerY);
         this.selectedBuildingIsReady = true;
-        if (!pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
+        if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
             return;
         }
         let key = pickResult.pickedMesh.metadata.key;

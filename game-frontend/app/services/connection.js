@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const io = require("socket.io-client");
+const config_1 = require("../configuration/config");
 let instance;
 class ConnectionService {
     static getInstance() {
@@ -11,9 +12,9 @@ class ConnectionService {
     }
     connect(username) {
         return new Promise((resolve) => {
-            console.info('ToC: Connected to game-server. https://tocgs-01.time-of-changes.com');
-            this._socket = io('http://127.0.0.1:9100', {
-                secure: false,
+            console.info(`ToC: Connected to game-server. ${config_1.default.get('connection').ws}`);
+            this._socket = io(config_1.default.get('connection').ws, {
+                secure: config_1.default.get('connection').ssl,
                 query: {
                     username: username,
                     token: `${username}-token`

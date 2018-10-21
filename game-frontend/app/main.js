@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const path = require("path");
 const url = require("url");
+const config_1 = require("./configuration/config");
 let mainWindow;
 function createWindow() {
     // Create the browser window.
@@ -25,7 +26,9 @@ function createWindow() {
         slashes: true,
     }));
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    if (config_1.default.get('app').debug) {
+        mainWindow.webContents.openDevTools();
+    }
     // Emitted when the window is closed.
     mainWindow.on("closed", () => {
         // Dereference the window object, usually you would store windows
