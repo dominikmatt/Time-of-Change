@@ -5,8 +5,9 @@
   "main": "./app/main.js",
   "scripts": {
     "build": "tsc",
-    "start": "ELECTRON_ENV=developmen; electron ./app/main.js",
-    "dist": "ELECTRON_ENV=production; build",
+    "start": "ELECTRON_ENV=dev electron ./app/main.js",
+    "dist": "ELECTRON_ENV=prod build",
+    "dist:osx": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dominik Matt <mail@matt-dominik.at>",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "electron": "^1.7.9",
     "electron-builder": "^19.49.0",
+    "electron-packager": "^12.2.0",
     "typescript": "^2.6.2"
   },
   "build": {

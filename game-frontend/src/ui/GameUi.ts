@@ -9,7 +9,7 @@ export default class GameUi {
 
     bindDOMEvents() {
         document.addEventListener('click', this.onDocumentClick.bind(this));
-    }
+    }WW
 
     onDocumentClick(event: UIEvent) {
         const element: HTMLElement = event.target as HTMLElement;

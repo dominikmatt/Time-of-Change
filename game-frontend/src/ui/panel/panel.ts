@@ -29,11 +29,12 @@ class Panel {
      * This method open the correct panel when a house or some element with a action has been clicked.
      */
     onClick() {
-        var pickResult = game.gameScene.scene.pick(game.gameScene.scene.pointerX, game.gameScene.scene.pointerY);
+
+        const pickResult: BABYLON.PickingInfo | null = game.gameScene.scene.pick(game.gameScene.scene.pointerX, game.gameScene.scene.pointerY);
 
         this.selectedBuildingIsReady = true;
 
-        if (!pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
+        if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
             return;
         }
 

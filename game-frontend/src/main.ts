@@ -1,6 +1,7 @@
 import {app, BrowserWindow, protocol} from "electron";
 import * as path from "path";
 import * as url from "url";
+import config from "./configuration/config";
 
 let mainWindow: Electron.BrowserWindow;
 
@@ -28,7 +29,9 @@ function createWindow() {
     }));
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    if (config.get('app').debug) {
+        mainWindow.webContents.openDevTools();
+    }
 
     // Emitted when the window is closed.
     mainWindow.on("closed", () => {

@@ -1,6 +1,4 @@
 import GameScene from "./GameScene";
-import connectionService from "./services/connection";
-
 let instance: Game = null;
 
 export class Game {
