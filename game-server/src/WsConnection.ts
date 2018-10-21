@@ -2,6 +2,7 @@ import core from "./Core";
 import Player from "./Player";
 import http from 'http';
 import Server, {Socket} from 'socket.io';
+import panel from "./Panel/panel";
 
 const app = http.createServer(() => {});
 const io = Server(app);
@@ -53,6 +54,10 @@ io.on('connection', (socket: any) => {
     newPlayer.wsSocket = socket;
     newPlayer.listenWs();
     newPlayer.initializeTown();
+
+    panel.player = newPlayer;
+
+    panel.initialize();
 
     socket.on('disconnect', function () {
         console.log('disconnected');

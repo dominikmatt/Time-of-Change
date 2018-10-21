@@ -207,4 +207,8 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
 
         return false;
     }
+
+    get resources(): ResourceInterface {
+        return this._resources;
+    }
 }

@@ -20,6 +20,7 @@ class Building {
             stones: 0,
             timber: 0
         };
+        this._completelyBuilt = false;
         this._player = player;
         this._position = new PositionComponent_1.PositionComponent(position);
     }
@@ -57,6 +58,7 @@ class Building {
             });
         });
     }
+    beforeUpdate() { }
     /**
      * This method will create all transport jobs to the jobs store.
      */
@@ -90,6 +92,10 @@ class Building {
         throw new Error('Building: Add getBuildingData and return your building specific data as a object.');
     }
     update() {
+        this.beforeUpdate();
+        if (this._health.maxHealth === this._health.currentHealth) {
+            this._completelyBuilt = true;
+        }
         Core_1.default.emitAll('building.update', {
             _id: this._id,
             type: this.getType(),
@@ -121,6 +127,9 @@ class Building {
     }
     get id() {
         return this._id;
+    }
+    get completelyBuilt() {
+        return this._completelyBuilt;
     }
 }
 exports.default = Building;

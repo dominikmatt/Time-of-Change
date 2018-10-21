@@ -7,6 +7,7 @@ const Core_1 = __importDefault(require("./Core"));
 const Player_1 = __importDefault(require("./Player"));
 const http_1 = __importDefault(require("http"));
 const socket_io_1 = __importDefault(require("socket.io"));
+const panel_1 = __importDefault(require("./Panel/panel"));
 const app = http_1.default.createServer(() => { });
 const io = socket_io_1.default(app);
 ;
@@ -45,6 +46,8 @@ io.on('connection', (socket) => {
     newPlayer.wsSocket = socket;
     newPlayer.listenWs();
     newPlayer.initializeTown();
+    panel_1.default.player = newPlayer;
+    panel_1.default.initialize();
     socket.on('disconnect', function () {
         console.log('disconnected');
     });

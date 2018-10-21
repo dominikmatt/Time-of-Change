@@ -10,6 +10,8 @@ import CreateCharacterCommand from "./Commands/CreateCharacterCommand";
 import Character from "./Characters/Character";
 import BuildingManager from "./Buildings/BuildingManager";
 import CharacterFactory from "./Characters/CharacterFactory";
+import PanelBuildingSelected from "./Commands/PanelBuildingSelected";
+import Schoolhouse from "./Buildings/types/Schoolhouse";
 
 export default class Player {
     private readonly _name: string;
@@ -37,9 +39,11 @@ export default class Player {
 
         this._db.flushdb()
             .then(() => console.log('database cleared'))
-            .catch((error) => { throw new Error(error); });
+            .catch((error) => {
+                throw new Error(error);
+            });
 
-        Core.db.hset(`players:${this._token}`, 'name', this._name, );
+        Core.db.hset(`players:${this._token}`, 'name', this._name,);
         Core.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core.players).length === 0);
     }
 
@@ -50,6 +54,7 @@ export default class Player {
         this.addCharacter(CharacterFactory('serf', 'start', this));
         this.addCharacter(CharacterFactory('laborer', 'start', this));
         const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 3, z: 3}, this, true));
+        const schoolhouse: Schoolhouse = this.addBuilding(BuildingFactory('schoolhouse', {x: 3, z: 8}, this, true));
 
         storehouse.addResources({
             stones: 60,
@@ -68,6 +73,7 @@ export default class Player {
         new BuildBuildingCommand(this);
         new GetMapDataCommand(this);
         new CreateCharacterCommand(this);
+        new PanelBuildingSelected(this);
     }
 
     public update() {
@@ -93,7 +99,7 @@ export default class Player {
         return building;
     }
 
-    public getBuildingById(buildingId: string): Building {
+    public getBuildingById(buildingId: string): Building | null {
         const buildings = this._buildings.filter((building: Building) => {
             return buildingId === building.id;
         });
@@ -101,6 +107,8 @@ export default class Player {
         if (0 < buildings.length) {
             return buildings[0];
         }
+
+        return null;
     }
 
     /**

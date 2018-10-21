@@ -1,0 +1,1 @@
+{"version":3,"file":"PanelUpdateCommand.js","sourceRoot":"","sources":["../../src/Commands/PanelUpdateCommand.ts"],"names":[],"mappings":";;AAAA,uCAAgC;AAEhC,6CAAsC;AAKrC,CAAC;AAGF;;GAEG;AACH,wBAAwC,SAAQ,iBAAO;IACnD,UAAU;QACN,OAAO,cAAc,CAAC;IAC1B,CAAC;IAED,OAAO,CAAC,GAAqB;QACzB,eAAK,CAAC,UAAU,CAAC,GAAG,CAAC,OAAO,CAAC,CAAC;IAClC,CAAC;CACJ;AARD,qCAQC"}

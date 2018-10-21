@@ -37,6 +37,8 @@ export default abstract class Building {
         this._position = new PositionComponent(position);
     }
 
+    private _completelyBuilt: boolean = false;
+
     /**
      * Perpare start of building.
      */
@@ -79,6 +81,8 @@ export default abstract class Building {
         });
     }
 
+    protected beforeUpdate() {}
+
     /**
      * This method will create all transport jobs to the jobs store.
      */
@@ -119,6 +123,12 @@ export default abstract class Building {
     }
 
     update() {
+        this.beforeUpdate();
+
+        if (this._health.maxHealth === this._health.currentHealth) {
+            this._completelyBuilt = true;
+        }
+
         Core.emitAll('building.update', {
             _id: this._id,
             type: this.getType(),
@@ -158,5 +168,9 @@ export default abstract class Building {
 
     get id(): string {
         return this._id;
+    }
+
+    get completelyBuilt(): boolean {
+        return this._completelyBuilt;
     }
 }

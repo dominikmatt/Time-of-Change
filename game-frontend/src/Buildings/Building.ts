@@ -34,7 +34,6 @@ export default class Building {
                     key: this._key,
                     isBuilding: true,
                     buildingId: this._id,
-                    isReady: false,
                 };
 
                 this.setPosition();

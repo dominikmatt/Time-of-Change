@@ -13,6 +13,7 @@ services:
         command: "npm run start:dev"
         volumes:
             - ./dist:/usr/src/game-server/dist
+            - ./views:/usr/src/game-server/views
         depends_on:
           - redis
 

@@ -29,49 +29,33 @@ class Panel {
      * This method open the correct panel when a house or some element with a action has been clicked.
      */
     onClick() {
+        if (!game.gameScene) {
+            return ;
+        }
 
         const pickResult: BABYLON.PickingInfo | null = game.gameScene.scene.pick(game.gameScene.scene.pointerX, game.gameScene.scene.pointerY);
-
-        this.selectedBuildingIsReady = true;
 
         if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
             return;
         }
 
-        let key = pickResult.pickedMesh.metadata.key;
-
-        if (!pickResult.pickedMesh.metadata.isBuilding) {
-            key = 'default';
-        } else {
+        if (true === pickResult.pickedMesh.metadata.isBuilding) {
             this.selectedBuildingId = pickResult.pickedMesh.metadata.buildingId;
-            this.selectedBuildingIsReady = pickResult.pickedMesh.metadata.isReady;
-        }
 
-        this.hideAllPanels();
-        this.showPanel(key);
+            connectionService.socket.emit('panel.building.selected', {
+                buildingId: this.selectedBuildingId,
+            });
+        }
     }
 
     onRightClick() {
-        this.hideAllPanels();
-        this.showPanel('default');
+        connectionService.socket.emit('panel.building.selected', {
+            buildingId: null,
+        });
     }
 
-    showPanel(key: string) {
-        const element: HTMLElement = document.querySelector(`[data-panel-key="${key}"]`);
-
-        element.classList.remove('is-hidden');
-
-        if (false === this.selectedBuildingIsReady) {
-            element.classList.add('is-not-ready');
-        }
-    }
-
-    hideAllPanels() {
-        document.querySelectorAll('[data-panel-key]')
-            .forEach((element: HTMLElement) => {
-                element.classList.add('is-hidden');
-                element.classList.remove('is-not-ready');
-            });
+    setContent(content: string) {
+        document.querySelector('.js-panel-content').innerHTML = content;
     }
 
     get selectedBuildingId(): string {
