@@ -9,7 +9,11 @@ class Config {
         return instance;
     }
     constructor() {
-        this._config = require(`${__dirname}/config.${process.env.ELECTRON_ENV}`).default;
+        let env = 'prod';
+        if (process.env.ELECTRON_ENV) {
+            env = process.env.ELECTRON_ENV;
+        }
+        this._config = require(`${__dirname}/config.${env}`).default;
     }
     get(key, defaultValue = '') {
         if (!this.exists(key)) {

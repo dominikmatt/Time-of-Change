@@ -15,7 +15,13 @@ export class Config {
     }
 
     constructor() {
-        this._config = require(`${__dirname}/config.${process.env.ELECTRON_ENV}`).default;
+        let env = 'prod';
+
+        if (process.env.ELECTRON_ENV) {
+            env = process.env.ELECTRON_ENV;
+        }
+
+        this._config = require(`${__dirname}/config.${env}`).default;
     }
 
     get(key: string, defaultValue: any = ''): any {
