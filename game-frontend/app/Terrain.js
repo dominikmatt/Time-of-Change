@@ -6,12 +6,12 @@ const BABYLON = require("babylonjs");
 class Terrain {
     constructor() {
         this._game = Game_1.default;
-        BABYLON.SceneLoader.ImportMesh('', 'assets/models/maps/flat/', 'flat.babylon', this._game.gameScene.scene, (meshes) => {
+        BABYLON.SceneLoader.ImportMesh('', 'assets/models/maps/slishou/', 'slishou.babylon', this._game.gameScene.scene, (meshes) => {
             this._mesh = meshes[0];
             this._mesh.position.x = 0;
             this._mesh.position.z = 0;
             this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));
-            this._mesh.material.wireframe = true;
+            this._mesh.material.wireframe = false;
             this._mesh.metadata = {
                 key: 'map',
             };
