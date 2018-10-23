@@ -8,27 +8,8 @@ class Config {
         }
         return instance;
     }
-    constructor() {
-        let env = 'prod';
-        if (process.env.ELECTRON_ENV) {
-            env = process.env.ELECTRON_ENV;
-        }
-        this._config = require(`${__dirname}/config.${env}`).default;
-    }
-    get(key, defaultValue = '') {
-        if (!this.exists(key)) {
-            return defaultValue;
-        }
-        return this._config[key];
-    }
-    exists(key) {
-        if (this._config[key]) {
-            return true;
-        }
-        return false;
-    }
 }
 exports.Config = Config;
 const config = Config.getInstance();
 exports.default = config;
-//# sourceMappingURL=config.js.map
+//# sourceMappingURL=Config.js.map
