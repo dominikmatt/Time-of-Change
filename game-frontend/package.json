@@ -29,7 +29,7 @@
     "typescript": "^2.6.2"
   },
   "build": {
-    "appId": "yourappid",
+    "appId": "time-of-changes",
     "dmg": {
       "contents": [
         {

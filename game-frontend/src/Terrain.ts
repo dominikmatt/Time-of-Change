@@ -61,7 +61,7 @@ export default class Terrain {
      *
      * @return {number}
      */
-    public getHeight(x: number, z: number): number {
+    public getHeight(x: number, z: number, middle: boolean = false): number {
         if (!this._heightData[x]) this._heightData[x] = [];
         if (!this._heightData[x+1]) this._heightData[x] = [];
 
@@ -76,7 +76,11 @@ export default class Terrain {
             return 0 === height || height;
         });
 
-        return heightData.reduce( ( p: number, c: number ) => p + c, 0 ) / heightData.length;
+        if (true === middle) {
+            return heightData.reduce((p: number, c: number) => p + c, 0) / heightData.length;
+        }
+
+        return Math.min.apply( Math, heightData );
     }
 
     get mesh(): BABYLON.AbstractMesh {

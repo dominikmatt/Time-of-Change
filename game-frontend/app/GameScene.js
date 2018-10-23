@@ -28,9 +28,10 @@ class GameScene {
         camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
         // This attaches the camera to the canvas
         camera.attachControl(canvas, true);
-        var light = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, -1, 0), scene);
-        //var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0, 10, 0), scene);
+        const light = new BABYLON.HemisphericLight("Hemi0", new BABYLON.Vector3(0, 1, 0), scene);
         light.diffuse = new BABYLON.Color3(1, 1, 1);
+        light.specular = new BABYLON.Color3(0, 0, 0);
+        light.groundColor = new BABYLON.Color3(0.4, 0.4, 0.4);
         this._terrain = new Terrain_1.default();
     }
     updateCoordinate(data) {
