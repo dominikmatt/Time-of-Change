@@ -15,6 +15,7 @@ class Terrain {
             this._mesh.metadata = {
                 key: 'map',
             };
+            this._mesh.receiveShadows = true;
             this.generateHeightData();
             connection_1.default.socket.emit('map.data');
         });
@@ -42,7 +43,7 @@ class Terrain {
      *
      * @return {number}
      */
-    getHeight(x, z) {
+    getHeight(x, z, middle = false) {
         if (!this._heightData[x])
             this._heightData[x] = [];
         if (!this._heightData[x + 1])
@@ -56,7 +57,10 @@ class Terrain {
         heightData = heightData.filter((height) => {
             return 0 === height || height;
         });
-        return heightData.reduce((p, c) => p + c, 0) / heightData.length;
+        if (true === middle) {
+            return heightData.reduce((p, c) => p + c, 0) / heightData.length;
+        }
+        return Math.min.apply(Math, heightData);
     }
     get mesh() {
         return this._mesh;

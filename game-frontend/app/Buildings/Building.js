@@ -26,6 +26,7 @@ class Building {
                 buildingId: this._id,
             };
             this.setPosition();
+            Game_1.default.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
         });
     }
     setPosition() {

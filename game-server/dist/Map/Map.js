@@ -8,8 +8,8 @@ const Core_1 = __importDefault(require("../Core"));
 const pathfinding_1 = __importDefault(require("pathfinding"));
 class Map {
     constructor() {
-        this._xMax = 16;
-        this._zMax = 16;
+        this._xMax = 100;
+        this._zMax = 100;
         this._streetMatrix = [];
         this.generateMatrix();
         this._mapGenerator = new MapGenerator_1.default(this);

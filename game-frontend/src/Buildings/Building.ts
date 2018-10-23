@@ -37,6 +37,7 @@ export default class Building {
                 };
 
                 this.setPosition();
+                game.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
             });
     }
 

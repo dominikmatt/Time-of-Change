@@ -4,9 +4,9 @@ const Game_1 = require("../Game");
 class Character {
     constructor(position) {
         this._positionFixture = {
-            x: 1,
-            y: 0,
-            z: -1
+            x: 0,
+            y: -5,
+            z: 0
         };
         this._position = position;
         this.load();
@@ -16,11 +16,12 @@ class Character {
         this.setPosition();
     }
     load() {
-        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/characters/', 'Ballbot.babylon', Game_1.default.gameScene.scene)
+        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/characters/', 'character1.babylon', Game_1.default.gameScene.scene)
             .then((result) => {
             this._mesh = result.meshes[0];
-            this._mesh.scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
+            this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
             this.setPosition();
+            Game_1.default.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
         });
     }
     setPosition() {
@@ -29,7 +30,7 @@ class Character {
         }
         this._mesh.position = BABYLON.Vector3.Zero();
         this._mesh.position.x = this._position.x;
-        this._mesh.position.y = Game_1.default.gameScene.terrain.getHeight(this._position.x, this._position.z) + 0.5;
+        this._mesh.position.y = Game_1.default.gameScene.terrain.getHeight(this._position.x, this._position.z, true);
         this._mesh.position.z = this._position.z;
     }
     setHealt(currentHealth, maxHealth) {

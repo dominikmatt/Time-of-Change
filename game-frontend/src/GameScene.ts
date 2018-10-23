@@ -1,12 +1,18 @@
 import * as BABYLON from 'babylonjs';
 import Terrain from "./Terrain";
 import connectionService from "./services/connection";
+import {default as game} from "./Game";
 
 export default class GameScene {
+    get shadowGenerator(): any {
+        return this._shadowGenerator;
+    }
     private _canvas: HTMLCanvasElement;
     private _engine: BABYLON.Engine;
     private _scene: BABYLON.Scene;
     private _terrain: Terrain;
+
+    private _shadowGenerator: any;
 
     public constructor() {
 
@@ -30,6 +36,7 @@ export default class GameScene {
 
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new BABYLON.Scene(engine);
+
         this._scene = scene;
 
         this._engine.enableOfflineSupport = false;
@@ -44,9 +51,21 @@ export default class GameScene {
         // This attaches the camera to the canvas
         camera.attachControl(canvas, true);
 
-        var light = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, -1, 0), scene);
-        //var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0, 10, 0), scene);
+        const light = new BABYLON.HemisphericLight("Hemi0", new BABYLON.Vector3(0, 1, 0), scene);
         light.diffuse = new BABYLON.Color3(1, 1, 1);
+        light.specular = new BABYLON.Color3(0, 0, 0);
+        light.groundColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+
+        var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(100, 100, 40), scene);
+        sun.diffuse = new BABYLON.Color3(1, 1, 1);
+        sun.specular = new BABYLON.Color3(0, 0, 0);
+
+
+        this._shadowGenerator = new BABYLON.ShadowGenerator(1024, sun);
+        this._shadowGenerator.useBlurExponentialShadowMap = true;
+        this._shadowGenerator.useKernelBlur = true;
+        this._shadowGenerator.blurKernel = 64;
+
 
         this._terrain = new Terrain();
     }
@@ -66,6 +85,9 @@ export default class GameScene {
                     mesh.position.x = data.x + 0.5;
                     mesh.position.y = this._terrain.getHeight(data.x, data.z);
                     mesh.position.z = data.z + 0.5;
+
+
+                    this._shadowGenerator.getShadowMap().renderList.push(mesh);
                 });
         }
     }
