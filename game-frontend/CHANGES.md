@@ -1,5 +1,9 @@
 # CHANGELOG for Time of Changes
 
+#### 0.1.2 (2018-10-24)
+ - FEATURE: Added slishnou map.
+ - FEATURE: Added tree instances.
+
 #### 0.1.1 (2018-10-19)
  - BUGFIX: Fixed multiplayer bug.
  - FEATURE: Added start characters.
