@@ -80,7 +80,7 @@ class Map {
     findTree() {
         let treePosition: PositionInterface;
 
-        this._treeMatrix.forEach((x: array, xIndex: number) => {
+        this._treeMatrix.forEach((x: any, xIndex: number) => {
             if (treePosition) {
                 return treePosition;
             }
