@@ -1,18 +1,13 @@
 import * as BABYLON from 'babylonjs';
 import Terrain from "./Terrain";
-import connectionService from "./services/connection";
-import {default as game} from "./Game";
 
 export default class GameScene {
-    get shadowGenerator(): any {
-        return this._shadowGenerator;
-    }
+    private tree: BABYLON.Mesh;
     private _canvas: HTMLCanvasElement;
     private _engine: BABYLON.Engine;
     private _scene: BABYLON.Scene;
     private _terrain: Terrain;
-
-    private _shadowGenerator: any;
+    private _shadowGenerator: BABYLON.ShadowGenerator;
 
     public constructor() {
 
@@ -66,29 +61,30 @@ export default class GameScene {
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
 
+        BABYLON.SceneLoader.ImportMeshAsync(
+            null,
+            'assets/models/terrain/',
+            'tree001.babylon',
+            this._scene)
+            .then((result) => {
+                this.tree = (<BABYLON.Mesh>result.meshes[0]);
 
-        this._terrain = new Terrain();
+                this.tree.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
+                this.tree.position = BABYLON.Vector3.Zero();
+
+                this._terrain = new Terrain();
+            });
+
     }
 
     public updateCoordinate(data: any) {
         if ('true' === data.hasTree) {
-            BABYLON.SceneLoader.ImportMeshAsync(
-                null,
-                'assets/models/terrain/',
-                'tree001.babylon',
-                this._scene)
-                .then((result) => {
-                    const mesh = result.meshes[0];
+            const tree = this.tree.createInstance('tree' + data.x + data.y);
+            tree.position.x = data.x + 0.5;
+            tree.position.y = this._terrain.getHeight(data.x, data.z);
+            tree.position.z = data.z + 0.5;
 
-                    mesh.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
-                    mesh.position = BABYLON.Vector3.Zero();
-                    mesh.position.x = data.x + 0.5;
-                    mesh.position.y = this._terrain.getHeight(data.x, data.z);
-                    mesh.position.z = data.z + 0.5;
-
-
-                    this._shadowGenerator.getShadowMap().renderList.push(mesh);
-                });
+            //this._shadowGenerator.getShadowMap().renderList.push(tree);
         }
     }
 
@@ -106,5 +102,9 @@ export default class GameScene {
 
     get terrain(): Terrain {
         return this._terrain;
+    }
+
+    get shadowGenerator(): any {
+        return this._shadowGenerator;
     }
 }
