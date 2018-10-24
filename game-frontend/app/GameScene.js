@@ -9,7 +9,6 @@ class GameScene {
     createScene() {
         const canvas = document.getElementById('render-canvas');
         const engine = new BABYLON.Engine(canvas, true);
-        this._trees = {};
         engine.runRenderLoop(() => {
             this._scene.render();
         });
@@ -50,9 +49,14 @@ class GameScene {
         });
     }
     updateCoordinate(data) {
-        function pad(n, width) {
-            n = n + '';
-            return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+        /**
+         * Fixme: Replace this function with a global library.
+         * @param n
+         * @param width
+         */
+        function pad(number, width) {
+            number = number + '';
+            return number.length >= width ? number : new Array(width - number.length + 1).join('0') + number;
         }
         const instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
         if ('true' === data.hasTree) {

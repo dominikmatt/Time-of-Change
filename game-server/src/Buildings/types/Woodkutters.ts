@@ -52,7 +52,6 @@ export default class Woodkutters extends EconomyBuilding implements BuildingInte
             return;
         }
 
-        console.log(Map.findTree());
         this._nextJob = new ChopWood(this._player, Map.findTree(), this._character);
     }
 

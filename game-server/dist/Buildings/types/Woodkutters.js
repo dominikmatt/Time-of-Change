@@ -42,7 +42,6 @@ class Woodkutters extends EconomyBuilding_1.default {
             || this._currentTreeTrunksStore >= this._maxTreeTrunksStore) {
             return;
         }
-        console.log(Map_1.default.findTree());
         this._nextJob = new ChopWood_1.default(this._player, Map_1.default.findTree(), this._character);
     }
     get currentTreeTrunksStore() {

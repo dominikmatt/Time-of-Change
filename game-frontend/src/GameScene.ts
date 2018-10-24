@@ -1,9 +1,13 @@
 import * as BABYLON from 'babylonjs';
 import Terrain from "./Terrain";
 
+interface TreesInterface {
+    [propName: string]: BABYLON.InstancedMesh;
+}
+
 export default class GameScene {
     private tree: BABYLON.Mesh;
-    private _trees: any = {};
+    private _trees: TreesInterface = {};
     private _canvas: HTMLCanvasElement;
     private _engine: BABYLON.Engine;
     private _scene: BABYLON.Scene;
@@ -17,8 +21,6 @@ export default class GameScene {
     public createScene() {
         const canvas: HTMLCanvasElement = document.getElementById('render-canvas') as HTMLCanvasElement;
         const engine: BABYLON.Engine = new BABYLON.Engine(canvas, true);
-
-        this._trees = {};
 
         engine.runRenderLoop(() => {
             this._scene.render();
@@ -81,15 +83,21 @@ export default class GameScene {
     }
 
     public updateCoordinate(data: any) {
-        function pad(n: string, width: number) {
-            n = n + '';
-            return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+        /**
+         * Fixme: Replace this function with a global library.
+         * @param n
+         * @param width
+         */
+        function pad(number: string, width: number) {
+            number = number + '';
+            return number.length >= width ? number : new Array(width - number.length + 1).join('0') + number;
         }
 
         const instanceName: string = 'tree' + pad(data.x, 2) + pad(data.z, 2);
 
         if ('true' === data.hasTree) {
             const tree = this.tree.createInstance(instanceName);
+
             tree.position.x = data.x + 0.5;
             tree.position.y = this._terrain.getHeight(data.x, data.z);
             tree.position.z = data.z + 0.5;
