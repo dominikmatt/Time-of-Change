@@ -3,9 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const BABYLON = require("babylonjs");
 const Terrain_1 = require("./Terrain");
 class GameScene {
-    get shadowGenerator() {
-        return this._shadowGenerator;
-    }
     constructor() {
     }
     createScene() {
@@ -42,20 +39,21 @@ class GameScene {
         this._shadowGenerator.useBlurExponentialShadowMap = true;
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
-        this._terrain = new Terrain_1.default();
+        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/terrain/', 'tree001.babylon', this._scene)
+            .then((result) => {
+            this.tree = result.meshes[0];
+            this.tree.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
+            this.tree.position = BABYLON.Vector3.Zero();
+            this._terrain = new Terrain_1.default();
+        });
     }
     updateCoordinate(data) {
         if ('true' === data.hasTree) {
-            BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/terrain/', 'tree001.babylon', this._scene)
-                .then((result) => {
-                const mesh = result.meshes[0];
-                mesh.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
-                mesh.position = BABYLON.Vector3.Zero();
-                mesh.position.x = data.x + 0.5;
-                mesh.position.y = this._terrain.getHeight(data.x, data.z);
-                mesh.position.z = data.z + 0.5;
-                this._shadowGenerator.getShadowMap().renderList.push(mesh);
-            });
+            const tree = this.tree.createInstance('tree' + data.x + data.y);
+            tree.position.x = data.x + 0.5;
+            tree.position.y = this._terrain.getHeight(data.x, data.z);
+            tree.position.z = data.z + 0.5;
+            //this._shadowGenerator.getShadowMap().renderList.push(tree);
         }
     }
     get scene() {
@@ -69,6 +67,9 @@ class GameScene {
     }
     get terrain() {
         return this._terrain;
+    }
+    get shadowGenerator() {
+        return this._shadowGenerator;
     }
 }
 exports.default = GameScene;
