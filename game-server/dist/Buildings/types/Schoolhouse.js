@@ -49,7 +49,6 @@ class Schoolhouse extends EconomyBuilding_1.default {
             return;
         }
         this._runningQueue = this._queue.pop();
-        console.log(this._runningQueue);
         setTimeout(() => {
             this.player.addCharacter(CharacterFactory_1.default(this._runningQueue, this.id, this.player));
             this._runningQueue = null;

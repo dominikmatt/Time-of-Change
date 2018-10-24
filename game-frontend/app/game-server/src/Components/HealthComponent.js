@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class HealthComponent {
-    constructor(maxhealt, currentHealt = 0) {
+    constructor(maxhealth, currentHealth = 0) {
         this._maxHealth = 0;
         this._currentHealth = 0;
-        this._maxHealth = maxhealt;
-        this._currentHealth = currentHealt;
+        this._maxHealth = maxhealth;
+        this._currentHealth = currentHealth;
     }
     get maxHealth() {
         return this._maxHealth;

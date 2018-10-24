@@ -33,13 +33,14 @@ export default class Serf extends Character implements CharacterInterface {
                     this,
                     building
                 );
+
                 this._walkTarget = startPosition;
 
                 // No Storehouse found with resource append job to job-list.
                 if (!building) {
                     this._player.jobStore.addJob(this._job);
                     this._job = null;
-                    this._walkTarget = [];
+                    this._walkTarget = null;
                 }
             });
     }

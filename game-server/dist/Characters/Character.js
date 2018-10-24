@@ -6,10 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
 const PositionComponent_1 = require("../Components/PositionComponent");
 const Core_1 = __importDefault(require("../Core"));
+const Map_1 = __importDefault(require("../Map/Map"));
 class Character {
     constructor(player, buildingId) {
         this._id = uuid_1.v1();
         this._job = null;
+        this._building = null;
+        this._walkTarget = null;
         this._currentPath = [];
         this._walkDelta = 0;
         let schoolhouse;
@@ -23,6 +26,9 @@ class Character {
             position = schoolhouse.doorPosition;
         }
         this._position = new PositionComponent_1.PositionComponent(position);
+    }
+    getNeedBuilding() {
+        return false;
     }
     /**
      * Returns all character specific data as a object.
@@ -42,7 +48,13 @@ class Character {
     findJob() {
         throw new Error('Character: Implement "findJob" method.');
     }
+    getBuildingType() {
+        throw new Error('Character: Implement "getBuildingType" method.');
+    }
     update() {
+        if (true === this.getNeedBuilding() && null === this._building) {
+            return this.searchBuilding();
+        }
         if (null === this._job) {
             this.findJob();
         }
@@ -75,6 +87,16 @@ class Character {
             position: this._position.position
         });
     }
+    searchBuilding() {
+        const building = this._player.getBuildingByType(this.getBuildingType(), false, true);
+        if (null === building) {
+            return;
+        }
+        this._building = building;
+        building.character = this;
+        const path = Map_1.default.findRunnablePath(this.position.position, building.doorPosition);
+        this.walkByPath(path);
+    }
     walkByPath(path) {
         this._currentPath = path;
         this._walkDelta = 0;
@@ -84,6 +106,9 @@ class Character {
     }
     set job(value) {
         this._job = value;
+    }
+    get building() {
+        return this._building;
     }
 }
 exports.default = Character;

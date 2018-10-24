@@ -14,6 +14,8 @@ class Map {
 
     private _streetMatrix: number[][] = [];
 
+    public _treeMatrix: number[][] = [];
+
     private _runnableGrid: PF.Grid;
 
     constructor() {
@@ -62,6 +64,10 @@ class Map {
             if ('street' === key) {
                 this._streetMatrix[x][z] = value ? 1 : 0;
             }
+
+            if ('hasTree' === key) {
+                this._treeMatrix[x][z] = value ? 1 : 0;
+            }
         });
 
         Core.emitAll('map.update', {
@@ -69,6 +75,24 @@ class Map {
             z: z,
             ...data
         });
+    }
+
+    findTree() {
+        let treePosition: PositionInterface;
+
+        this._treeMatrix.forEach((x: array, xIndex: number) => {
+            if (treePosition) {
+                return treePosition;
+            }
+
+            x.forEach((hasTree: number, zIndex: number) => {
+                if (1 === hasTree) {
+                    treePosition = {x: xIndex + 1, z: zIndex};
+                }
+            });
+        });
+
+        return treePosition;
     }
 
     get zMax(): number {
@@ -96,6 +120,7 @@ class Map {
         }
 
         this._runnableGrid = new PF.Grid(runnableMatrix);
+        this._treeMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
     }
 }
 

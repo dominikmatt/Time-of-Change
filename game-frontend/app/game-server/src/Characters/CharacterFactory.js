@@ -12,8 +12,8 @@ const characterMapping = {
 /**
  * Create a new character with given data.
  */
-exports.default = (key, player) => {
-    const character = new characterMapping[key](player);
+exports.default = (key, buildingId, player) => {
+    const character = new characterMapping[key](player, buildingId);
     character.update();
     return character;
 };

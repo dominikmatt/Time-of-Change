@@ -11,6 +11,7 @@ class Map {
         this._xMax = 100;
         this._zMax = 100;
         this._streetMatrix = [];
+        this._treeMatrix = [];
         this.generateMatrix();
         this._mapGenerator = new MapGenerator_1.default(this);
         this._mapGenerator.generate();
@@ -41,8 +42,25 @@ class Map {
             if ('street' === key) {
                 this._streetMatrix[x][z] = value ? 1 : 0;
             }
+            if ('hasTree' === key) {
+                this._treeMatrix[x][z] = value ? 1 : 0;
+            }
         });
         Core_1.default.emitAll('map.update', Object.assign({ x: x, z: z }, data));
+    }
+    findTree() {
+        let treePosition;
+        this._treeMatrix.forEach((x, xIndex) => {
+            if (treePosition) {
+                return treePosition;
+            }
+            x.forEach((hasTree, zIndex) => {
+                if (1 === hasTree) {
+                    treePosition = { x: xIndex + 1, z: zIndex };
+                }
+            });
+        });
+        return treePosition;
     }
     get zMax() {
         return this._zMax;
@@ -64,6 +82,7 @@ class Map {
             }
         }
         this._runnableGrid = new pathfinding_1.default.Grid(runnableMatrix);
+        this._treeMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
     }
 }
 exports.default = Map.Instance;

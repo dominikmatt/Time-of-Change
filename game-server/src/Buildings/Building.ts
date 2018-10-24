@@ -7,6 +7,8 @@ import TransportJob from "../Jobs/types/TransportJob";
 import Map from "../Map/Map";
 import BuildJob from "../Jobs/types/BuildJob";
 import Core from "./../Core";
+import Character from "../Characters/Character";
+import Job from "../Jobs/Job";
 
 /**
  * Base class for all Buildings.
@@ -14,7 +16,7 @@ import Core from "./../Core";
 export default abstract class Building {
     private readonly _id: string =  uuidv1();
 
-    protected character: any; // TODO: Change to Character.
+    protected _character: Character | null = null;
 
     private _position: PositionComponent;
 
@@ -23,6 +25,8 @@ export default abstract class Building {
     protected _player: Player;
 
     public _cost: CostComponent;
+
+    protected _nextJob: Job | null = null;
 
     readonly _matrix: number[][];
     public doorPosition: PositionInterface;
@@ -172,5 +176,17 @@ export default abstract class Building {
 
     get completelyBuilt(): boolean {
         return this._completelyBuilt;
+    }
+
+    get character(): Character | null {
+        return this._character;
+    }
+
+    set character(value: Character) {
+        this._character = value;
+    }
+
+    get nextJob(): Job | null {
+        return this._nextJob;
     }
 }

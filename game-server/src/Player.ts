@@ -111,6 +111,20 @@ export default class Player {
         return null;
     }
 
+    public getBuildingByType(buildingType: string, hasCharacter: boolean = false, isBuilt: boolean = true): Building | null {
+        const buildings = this._buildings.filter((building: Building) => {
+            return buildingType === building.getType()
+                && (null !== building.character || false === hasCharacter)
+                && (true === building.completelyBuilt || false === isBuilt);
+        });
+
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
+
+        return null;
+    }
+
     /**
      * Add a new building to the buildings list.
      */

@@ -6,6 +6,7 @@ const HealthComponent_1 = require("../Components/HealthComponent");
 const TransportJob_1 = require("../Jobs/types/TransportJob");
 const Map_1 = require("../Map/Map");
 const BuildJob_1 = require("../Jobs/types/BuildJob");
+const Core_1 = require("./../Core");
 /**
  * Base class for all Buildings.
  */
@@ -16,6 +17,7 @@ class Building {
             stones: 0,
             timber: 0
         };
+        this._completelyBuilt = false;
         this._player = player;
         this._position = new PositionComponent_1.PositionComponent(position);
     }
@@ -23,7 +25,7 @@ class Building {
      * Perpare start of building.
      */
     build(alreadyBuilt = false) {
-        this.addHealtComponent(alreadyBuilt);
+        this.addHealthComponent(alreadyBuilt);
         this.updateMap();
         if (!alreadyBuilt) {
             this.addTransportJobs();
@@ -41,7 +43,7 @@ class Building {
                 Map_1.default.updateCoordinate(x, z, {
                     runnable: type === 2,
                     building: this._id,
-                    hasTree: false
+                    hasTree: false,
                 });
                 // Set door position;
                 if (2 === type) {
@@ -53,6 +55,7 @@ class Building {
             });
         });
     }
+    beforeUpdate() { }
     /**
      * This method will create all transport jobs to the jobs store.
      */
@@ -70,8 +73,8 @@ class Building {
     addBuildJob() {
         this._player.jobStore.addJob(new BuildJob_1.default(this._player, this));
     }
-    addHealtComponent(alreadyBuilt = false) {
-        this._healt = new HealthComponent_1.default(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
+    addHealthComponent(alreadyBuilt = false) {
+        this._health = new HealthComponent_1.default(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
     }
     /**
      * Returns building type as a string.
@@ -86,13 +89,17 @@ class Building {
         throw new Error('Building: Add getBuildingData and return your building specific data as a object.');
     }
     update() {
-        this.player.wsSocket.emit('building.update', {
+        this.beforeUpdate();
+        if (this._health.maxHealth === this._health.currentHealth) {
+            this._completelyBuilt = true;
+        }
+        Core_1.default.emitAll('building.update', {
             _id: this._id,
             type: this.getType(),
             position: this.position.position,
             data: this.getBuildingData(),
-            currentHealth: this.healt.currentHealth,
-            maxHealth: this.healt.maxHealth,
+            currentHealth: this.health.currentHealth,
+            maxHealth: this.health.maxHealth,
             matrix: this._matrix
         });
     }
@@ -100,8 +107,8 @@ class Building {
         this._buildResources[type]++;
         this.addBuildJob();
     }
-    increaseHealt() {
-        this._healt.currentHealth += 50;
+    increaseHealth() {
+        this._health.currentHealth += 50;
     }
     get position() {
         return this._position;
@@ -112,11 +119,14 @@ class Building {
     get player() {
         return this._player;
     }
-    get healt() {
-        return this._healt;
+    get health() {
+        return this._health;
     }
     get id() {
         return this._id;
+    }
+    get completelyBuilt() {
+        return this._completelyBuilt;
     }
 }
 exports.default = Building;

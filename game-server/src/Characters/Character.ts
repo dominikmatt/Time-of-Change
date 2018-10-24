@@ -4,6 +4,7 @@ import {PositionComponent, PositionInterface} from "../Components/PositionCompon
 import Core from "../Core";
 import Job from "../Jobs/Job";
 import Building from "../Buildings/Building";
+import Map from "../Map/Map";
 
 export default class Character {
     protected _id: string =  uuidv1();
@@ -11,7 +12,8 @@ export default class Character {
     protected readonly _player: Player;
     private _position: PositionComponent;
     protected _job?: Job = null;
-    protected _walkTarget: number[][];
+    protected _building?: Building = null;
+    protected _walkTarget: PositionInterface | null = null;
     protected _currentPath: number[][] = [];
     private _walkDelta: number = 0;
 
@@ -31,6 +33,11 @@ export default class Character {
 
         this._position = new PositionComponent(position);
     }
+
+    public getNeedBuilding(): boolean {
+        return false;
+    }
+
 
     /**
      * Returns all character specific data as a object.
@@ -53,7 +60,16 @@ export default class Character {
         throw new Error('Character: Implement "findJob" method.')
     }
 
+    public getBuildingType(): string {
+        throw new Error('Character: Implement "getBuildingType" method.')
+    }
+
+
     update() {
+        if (true === this.getNeedBuilding() && null === this._building) {
+            return this.searchBuilding();
+        }
+
         if (null === this._job) {
             this.findJob();
         } else {
@@ -92,6 +108,24 @@ export default class Character {
         });
     }
 
+    private searchBuilding() {
+        const building: Building | null = this._player.getBuildingByType(this.getBuildingType(), false, true);
+
+        if (null === building) {
+            return;
+        }
+
+        this._building = building;
+        building.character = this;
+
+        const path = Map.findRunnablePath(
+            this.position.position,
+            building.doorPosition
+        );
+
+        this.walkByPath(path);
+    }
+
     walkByPath(path: number[][]) {
         this._currentPath = path;
         this._walkDelta = 0;
@@ -103,5 +137,9 @@ export default class Character {
 
     set job(value: Job) {
         this._job = value;
+    }
+
+    get building(): Building {
+        return this._building;
     }
 }

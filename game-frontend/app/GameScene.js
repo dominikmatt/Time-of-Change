@@ -4,10 +4,12 @@ const BABYLON = require("babylonjs");
 const Terrain_1 = require("./Terrain");
 class GameScene {
     constructor() {
+        this._trees = {};
     }
     createScene() {
         const canvas = document.getElementById('render-canvas');
         const engine = new BABYLON.Engine(canvas, true);
+        this._trees = {};
         engine.runRenderLoop(() => {
             this._scene.render();
         });
@@ -48,12 +50,22 @@ class GameScene {
         });
     }
     updateCoordinate(data) {
+        function pad(n, width) {
+            n = n + '';
+            return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+        }
+        const instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
         if ('true' === data.hasTree) {
-            const tree = this.tree.createInstance('tree' + data.x + data.y);
+            const tree = this.tree.createInstance(instanceName);
             tree.position.x = data.x + 0.5;
             tree.position.y = this._terrain.getHeight(data.x, data.z);
             tree.position.z = data.z + 0.5;
+            this._trees[instanceName] = tree;
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
+        }
+        else if (this._trees[instanceName]) {
+            this._trees[instanceName].dispose();
+            this._trees[instanceName] = null;
         }
     }
     get scene() {

@@ -83,6 +83,17 @@ class Player {
         }
         return null;
     }
+    getBuildingByType(buildingType, hasCharacter = false, isBuilt = true) {
+        const buildings = this._buildings.filter((building) => {
+            return buildingType === building.getType()
+                && (null !== building.character || false === hasCharacter)
+                && (true === building.completelyBuilt || false === isBuilt);
+        });
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
+        return null;
+    }
     /**
      * Add a new building to the buildings list.
      */

@@ -16,7 +16,7 @@ class ActionHandler {
     handleAction(action: string, element: HTMLElement) {
         switch (action) {
             case 'buildBuildingSelect':
-                const buildBuildingSelect = new BuildBuildingSelect();
+                const buildBuildingSelect = new BuildBuildingSelect(element.dataset.type);
                 break;
             case 'createCharacter':
                 const createCharacter = new CreateCharacter(element);

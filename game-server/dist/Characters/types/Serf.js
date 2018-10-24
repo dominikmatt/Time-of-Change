@@ -28,7 +28,7 @@ class Serf extends Character_1.default {
             if (!building) {
                 this._player.jobStore.addJob(this._job);
                 this._job = null;
-                this._walkTarget = [];
+                this._walkTarget = null;
             }
         });
     }

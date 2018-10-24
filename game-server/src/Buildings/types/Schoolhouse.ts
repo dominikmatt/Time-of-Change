@@ -62,8 +62,6 @@ export default class Schoolhouse extends EconomyBuilding implements BuildingInte
 
         this._runningQueue = this._queue.pop();
 
-        console.log(this._runningQueue);
-
         setTimeout(() => {
             this.player.addCharacter(CharacterFactory(this._runningQueue, this.id, this.player));
             this._runningQueue = null;

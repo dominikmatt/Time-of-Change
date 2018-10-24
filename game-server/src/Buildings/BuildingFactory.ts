@@ -3,6 +3,7 @@ import {PositionComponent, PositionInterface} from "../Components/PositionCompon
 import Building from "./Building";
 import Player from "../Player";
 import Schoolhouse from "./types/Schoolhouse";
+import Woodkutters from "./types/Woodkutters";
 
 interface BuildingMapping {
     [key:string]: any;
@@ -10,7 +11,8 @@ interface BuildingMapping {
 
 const buildingMapping: BuildingMapping = {
     storehouse: Storehouse,
-    schoolhouse: Schoolhouse
+    schoolhouse: Schoolhouse,
+    woodkutters: Woodkutters,
 };
 
 /**
@@ -22,7 +24,7 @@ const buildingMapping: BuildingMapping = {
  * @param alreadyBuilt
  */
 export default (key: string, position: PositionInterface, player: Player, alreadyBuilt: boolean = false) => {
-    const building: Building = new buildingMapping[key](player, position, alreadyBuilt);
+    const building: Building = new buildingMapping[key](player, position, true);
 
     building.update();
 
