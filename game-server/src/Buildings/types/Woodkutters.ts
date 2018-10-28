@@ -5,11 +5,14 @@ import {PositionInterface} from "../../Components/PositionComponent";
 import Player from "../../Player";
 import ChopWood from "../../Jobs/types/ChopWood";
 import Map from "../../Map/Map";
+import TransportJob from "../../Jobs/types/TransportJob";
+import TransportToStorehouseJob from "../../Jobs/types/TransportToStorehouseJob";
+import ProductionBuildingInterface from "../ProductionBuildingInterface";
 
 /**
  * The Woodkutters will take tree trunks from a tree.
  */
-export default class Woodkutters extends EconomyBuilding implements BuildingInterface {
+export default class Woodkutters extends EconomyBuilding implements BuildingInterface, ProductionBuildingInterface {
     private readonly _maxTreeTrunksStore: number = 5;
 
     readonly _matrix: number[][] = [
@@ -28,6 +31,8 @@ export default class Woodkutters extends EconomyBuilding implements BuildingInte
         });
 
         this.build(alreadyBuilt);
+
+        this.increaseStore();
     }
 
     public getType() {
@@ -62,5 +67,18 @@ export default class Woodkutters extends EconomyBuilding implements BuildingInte
     public increaseStore() {
         this._currentTreeTrunksStore++;
         this._nextJob = null;
+
+        this._player.jobStore.addJob(
+                new TransportToStorehouseJob(
+                this._player,
+                'treeTrunks',
+                this
+            )
+        );
+
+    }
+
+    public decreaseStore() {
+        this._currentTreeTrunksStore--;
     }
 }

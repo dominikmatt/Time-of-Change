@@ -7,6 +7,7 @@ const uuid_1 = require("uuid");
 const PositionComponent_1 = require("../Components/PositionComponent");
 const Core_1 = __importDefault(require("../Core"));
 const Map_1 = __importDefault(require("../Map/Map"));
+const gameSettings_1 = require("../gameSettings");
 class Character {
     constructor(player, buildingId) {
         this._id = uuid_1.v1();
@@ -63,7 +64,7 @@ class Character {
         }
         // Do walk - ever second to the next field.
         if (0 < this._currentPath.length) {
-            this._walkDelta += Core_1.default.currentTick.delta;
+            this._walkDelta += Core_1.default.currentTick.delta * gameSettings_1.GAME_SPEED;
             if (1 <= this._walkDelta) {
                 const next = this._currentPath.shift();
                 if (next) {

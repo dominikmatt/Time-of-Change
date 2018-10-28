@@ -3,6 +3,7 @@ import CharacterInterface from "../CharacterInterface";
 import TransportJob from "../../Jobs/types/TransportJob";
 import Storehouse from "../../Buildings/types/Storehouse";
 import Building from "../../Buildings/Building";
+import TransportToStorehouseJob from "../../Jobs/types/TransportToStorehouseJob";
 
 export default class Serf extends Character implements CharacterInterface {
     public getType(): string {
@@ -18,6 +19,19 @@ export default class Serf extends Character implements CharacterInterface {
             .then((job: any) => {
                 // No Storehouse found with resource append job to job-list.
                 if (null === job) {
+                    return;
+                }
+
+                if (true === job.toStore) {
+                    this._job = new TransportToStorehouseJob(
+                        this._player,
+                        job.resourceType,
+                        this._player.getBuildingById(job.building),
+                        this
+                    );
+
+                    this._walkTarget = job.startPosition;
+
                     return;
                 }
 

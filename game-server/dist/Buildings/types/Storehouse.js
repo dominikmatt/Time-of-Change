@@ -159,6 +159,13 @@ class Storehouse extends EconomyBuilding_1.default {
         }
         return false;
     }
+    putInResource(resourceType) {
+        this._resources[resourceType].store++;
+        return true;
+    }
+    hasStoreableResource(resourceType) {
+        return this._resources[resourceType].storable;
+    }
     get resources() {
         return this._resources;
     }

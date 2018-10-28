@@ -7,6 +7,7 @@ const EconomyBuilding_1 = __importDefault(require("../EconomyBuilding"));
 const CostComponent_1 = __importDefault(require("../../Components/CostComponent"));
 const ChopWood_1 = __importDefault(require("../../Jobs/types/ChopWood"));
 const Map_1 = __importDefault(require("../../Map/Map"));
+const TransportToStorehouseJob_1 = __importDefault(require("../../Jobs/types/TransportToStorehouseJob"));
 /**
  * The Woodkutters will take tree trunks from a tree.
  */
@@ -24,6 +25,7 @@ class Woodkutters extends EconomyBuilding_1.default {
             stones: 2
         });
         this.build(alreadyBuilt);
+        this.increaseStore();
     }
     getType() {
         return 'woodkutters';
@@ -50,6 +52,10 @@ class Woodkutters extends EconomyBuilding_1.default {
     increaseStore() {
         this._currentTreeTrunksStore++;
         this._nextJob = null;
+        this._player.jobStore.addJob(new TransportToStorehouseJob_1.default(this._player, 'treeTrunks', this));
+    }
+    decreaseStore() {
+        this._currentTreeTrunksStore--;
     }
 }
 exports.default = Woodkutters;

@@ -21,7 +21,7 @@ const buildingMapping = {
  * @param alreadyBuilt
  */
 exports.default = (key, position, player, alreadyBuilt = false) => {
-    const building = new buildingMapping[key](player, position, alreadyBuilt);
+    const building = new buildingMapping[key](player, position, true);
     building.update();
     return building;
 };

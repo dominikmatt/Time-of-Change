@@ -5,6 +5,7 @@ import Core from "../Core";
 import Job from "../Jobs/Job";
 import Building from "../Buildings/Building";
 import Map from "../Map/Map";
+import {GAME_SPEED} from "../gameSettings";
 
 export default class Character {
     protected _id: string =  uuidv1();
@@ -78,7 +79,7 @@ export default class Character {
 
         // Do walk - ever second to the next field.
         if (0 < this._currentPath.length) {
-            this._walkDelta += Core.currentTick.delta;
+            this._walkDelta += Core.currentTick.delta * GAME_SPEED;
 
             if (1 <= this._walkDelta) {
                 const next = this._currentPath.shift();
