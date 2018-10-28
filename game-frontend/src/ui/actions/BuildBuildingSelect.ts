@@ -11,9 +11,11 @@ export default class BuildBuildingSelect {
     private pickResult: Nullable<PickingInfo>;
     private _mesh: BABYLON.AbstractMesh;
     private _buildable: boolean;
+    private _type: string;
 
-    constructor() {
+    constructor(type: string) {
         this.pickResult = null;
+        this._type = type;
         this.load();
 
         this.bindDOMEvents();
@@ -46,7 +48,7 @@ export default class BuildBuildingSelect {
         }
 
         connectionService.socket.emit('building.create', {
-            type: 'schoolhouse',
+            type: this._type,
             position: {
                 x: this.pickResult.pickedPoint.x,
                 y: 0,

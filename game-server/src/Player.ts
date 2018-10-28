@@ -25,17 +25,20 @@ export default class Player {
 
     private readonly _db: Redis;
 
+    private readonly _playerId: number;
+
     /**
      * socket.io Socket.
      */
     private _wsSocket: any;
 
-    constructor(name: string, token: string) {
+    constructor(name: string, token: string, playerId: number) {
         this._name = name;
         this._token = token;
         this._db = new Redis(Object.keys(Core.players).length + 1);
         this._jobStore = new JobStore(this);
         this._buildingManager = new BuildingManager(this);
+        this._playerId = playerId;
 
         this._db.flushdb()
             .then(() => console.log('database cleared'))
@@ -53,8 +56,8 @@ export default class Player {
         this.addCharacter(CharacterFactory('serf', 'start', this));
         this.addCharacter(CharacterFactory('serf', 'start', this));
         this.addCharacter(CharacterFactory('laborer', 'start', this));
-        const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 3, z: 3}, this, true));
-        const schoolhouse: Schoolhouse = this.addBuilding(BuildingFactory('schoolhouse', {x: 3, z: 8}, this, true));
+        const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 8 * (this._playerId), z: 3 * (this._playerId)}, this, true));
+        const schoolhouse: Schoolhouse = this.addBuilding(BuildingFactory('schoolhouse', {x: 8 * (this._playerId), z: 8 * (this._playerId)}, this, true));
 
         storehouse.addResources({
             stones: 60,
@@ -111,6 +114,20 @@ export default class Player {
         return null;
     }
 
+    public getBuildingByType(buildingType: string, hasCharacter: boolean = false, isBuilt: boolean = true): Building | null {
+        const buildings = this._buildings.filter((building: Building) => {
+            return buildingType === building.getType()
+                && (null === building.character || true === hasCharacter)
+                && (true === building.completelyBuilt || false === isBuilt);
+        });
+
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
+
+        return null;
+    }
+
     /**
      * Add a new building to the buildings list.
      */
@@ -150,5 +167,9 @@ export default class Player {
 
     get buildingManager(): BuildingManager {
         return this._buildingManager;
+    }
+
+    get playerId(): number {
+        return this._playerId;
     }
 };

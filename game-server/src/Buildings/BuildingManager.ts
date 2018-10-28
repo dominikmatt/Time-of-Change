@@ -28,4 +28,19 @@ export default class BuildingManager {
 
         return building;
     }
+
+    // Find a storehouse with storeable resource.
+    public findStorehouseByResource(resourceType: string): Storehouse {
+        const buildings = this._player.buildings.filter((building: Building) => {
+            return 'storehouse' === building.getType()
+                && true === building.completelyBuilt
+                && (<Storehouse>building).hasStoreableResource(resourceType);
+        });
+
+        if (0 < buildings.length) {
+            return (<Storehouse>buildings[0]);
+        }
+
+        return null;
+    }
 }

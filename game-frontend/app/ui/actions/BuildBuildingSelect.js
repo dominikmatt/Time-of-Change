@@ -5,8 +5,9 @@ const connection_1 = require("../../services/connection");
 const DOMEvent_1 = require("../../services/DOMEvent");
 const BuildingUpdateCommand_1 = require("../../Commands/BuildingUpdateCommand");
 class BuildBuildingSelect {
-    constructor() {
+    constructor(type) {
         this.pickResult = null;
+        this._type = type;
         this.load();
         this.bindDOMEvents();
     }
@@ -30,7 +31,7 @@ class BuildBuildingSelect {
             return;
         }
         connection_1.default.socket.emit('building.create', {
-            type: 'schoolhouse',
+            type: this._type,
             position: {
                 x: this.pickResult.pickedPoint.x,
                 y: 0,

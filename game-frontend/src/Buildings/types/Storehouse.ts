@@ -4,7 +4,7 @@ import PositionInterface from "../../interfaces/PositionInterface";
 export default class Storehouse extends Building {
     static asset: string = 'storehouse.babylon';
 
-    constructor(position: PositionInterface, id: string) {
-        super(id, position, 'storehouse');
+    constructor(position: PositionInterface, id: string, playerId: number) {
+        super(id, position, 'storehouse', playerId);
     }
 }

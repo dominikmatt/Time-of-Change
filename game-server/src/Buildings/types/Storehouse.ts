@@ -208,6 +208,17 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
         return false;
     }
 
+    public putInResource(resourceType: string): boolean {
+        this._resources[resourceType].store++;
+
+        return true;
+    }
+
+    public hasStoreableResource(resourceType: string): boolean {
+        return this._resources[resourceType].storable;
+    }
+
+
     get resources(): ResourceInterface {
         return this._resources;
     }

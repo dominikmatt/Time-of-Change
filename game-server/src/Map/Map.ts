@@ -14,6 +14,8 @@ class Map {
 
     private _streetMatrix: number[][] = [];
 
+    public _treeMatrix: number[][] = [];
+
     private _runnableGrid: PF.Grid;
 
     constructor() {
@@ -31,16 +33,26 @@ class Map {
     /**
      * Returns an array with all coordinates from start-position to the target.
      */
-    public findRunnablePath(start: PositionInterface, target: PositionInterface): number[][] {
+    public findRunnablePath(
+        start: PositionInterface,
+        target: PositionInterface,
+        lastPositionRunnable: boolean = false
+    ): number[][] {
+        const runnableGrid = this._runnableGrid.clone();
         const finder = new PF.AStarFinder({
             //allowDiagonal: true
         });
+
+        if (true === lastPositionRunnable) {
+            runnableGrid.setWalkableAt(target.x, target.z, true);
+        }
+
         const path = finder.findPath(
             start.x,
             start.z,
             target.x,
             target.z,
-            this._runnableGrid.clone()
+            runnableGrid
         );
 
         return path;
@@ -62,6 +74,10 @@ class Map {
             if ('street' === key) {
                 this._streetMatrix[x][z] = value ? 1 : 0;
             }
+
+            if ('hasTree' === key) {
+                this._treeMatrix[x][z] = value ? 1 : 0;
+            }
         });
 
         Core.emitAll('map.update', {
@@ -69,6 +85,42 @@ class Map {
             z: z,
             ...data
         });
+    }
+
+    /**
+     * Returns the nearest tree from a position on the map.
+     *
+     * @param startPosition
+     */
+    findTree(startPosition: PositionInterface): PositionInterface {
+        let treePosition: PositionInterface = null;
+        let lastDista: Number = null;
+
+        // Calculate distance.
+        const distance = (start: PositionInterface, end: PositionInterface) => {
+            return Math.sqrt(Math.pow(Math.abs(start.x-end.x),2) +
+                Math.pow(Math.abs(start.z-end.z),2) +
+                Math.pow(Math.abs(start.z-end.z),2));
+        };
+
+        // Find nearest tree from doorPosition.
+        this._treeMatrix.forEach((row, x) => {
+            row.forEach((hasTree, z) => {
+                const dista = distance({
+                        x,
+                        z
+                    },
+                    startPosition
+                );
+
+                if (null === lastDista || (dista < lastDista && 1 === hasTree)) {
+                    lastDista = dista;
+                    treePosition = {x: x, z: z};
+                }
+            });
+        });
+
+        return treePosition;
     }
 
     get zMax(): number {
@@ -96,6 +148,7 @@ class Map {
         }
 
         this._runnableGrid = new PF.Grid(runnableMatrix);
+        this._treeMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
     }
 }
 

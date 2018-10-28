@@ -13,7 +13,7 @@ class BuildingUpdateCommand extends Command_1.default {
     }
     execute(req) {
         if (!exports.builtBuildings[req._id]) {
-            exports.builtBuildings[req._id] = new buildingMapping_1.default[req.type](req.position, req._id);
+            exports.builtBuildings[req._id] = new buildingMapping_1.default[req.type](req.position, req._id, req.playerId);
         }
         exports.builtBuildings[req._id].setHealt(req.currentHealth, req.maxHealth);
     }

@@ -19,6 +19,18 @@ class BuildingManager {
         });
         return building;
     }
+    // Find a storehouse with storeable resource.
+    findStorehouseByResource(resourceType) {
+        const buildings = this._player.buildings.filter((building) => {
+            return 'storehouse' === building.getType()
+                && true === building.completelyBuilt
+                && building.hasStoreableResource(resourceType);
+        });
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
+        return null;
+    }
 }
 exports.default = BuildingManager;
 //# sourceMappingURL=BuildingManager.js.map

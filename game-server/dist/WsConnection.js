@@ -10,6 +10,7 @@ const socket_io_1 = __importDefault(require("socket.io"));
 const panel_1 = __importDefault(require("./Panel/panel"));
 const app = http_1.default.createServer(() => { });
 const io = socket_io_1.default(app);
+let playerId = 1;
 ;
 app.listen(9100);
 /**
@@ -41,7 +42,8 @@ io.on('connection', (socket) => {
         return;
     }
     // Create a new player.
-    const newPlayer = new Player_1.default(query.username, token);
+    const newPlayer = new Player_1.default(query.username, token, playerId);
+    playerId++;
     Core_1.default.addPlayer(newPlayer);
     newPlayer.wsSocket = socket;
     newPlayer.listenWs();

@@ -16,6 +16,8 @@ const Core_1 = __importDefault(require("./../Core"));
 class Building {
     constructor(player, position) {
         this._id = uuid_1.v1();
+        this._character = null;
+        this._nextJob = null;
         this._buildResources = {
             stones: 0,
             timber: 0
@@ -101,6 +103,7 @@ class Building {
             type: this.getType(),
             position: this.position.position,
             data: this.getBuildingData(),
+            playerId: this._player.playerId,
             currentHealth: this.health.currentHealth,
             maxHealth: this.health.maxHealth,
             matrix: this._matrix
@@ -130,6 +133,15 @@ class Building {
     }
     get completelyBuilt() {
         return this._completelyBuilt;
+    }
+    get character() {
+        return this._character;
+    }
+    set character(value) {
+        this._character = value;
+    }
+    get nextJob() {
+        return this._nextJob;
     }
 }
 exports.default = Building;

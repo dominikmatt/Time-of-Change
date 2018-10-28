@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Storehouse_1 = require("./types/Storehouse");
 const Schoolhouse_1 = require("./types/Schoolhouse");
+const Woodkutters_1 = require("./types/Woodkutters");
 ;
 const buildingMapping = {
     storehouse: Storehouse_1.default,
-    schoolhouse: Schoolhouse_1.default
+    schoolhouse: Schoolhouse_1.default,
+    wookkutters: Woodkutters_1.default,
 };
 /**
  * Create a new building with given data.
