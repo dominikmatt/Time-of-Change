@@ -6,6 +6,7 @@ import panel from "./Panel/panel";
 
 const app = http.createServer(() => {});
 const io = Server(app);
+let playerId: number = 1;
 
 interface QueryInterface {
     username: string;
@@ -48,7 +49,8 @@ io.on('connection', (socket: any) => {
     }
 
     // Create a new player.
-    const newPlayer = new Player(query.username, token);
+    const newPlayer = new Player(query.username, token, playerId);
+    playerId++;
 
     core.addPlayer(newPlayer);
     newPlayer.wsSocket = socket;

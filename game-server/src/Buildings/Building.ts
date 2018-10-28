@@ -138,6 +138,7 @@ export default abstract class Building {
             type: this.getType(),
             position: this.position.position,
             data: this.getBuildingData(),
+            playerId: this._player.playerId,
             currentHealth: this.health.currentHealth,
             maxHealth: this.health.maxHealth,
             matrix: this._matrix
