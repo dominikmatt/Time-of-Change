@@ -1,6 +1,6 @@
 {
   "name": "kam-online-game-server",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "KaM Online Game Server",
   "main": "index.js",
   "author": "Dominik Matt <mail@matt-dominik.at>",

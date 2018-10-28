@@ -1,5 +1,11 @@
 # CHANGELOG for Time of Changes
 
+#### 0.1.3 (2018-10-28)
+ - FEATURE: Added different start position for players.
+ - FEATURE: Added flags to buildings.
+ - FEATURE: Added new models for storehouse, schoolhouse and woodkutters.
+ - FEATURE: Added woodkutters building, woodkutter character and chopWood job.
+
 #### 0.1.2 (2018-10-24)
  - FEATURE: Added slishnou map.
  - FEATURE: Added tree instances.
