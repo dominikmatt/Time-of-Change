@@ -7,13 +7,13 @@ const Job_1 = __importDefault(require("../Job"));
 const Map_1 = __importDefault(require("../../Map/Map"));
 const gameSettings_1 = require("../../gameSettings");
 class ChopWood extends Job_1.default {
-    constructor(player, targetTree, character) {
+    constructor(player, targetTreePosition, character) {
         super(player);
         this._type = 'chopWood';
         this._character = null;
         this._isCharacterWalking = false;
         this._isCharacterAtStart = false;
-        this._targetTree = targetTree;
+        this._targetTreePosition = targetTreePosition;
         this._character = character;
     }
     toJSON() {
@@ -21,29 +21,33 @@ class ChopWood extends Job_1.default {
             _id: this._id,
             type: this.getType(),
             player: this._player.token,
-            targetTree: this._targetTree,
+            targetTreePosition: this._targetTreePosition,
         });
     }
     update() {
         switch (this._currentStep) {
             case 0:
                 if (!this._isCharacterWalking && !this._isCharacterAtStart) {
-                    const path = Map_1.default.findRunnablePath(this._character.position.position, this._targetTree);
+                    const path = Map_1.default.findRunnablePath(this._character.position.position, this._targetTreePosition, true);
                     this._character.walkByPath(path);
                     this._isCharacterWalking = true;
                     this._currentStep++;
                 }
                 break;
             case 1:
-                if (this._character.position.x === this._targetTree.x &&
-                    this._character.position.z === this._targetTree.z) {
+                if (this._character.position.x === this._targetTreePosition.x &&
+                    this._character.position.z === this._targetTreePosition.z) {
                     this._isCharacterWalking = false;
                     setTimeout(() => {
                         if (1 !== this._currentStep) {
                             return;
                         }
+                        Map_1.default.updateCoordinate(this._targetTreePosition.x, this._targetTreePosition.z, {
+                            hasTree: false,
+                            runnable: true
+                        });
                         this._currentStep++;
-                    }, 5000 * gameSettings_1.GAME_SPEED);
+                    }, 5000 / gameSettings_1.GAME_SPEED);
                 }
                 break;
             case 2:

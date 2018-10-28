@@ -22,11 +22,15 @@ class Map {
     /**
      * Returns an array with all coordinates from start-position to the target.
      */
-    findRunnablePath(start, target) {
+    findRunnablePath(start, target, lastPositionRunnable = false) {
+        const runnableGrid = this._runnableGrid.clone();
         const finder = new pathfinding_1.default.AStarFinder({
         //allowDiagonal: true
         });
-        const path = finder.findPath(start.x, start.z, target.x, target.z, this._runnableGrid.clone());
+        if (true === lastPositionRunnable) {
+            runnableGrid.setWalkableAt(target.x, target.z, true);
+        }
+        const path = finder.findPath(start.x, start.z, target.x, target.z, runnableGrid);
         return path;
     }
     /**
@@ -48,15 +52,30 @@ class Map {
         });
         Core_1.default.emitAll('map.update', Object.assign({ x: x, z: z }, data));
     }
-    findTree() {
-        let treePosition;
-        this._treeMatrix.forEach((x, xIndex) => {
-            if (treePosition) {
-                return treePosition;
-            }
-            x.forEach((hasTree, zIndex) => {
-                if (1 === hasTree) {
-                    treePosition = { x: xIndex + 1, z: zIndex };
+    /**
+     * Returns the nearest tree from a position on the map.
+     *
+     * @param startPosition
+     */
+    findTree(startPosition) {
+        let treePosition = null;
+        let lastDista = null;
+        // Calculate distance.
+        const distance = (start, end) => {
+            return Math.sqrt(Math.pow(Math.abs(start.x - end.x), 2) +
+                Math.pow(Math.abs(start.z - end.z), 2) +
+                Math.pow(Math.abs(start.z - end.z), 2));
+        };
+        // Find nearest tree from doorPosition.
+        this._treeMatrix.forEach((row, x) => {
+            row.forEach((hasTree, z) => {
+                const dista = distance({
+                    x,
+                    z
+                }, startPosition);
+                if (null === lastDista || (dista < lastDista && 1 === hasTree)) {
+                    lastDista = dista;
+                    treePosition = { x: x, z: z };
                 }
             });
         });

@@ -44,7 +44,7 @@ class Woodkutters extends EconomyBuilding_1.default {
             || this._currentTreeTrunksStore >= this._maxTreeTrunksStore) {
             return;
         }
-        this._nextJob = new ChopWood_1.default(this._player, Map_1.default.findTree(), this._character);
+        this._nextJob = new ChopWood_1.default(this._player, Map_1.default.findTree(this.doorPosition), this._character);
     }
     get currentTreeTrunksStore() {
         return this._currentTreeTrunksStore;
@@ -55,7 +55,7 @@ class Woodkutters extends EconomyBuilding_1.default {
         this._player.jobStore.addJob(new TransportToStorehouseJob_1.default(this._player, 'treeTrunks', this));
     }
     decreaseStore() {
-        this._currentTreeTrunksStore--;
+        return this._currentTreeTrunksStore--;
     }
 }
 exports.default = Woodkutters;

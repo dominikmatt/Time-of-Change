@@ -52,7 +52,7 @@ class Schoolhouse extends EconomyBuilding_1.default {
         setTimeout(() => {
             this.player.addCharacter(CharacterFactory_1.default(this._runningQueue, this.id, this.player));
             this._runningQueue = null;
-        }, 5000 * gameSettings_1.GAME_SPEED);
+        }, 5000 / gameSettings_1.GAME_SPEED);
     }
     get currentGoldStore() {
         return this._currentGoldStore;

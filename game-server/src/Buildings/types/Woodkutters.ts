@@ -5,7 +5,6 @@ import {PositionInterface} from "../../Components/PositionComponent";
 import Player from "../../Player";
 import ChopWood from "../../Jobs/types/ChopWood";
 import Map from "../../Map/Map";
-import TransportJob from "../../Jobs/types/TransportJob";
 import TransportToStorehouseJob from "../../Jobs/types/TransportToStorehouseJob";
 import ProductionBuildingInterface from "../ProductionBuildingInterface";
 
@@ -57,7 +56,7 @@ export default class Woodkutters extends EconomyBuilding implements BuildingInte
             return;
         }
 
-        this._nextJob = new ChopWood(this._player, Map.findTree(), this._character);
+        this._nextJob = new ChopWood(this._player, Map.findTree(this.doorPosition), this._character);
     }
 
     get currentTreeTrunksStore(): number {
@@ -78,7 +77,7 @@ export default class Woodkutters extends EconomyBuilding implements BuildingInte
 
     }
 
-    public decreaseStore() {
-        this._currentTreeTrunksStore--;
+    public decreaseStore(): Number {
+        return this._currentTreeTrunksStore--;
     }
 }
