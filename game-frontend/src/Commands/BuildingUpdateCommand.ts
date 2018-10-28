@@ -19,7 +19,7 @@ export default class BuildingUpdateCommand extends Command {
 
     execute(req: RequestInterface) {
         if (!builtBuildings[req._id]) {
-            builtBuildings[req._id] = new buildingMapping[req.type](req.position, req._id);
+            builtBuildings[req._id] = new buildingMapping[req.type](req.position, req._id, req.playerId);
         }
 
         builtBuildings[req._id].setHealt(req.currentHealth, req.maxHealth);

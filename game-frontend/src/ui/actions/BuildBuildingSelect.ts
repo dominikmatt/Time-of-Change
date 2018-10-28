@@ -47,8 +47,6 @@ export default class BuildBuildingSelect {
             return;
         }
 
-        console.log(this._type);
-
         connectionService.socket.emit('building.create', {
             type: this._type,
             position: {

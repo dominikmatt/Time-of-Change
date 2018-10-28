@@ -30,7 +30,6 @@ class BuildBuildingSelect {
         if (!this.pickResult || !this._buildable) {
             return;
         }
-        console.log(this._type);
         connection_1.default.socket.emit('building.create', {
             type: this._type,
             position: {
