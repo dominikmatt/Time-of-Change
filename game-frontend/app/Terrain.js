@@ -3,22 +3,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Game_1 = require("./Game");
 const connection_1 = require("./services/connection");
 const BABYLON = require("babylonjs");
+const AssetsManager_1 = require("./AssetsManager");
 class Terrain {
     constructor() {
         this._game = Game_1.default;
-        BABYLON.SceneLoader.ImportMesh('', 'assets/models/maps/slishou/', 'slishou.babylon', this._game.gameScene.scene, (meshes) => {
-            this._mesh = meshes[0];
-            this._mesh.position.x = 0;
-            this._mesh.position.z = 0;
-            this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));
-            this._mesh.material.wireframe = false;
-            this._mesh.metadata = {
-                key: 'map',
-            };
-            this._mesh.receiveShadows = true;
-            this.generateHeightData();
-            connection_1.default.socket.emit('map.data');
-        });
+        this._mesh = AssetsManager_1.default.getTerrainMeshByName('terrain');
+        console.log(this._mesh);
+        this._mesh.position.x = 0;
+        this._mesh.position.z = 0;
+        this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));
+        this._mesh.material.wireframe = false;
+        this._mesh.metadata = {
+            key: 'map',
+        };
+        this._mesh.receiveShadows = true;
+        this._mesh.isVisible = true;
+        this.generateHeightData();
+        connection_1.default.socket.emit('map.data');
     }
     /**
      * Generate the height data of the map.

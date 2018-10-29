@@ -1,28 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Game_1 = require("../Game");
+const AssetsManager_1 = require("../AssetsManager");
 class Character {
-    constructor(position) {
+    constructor(id, position) {
         this._positionFixture = {
             x: 0,
             y: -5,
             z: 0
         };
         this._position = position;
+        this._id = id;
         this.load();
     }
     set position(position) {
         this._position = position;
         this.setPosition();
     }
+    /**
+     * Load character and place it to the scene.
+     */
     load() {
-        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/characters/', 'character1.babylon', Game_1.default.gameScene.scene)
-            .then((result) => {
-            this._mesh = result.meshes[0];
-            this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
-            this.setPosition();
-            Game_1.default.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
-        });
+        this._mesh = AssetsManager_1.default.getCharacterMeshByName('character', this._id);
+        this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
+        this.setPosition();
+        Game_1.default.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
+        // Show meshes.
+        this._mesh.isVisible = true;
     }
     setPosition() {
         if (!this._mesh) {

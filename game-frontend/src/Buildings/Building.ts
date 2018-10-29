@@ -2,6 +2,7 @@ import {default as game} from "../Game";
 import PositionInterface from "../interfaces/PositionInterface";
 import buildingMapping from "./buildingMapping";
 import AbstractMesh = BABYLON.AbstractMesh;
+import assetsManager from "../AssetsManager";
 
 interface ColorsInterface {
     [key:string]: any;
@@ -30,42 +31,30 @@ export default class Building {
         this.load();
     }
 
+    /**
+     * Load Building and add to the scene.
+     */
     private load() {
-        BABYLON.SceneLoader.ImportMeshAsync(
-            null,
-            'assets/models/buildings/',
-            buildingMapping[this._key].asset,
-            game.gameScene.scene)
-            .then((results) => {
-                let banner = null;
-                let building;
+        this._mesh = assetsManager.getBuildingMeshByName(this._key, this._id);
+        this._banner = this._mesh.getChildMeshes()[0];
+        this._mesh.checkCollisions = true;
+        this._mesh.metadata = {
+            key: this._key,
+            isBuilding: true,
+            buildingId: this._id,
+        };
 
-                results.meshes.forEach((mesh: AbstractMesh) => {
-                    if ('banner' === mesh.id) {
-                        banner = mesh;
-                    } else {
-                        building = mesh;
-                    }
-                });
+        this.setPosition();
 
-                this._mesh = building;
-                this._banner = banner;
-                this._mesh.checkCollisions = true;
-                this._mesh.metadata = {
-                    key: this._key,
-                    isBuilding: true,
-                    buildingId: this._id,
-                };
+        if (this._banner) {
+            this.setBannerMaterial();
+        }
 
-                this.setPosition();
+        game.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
 
-                if (this._banner) {
-                    this.setBannerPosition();
-                    this.setBannerMaterial();
-                }
-
-                game.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
-            });
+        // Show meshes.
+        this._mesh.isVisible = true;
+        this._banner.isVisible = true;
     }
 
     private setPosition() {
@@ -73,15 +62,6 @@ export default class Building {
         this._mesh.position.x = this._position.x - this._positionFixture.x;
         this._mesh.position.y = game.gameScene.terrain.getHeight(this._position.x, this._position.z);
         this._mesh.position.z = this._position.z - this._positionFixture.z;
-    }
-
-    private setBannerPosition() {
-        const bannerPosition: BABYLON.Vector3 = this._banner.position;
-
-        this._banner.position = BABYLON.Vector3.Zero();
-        this._banner.position.x = this._mesh.position.x + bannerPosition.x;
-        this._banner.position.y = this._mesh.position.y + bannerPosition.y;
-        this._banner.position.z = this._mesh.position.z + bannerPosition.z;
     }
 
     private setBannerMaterial() {

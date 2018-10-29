@@ -1,18 +1,21 @@
 import {default as game, Game} from "../Game";
 import PositionInterface from "../interfaces/PositionInterface";
+import assetsManager from "../AssetsManager";
 
 export default class Character {
     private readonly _game: Game;
     private _position: PositionInterface;
     protected _mesh: BABYLON.AbstractMesh;
+    protected _id: string;
     protected readonly _positionFixture: PositionInterface = {
         x: 0,
         y: -5,
         z: 0
     };
 
-    constructor(position: PositionInterface) {
+    constructor(id: string, position: PositionInterface) {
         this._position = position;
+        this._id = id;
 
         this.load();
     }
@@ -23,20 +26,18 @@ export default class Character {
         this.setPosition();
     }
 
+    /**
+     * Load character and place it to the scene.
+     */
     private load() {
-        BABYLON.SceneLoader.ImportMeshAsync(
-            null,
-            'assets/models/characters/',
-            'character1.babylon',
-            game.gameScene.scene)
-            .then((result) => {
-                this._mesh = result.meshes[0];
-                this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
-                this.setPosition();
+        this._mesh = assetsManager.getCharacterMeshByName('character', this._id);
+        this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
+        this.setPosition();
 
+        game.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
 
-                game.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
-            });
+        // Show meshes.
+        this._mesh.isVisible = true;
     }
 
     private setPosition() {
