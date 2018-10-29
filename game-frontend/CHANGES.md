@@ -1,5 +1,9 @@
 # CHANGELOG for Time of Changes
 
+#### 0.1.4 (2018-10-29)
+ - FEATURE: Added assets manager and a loading screen at the start.
+ - BUGFIX: Fixed buildings has been build without building job.
+
 #### 0.1.3 (2018-10-28)
  - FEATURE: Added different start position for players.
  - FEATURE: Added flags to buildings.
