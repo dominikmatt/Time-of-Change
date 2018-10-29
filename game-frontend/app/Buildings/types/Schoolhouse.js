@@ -6,6 +6,5 @@ class Schoolhouse extends Building_1.default {
         super(id, position, 'schoolhouse', playerId);
     }
 }
-Schoolhouse.asset = 'schoolhouse.babylon';
 exports.default = Schoolhouse;
 //# sourceMappingURL=Schoolhouse.js.map

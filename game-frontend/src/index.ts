@@ -6,17 +6,22 @@ import CharacterUpdateCommand from "./Commands/CharacterUpdateCommand";
 import GameUi from "./ui/GameUi";
 import {AddUserOptionsInterface, default as addUserEvent} from "./Events/AddUser";
 import PanelUpdateCommand from "./Commands/PanelUpdateCommand";
+import assetsManager from "./AssetsManager";
 
 new GameUi();
 
-addUserEvent.addCallBack((options: AddUserOptionsInterface) => {
+
+
+addUserEvent.addCallBack(
+    (options: AddUserOptionsInterface) => {
         connectionService
             .connect(options.username)
             .then(() => {
                 game.initialize();
+                assetsManager.initialize();
                 new MapUpdateCommand();
                 new BuildingUpdateCommand();
                 new CharacterUpdateCommand();
                 new PanelUpdateCommand();
             });
-});
+    });

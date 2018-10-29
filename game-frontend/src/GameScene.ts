@@ -1,12 +1,13 @@
 import * as BABYLON from 'babylonjs';
 import Terrain from "./Terrain";
+import assetsManager from "./AssetsManager";
+import game from "./Game";
 
 interface TreesInterface {
     [propName: string]: BABYLON.InstancedMesh;
 }
 
 export default class GameScene {
-    private tree: BABYLON.Mesh;
     private _trees: TreesInterface = {};
     private _canvas: HTMLCanvasElement;
     private _engine: BABYLON.Engine;
@@ -21,10 +22,6 @@ export default class GameScene {
     public createScene() {
         const canvas: HTMLCanvasElement = document.getElementById('render-canvas') as HTMLCanvasElement;
         const engine: BABYLON.Engine = new BABYLON.Engine(canvas, true);
-
-        engine.runRenderLoop(() => {
-            this._scene.render();
-        });
 
         window.addEventListener('resize', function () {
             engine.resize();
@@ -65,27 +62,23 @@ export default class GameScene {
         this._shadowGenerator.useBlurExponentialShadowMap = true;
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
+    }
 
-        BABYLON.SceneLoader.ImportMeshAsync(
-            null,
-            'assets/models/terrain/',
-            'tree001.babylon',
-            this._scene)
-            .then((result) => {
-                this.tree = (<BABYLON.Mesh>result.meshes[0]);
+    /**
+     * This method is called by the assetsManager after all assets has been loaded.
+     */
+    public onAssetsLoaded() {
+        this._terrain = new Terrain();
 
-                this.tree.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
-                this.tree.position = BABYLON.Vector3.Zero();
-
-                this._terrain = new Terrain();
-            });
-
+        game.gameScene.engine.runRenderLoop(() => {
+            this._scene.render();
+        });
     }
 
     public updateCoordinate(data: any) {
         /**
          * Fixme: Replace this function with a global library.
-         * @param n
+         * @param number
          * @param width
          */
         function pad(number: string, width: number) {
@@ -96,7 +89,7 @@ export default class GameScene {
         const instanceName: string = 'tree' + pad(data.x, 2) + pad(data.z, 2);
 
         if ('true' === data.hasTree) {
-            const tree = this.tree.createInstance(instanceName);
+            const tree = assetsManager.getTreeMeshByName('tree', instanceName);
 
             tree.position.x = data.x + 0.5;
             tree.position.y = this._terrain.getHeight(data.x, data.z);

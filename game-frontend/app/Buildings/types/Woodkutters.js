@@ -6,6 +6,5 @@ class Woodkutters extends Building_1.default {
         super(id, position, 'woodkutters', playerId);
     }
 }
-Woodkutters.asset = 'woodkutters.babylon';
 exports.default = Woodkutters;
 //# sourceMappingURL=Woodkutters.js.map

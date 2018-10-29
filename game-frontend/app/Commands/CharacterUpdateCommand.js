@@ -13,7 +13,7 @@ class CharacterUpdateCommand extends Command_1.default {
     }
     execute(req) {
         if (!aliveCharacters[req._id]) {
-            aliveCharacters[req._id] = new Character_1.default(req.position);
+            aliveCharacters[req._id] = new Character_1.default(req._id, req.position);
         }
         aliveCharacters[req._id].position = req.position;
     }
