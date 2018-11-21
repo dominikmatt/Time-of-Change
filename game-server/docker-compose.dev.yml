@@ -11,7 +11,10 @@ services:
         environment:
             - REDIS_HOST=redis
         restart: always
-        command: "npm run start:prod"
+        command: "npm run start:dev"
+        volumes:
+            - ./dist:/usr/src/game-server/dist:cached
+            - ./views:/usr/src/game-server/views:cached
         depends_on:
           - redis
 
