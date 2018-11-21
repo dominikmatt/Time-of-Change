@@ -18,8 +18,10 @@ function createWindow() {
         resizable: true
     });
 
-    mainWindow.maximize();
-    mainWindow.setFullScreen(true);
+    if (!config.get('app').debug) {
+        mainWindow.maximize();
+        mainWindow.setFullScreen(true);
+    }
 
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
@@ -29,7 +31,7 @@ function createWindow() {
     }));
 
     // Open the DevTools.
-    if (config.get('app').debug) {
+    if (!config.get('app').debug) {
         mainWindow.webContents.openDevTools();
     }
 
@@ -40,6 +42,23 @@ function createWindow() {
         // when you should delete the corresponding element.
         mainWindow = null;
     });
+
+    protocol.registerStringProtocol(
+        'tocgame',
+        (request, callback) => {
+            let url = request.url.substr(7);
+
+            console.log('url: %s', url);
+
+            callback('It works!');
+        },
+        (err) => {
+            if (!err) {
+                console.log('Registered protocol succesfully');
+            }
+        });
+
+    app.setAsDefaultProtocolClient('tocgame://');
 }
 
 // This method will be called when Electron has finished
