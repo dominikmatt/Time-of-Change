@@ -28,7 +28,7 @@ function createWindow() {
         slashes: true,
     }));
     // Open the DevTools.
-    if (!config_1.default.get('app').debug) {
+    if (config_1.default.get('app').debug) {
         mainWindow.webContents.openDevTools();
     }
     // Emitted when the window is closed.

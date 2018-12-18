@@ -31,7 +31,7 @@ function createWindow() {
     }));
 
     // Open the DevTools.
-    if (!config.get('app').debug) {
+    if (config.get('app').debug) {
         mainWindow.webContents.openDevTools();
     }
 
