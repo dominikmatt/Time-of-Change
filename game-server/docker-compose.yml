@@ -5,11 +5,12 @@ services:
         build:
             context: ""
             dockerfile: Dockerfile
-            target: development
         ports:
             - "9100:9100"
         environment:
             - REDIS_HOST=redis
+        env_file:
+            - game.env
         restart: always
         command: "npm run start:prod"
         depends_on:
