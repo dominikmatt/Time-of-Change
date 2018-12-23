@@ -15,7 +15,7 @@ new GameUi();
 addUserEvent.addCallBack(
     (options: AddUserOptionsInterface) => {
         connectionService
-            .connect(options.username)
+            .connect(options.token)
             .then(() => {
                 game.initialize();
                 assetsManager.initialize();

@@ -3,7 +3,7 @@ import EventsAbstract from "./EventsAbstract";
 let instance: AddUser = null;
 
 export interface AddUserOptionsInterface {
-    username: string,
+    token: string,
 }
 
 class AddUser extends EventsAbstract {

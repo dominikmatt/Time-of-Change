@@ -5,6 +5,7 @@ import Character from "../../Characters/Character";
 import Map from "../../Map/Map";
 import Storehouse from "../../Buildings/types/Storehouse";
 import ProductionBuildingInterface from "../../Buildings/ProductionBuildingInterface";
+import Building from "../../Buildings/Building";
 
 export default class TransportToStorehouseJob extends Job implements JobInterface {
     protected readonly _type: string = 'transport';

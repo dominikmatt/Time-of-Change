@@ -1,6 +1,7 @@
 import Player from "../Player";
 import Building from "./Building";
 import Storehouse from "./types/Storehouse";
+import ProductionBuildingInterface from "./ProductionBuildingInterface";
 
 export default class BuildingManager {
     private readonly _player: Player;
@@ -26,6 +27,15 @@ export default class BuildingManager {
             return id === building.id;
         });
 
+        return building;
+    }
+
+    public findProductionBuildingById(id: string): ProductionBuildingInterface {
+        const building = this._player.buildings.find((building: Building): boolean => {
+            return id === building.id;
+        });
+
+        // @ts-ignore
         return building;
     }
 

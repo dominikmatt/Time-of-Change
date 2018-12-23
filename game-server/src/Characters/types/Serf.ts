@@ -4,6 +4,7 @@ import TransportJob from "../../Jobs/types/TransportJob";
 import Storehouse from "../../Buildings/types/Storehouse";
 import Building from "../../Buildings/Building";
 import TransportToStorehouseJob from "../../Jobs/types/TransportToStorehouseJob";
+import ProductionBuildingInterface from "../../Buildings/ProductionBuildingInterface";
 
 export default class Serf extends Character implements CharacterInterface {
     public getType(): string {
@@ -23,10 +24,11 @@ export default class Serf extends Character implements CharacterInterface {
                 }
 
                 if (true === job.toStore) {
+                    const building = this._player.buildingManager.findProductionBuildingById(job.building);
                     this._job = new TransportToStorehouseJob(
                         this._player,
                         job.resourceType,
-                        this._player.getBuildingById(job.building),
+                        building,
                         this
                     );
 

@@ -19,6 +19,13 @@ class BuildingManager {
         });
         return building;
     }
+    findProductionBuildingById(id) {
+        const building = this._player.buildings.find((building) => {
+            return id === building.id;
+        });
+        // @ts-ignore
+        return building;
+    }
     // Find a storehouse with storeable resource.
     findStorehouseByResource(resourceType) {
         const buildings = this._player.buildings.filter((building) => {

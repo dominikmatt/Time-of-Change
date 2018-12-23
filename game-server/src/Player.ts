@@ -46,7 +46,6 @@ export default class Player {
                 throw new Error(error);
             });
 
-        Core.db.hset(`players:${this._token}`, 'name', this._name,);
         Core.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core.players).length === 0);
     }
 

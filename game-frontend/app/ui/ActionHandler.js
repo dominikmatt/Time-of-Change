@@ -20,11 +20,11 @@ class ActionHandler {
                 const createCharacter = new CreateCharacter_1.default(element);
                 break;
             case 'addUser':
-                const usernameEl = document.querySelector('#username');
+                const tokenEl = document.querySelector('#token');
                 const modalEl = document.querySelector('.modal');
                 const backdropEl = document.querySelector('.backdrop');
                 AddUser_1.default.trigger({
-                    username: usernameEl.value,
+                    token: tokenEl.value,
                 });
                 modalEl.style.display = 'none';
                 backdropEl.style.display = 'none';

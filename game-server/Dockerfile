@@ -1,6 +1,6 @@
 FROM node:10.11-alpine
 RUN mkdir -p /usr/src/game-server
-COPY . /usr/src/game-server
+COPY . ./package.json ./package-lock.json /usr/src/game-server/
 
 WORKDIR /usr/src/game-server
 
