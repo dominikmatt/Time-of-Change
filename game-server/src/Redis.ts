@@ -33,6 +33,30 @@ export default class Redis {
         });
     }
 
+    public keys(key: string) {
+        return new Promise((resolve, reject) => {
+            this._client.keys(key, (error: any, value: any) => {
+                if (error) {
+                    return reject(error);
+                }
+
+                return resolve(value);
+            });
+        });
+    }
+
+    public scan(key: string) {
+        return new Promise((resolve, reject) => {
+            this._client.scan(key, (error: any, value: any) => {
+                if (error) {
+                    return reject(error);
+                }
+
+                return resolve(value);
+            });
+        });
+    }
+
     public set(key: string, value: any) {
         this._client.set(key, value);
     }

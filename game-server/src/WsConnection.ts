@@ -5,10 +5,12 @@ import Server, {Socket} from 'socket.io';
 import panel from "./Panel/panel";
 import express from 'express';
 import addUserRoute from "./api/routes/addUserRoute";
+import getServerInfoRoute from "./api/routes/getServerInfoRoute";
 import * as expressCore from "express-serve-static-core";
 import bodyParser = require("body-parser");
 import Core from "./Core";
-
+import cors from 'cors';
+import IPlayerData from "./Interfaces/PlayerData";
 
 const app: expressCore.Express = express();
 app.use(bodyParser());
@@ -23,7 +25,9 @@ interface QueryInterface {
     [key: string]: string;
 };
 
+app.use(cors());
 addUserRoute(app);
+getServerInfoRoute(app);
 
 
 /**
@@ -52,17 +56,14 @@ io.on('connection', (socket: any) => {
     const token: string = query.token;
 
     Core.db.hgetall(`players:${token}`)
-        .then((playerData) => {
+        .then((playerData: IPlayerData) => {
             // Player is already connected set the new socket to player and bind listeners.
             if ((<any>core).players[token]) {
                 (<any>core).players[token].wsSocket = socket;
                 (<any>core).players[token].listenWs();
 
-                console.log('ok');
                 return;
             }
-
-            console.log('ok new');
 
             // Create a new player.
             const newPlayer = new Player(playerData.username, token, playerId);

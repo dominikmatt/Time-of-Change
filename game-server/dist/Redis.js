@@ -30,6 +30,26 @@ class Redis {
             });
         });
     }
+    keys(key) {
+        return new Promise((resolve, reject) => {
+            this._client.keys(key, (error, value) => {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(value);
+            });
+        });
+    }
+    scan(key) {
+        return new Promise((resolve, reject) => {
+            this._client.scan(key, (error, value) => {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(value);
+            });
+        });
+    }
     set(key, value) {
         this._client.set(key, value);
     }

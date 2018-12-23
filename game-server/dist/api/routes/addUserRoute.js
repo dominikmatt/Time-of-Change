@@ -5,9 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Core_1 = __importDefault(require("../../Core"));
 const addUserToGame = (req, res) => {
-    const token = req.query.token;
-    const username = req.query.username;
-    Core_1.default.db.hset(`players:${token}`, 'username', username);
+    const body = req.body;
+    const token = body.token;
+    const gameToken = body.gameToken;
+    const username = body.username;
+    Core_1.default.db.hset(`players:${gameToken}`, 'username', username);
+    Core_1.default.db.hset(`players:${gameToken}`, 'token', token);
     res
         .status(200)
         .json({
@@ -15,7 +18,7 @@ const addUserToGame = (req, res) => {
     });
 };
 const addUserRoute = (app) => {
-    app.get('/api/add-player', addUserToGame);
+    app.post('/api/add-player', addUserToGame);
 };
 exports.default = addUserRoute;
 //# sourceMappingURL=addUserRoute.js.map

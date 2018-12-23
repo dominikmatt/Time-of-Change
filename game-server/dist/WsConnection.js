@@ -10,15 +10,19 @@ const socket_io_1 = __importDefault(require("socket.io"));
 const panel_1 = __importDefault(require("./Panel/panel"));
 const express_1 = __importDefault(require("express"));
 const addUserRoute_1 = __importDefault(require("./api/routes/addUserRoute"));
+const getServerInfoRoute_1 = __importDefault(require("./api/routes/getServerInfoRoute"));
 const bodyParser = require("body-parser");
 const Core_2 = __importDefault(require("./Core"));
+const cors_1 = __importDefault(require("cors"));
 const app = express_1.default();
 app.use(bodyParser());
 const server = http_1.default.createServer(app);
 const io = socket_io_1.default(server);
 let playerId = 1;
 ;
+app.use(cors_1.default());
 addUserRoute_1.default(app);
+getServerInfoRoute_1.default(app);
 /**
  * Check if connectiondata like token and username has been set on the connection request.
  */
@@ -48,10 +52,8 @@ io.on('connection', (socket) => {
         if (Core_1.default.players[token]) {
             Core_1.default.players[token].wsSocket = socket;
             Core_1.default.players[token].listenWs();
-            console.log('ok');
             return;
         }
-        console.log('ok new');
         // Create a new player.
         const newPlayer = new Player_1.default(playerData.username, token, playerId);
         playerId++;

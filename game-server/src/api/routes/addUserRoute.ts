@@ -1,13 +1,17 @@
 import express from 'express';
 import * as expressCore from "express-serve-static-core";
 import Core from "../../Core";
+import IAddUserRequest from "../../Interfaces/AddUserRequest";
 
 const addUserToGame = (req: express.Request, res: express.Response): void => {
-    const token = req.query.token;
-    const username = req.query.username;
+    const body: IAddUserRequest = (<IAddUserRequest>req.body);
+    const token = body.token;
+    const gameToken = body.gameToken;
+    const username = body.username;
 
 
-    Core.db.hset(`players:${token}`, 'username', username,);
+    Core.db.hset(`players:${gameToken}`, 'username', username,);
+    Core.db.hset(`players:${gameToken}`, 'token', token,);
 
     res
         .status(200)
@@ -17,7 +21,7 @@ const addUserToGame = (req: express.Request, res: express.Response): void => {
 };
 
 const addUserRoute = (app: expressCore.Express) => {
-    app.get('/api/add-player', addUserToGame);
+    app.post('/api/add-player', addUserToGame);
 };
 
 export default addUserRoute;

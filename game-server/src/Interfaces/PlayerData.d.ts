@@ -1,4 +1,4 @@
-export default interface IAddUserRequest {
+export default interface IPlayerData {
     username: string;
     token: string;
 }
