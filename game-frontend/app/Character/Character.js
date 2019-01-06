@@ -4,11 +4,6 @@ const Game_1 = require("../Game");
 const AssetsManager_1 = require("../AssetsManager");
 class Character {
     constructor(id, position) {
-        this._positionFixture = {
-            x: 0,
-            y: -5,
-            z: 0
-        };
         this._position = position;
         this._id = id;
         this.load();

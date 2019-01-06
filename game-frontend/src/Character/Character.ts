@@ -1,17 +1,11 @@
-import {default as game, Game} from "../Game";
+import {default as game} from "../Game";
 import PositionInterface from "../interfaces/PositionInterface";
 import assetsManager from "../AssetsManager";
 
 export default class Character {
-    private readonly _game: Game;
     private _position: PositionInterface;
     protected _mesh: BABYLON.AbstractMesh;
     protected _id: string;
-    protected readonly _positionFixture: PositionInterface = {
-        x: 0,
-        y: -5,
-        z: 0
-    };
 
     constructor(id: string, position: PositionInterface) {
         this._position = position;

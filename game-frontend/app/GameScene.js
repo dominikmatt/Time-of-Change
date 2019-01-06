@@ -4,6 +4,7 @@ const BABYLON = require("babylonjs");
 const Terrain_1 = require("./Terrain");
 const AssetsManager_1 = require("./AssetsManager");
 const Game_1 = require("./Game");
+const Camera_1 = require("./Camera");
 class GameScene {
     constructor() {
         this._trees = {};
@@ -21,13 +22,7 @@ class GameScene {
         this._scene = scene;
         this._engine.enableOfflineSupport = false;
         // This creates and positions a free camera (non-mesh)
-        const camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-        // This targets the camera to scene origin
-        camera.setTarget(BABYLON.Vector3.Zero());
-        //Set the ellipsoid around the camera (e.g. your player's size)
-        camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
-        // This attaches the camera to the canvas
-        camera.attachControl(canvas, true);
+        this._camera = new Camera_1.default(this._scene, this._canvas);
         const light = new BABYLON.HemisphericLight("Hemi0", new BABYLON.Vector3(0, 1, 0), scene);
         light.diffuse = new BABYLON.Color3(1, 1, 1);
         light.specular = new BABYLON.Color3(0, 0, 0);
@@ -47,6 +42,7 @@ class GameScene {
         this._terrain = new Terrain_1.default();
         Game_1.default.gameScene.engine.runRenderLoop(() => {
             this._scene.render();
+            this._camera.update();
         });
     }
     updateCoordinate(data) {
@@ -62,9 +58,9 @@ class GameScene {
         const instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
         if ('true' === data.hasTree) {
             const tree = AssetsManager_1.default.getTreeMeshByName('tree', instanceName);
-            tree.position.x = data.x + 0.5;
+            tree.position.x = data.x + Math.random();
             tree.position.y = this._terrain.getHeight(data.x, data.z);
-            tree.position.z = data.z + 0.5;
+            tree.position.z = data.z + Math.random();
             this._trees[instanceName] = tree;
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
         }
@@ -87,6 +83,9 @@ class GameScene {
     }
     get shadowGenerator() {
         return this._shadowGenerator;
+    }
+    get camera() {
+        return this._camera;
     }
 }
 exports.default = GameScene;

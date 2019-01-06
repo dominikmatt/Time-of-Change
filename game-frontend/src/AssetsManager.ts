@@ -100,7 +100,7 @@ export class AssetsManager {
         if (this._meshesStore[name]) {
             const tree = (<BABYLON.Mesh>this._meshesStore[name][0]);
 
-            tree.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
+            tree.scaling = new BABYLON.Vector3(0.07, 0.07, 0.07);
             tree.position = BABYLON.Vector3.Zero();
 
             return (<BABYLON.Mesh>this._meshesStore[name][0]).createInstance(instanceName);
