@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Core_1 = __importDefault(require("../../Core"));
 const getServerInfo = (req, res) => {
-    console.log(process.env);
     Core_1.default.db.keys(`players:*`)
         .then((players) => {
         res.status(200)

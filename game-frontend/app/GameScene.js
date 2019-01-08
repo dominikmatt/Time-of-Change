@@ -5,6 +5,7 @@ const Terrain_1 = require("./Terrain");
 const AssetsManager_1 = require("./AssetsManager");
 const Game_1 = require("./Game");
 const Camera_1 = require("./Camera");
+const babylonjs_inspector_1 = require("babylonjs-inspector");
 class GameScene {
     constructor() {
         this._trees = {};
@@ -20,6 +21,8 @@ class GameScene {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new BABYLON.Scene(engine);
         this._scene = scene;
+        // @ts-ignore
+        window.scene = scene;
         this._engine.enableOfflineSupport = false;
         // This creates and positions a free camera (non-mesh)
         this._camera = new Camera_1.default(this._scene, this._canvas);
@@ -34,6 +37,7 @@ class GameScene {
         this._shadowGenerator.useBlurExponentialShadowMap = true;
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
+        new babylonjs_inspector_1.Inspector(this._scene, false, 0, null);
     }
     /**
      * This method is called by the assetsManager after all assets has been loaded.

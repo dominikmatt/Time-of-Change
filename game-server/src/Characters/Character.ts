@@ -6,6 +6,7 @@ import Job from "../Jobs/Job";
 import Building from "../Buildings/Building";
 import Map from "../Map/Map";
 import {GAME_SPEED} from "../gameSettings";
+import {arrayPathToObject} from "../utils/path";
 
 export default class Character {
     protected _id: string =  uuidv1();
@@ -84,6 +85,7 @@ export default class Character {
             if (1 <= this._walkDelta) {
                 const next = this._currentPath.shift();
 
+
                 if (next) {
                     this.position.position = {
                         x: next[0],
@@ -100,6 +102,8 @@ export default class Character {
             type: this.getType(),
             data: this.getCharacterData(),
             position: this.position.position,
+            isWalking: 0 < this._currentPath.length,
+            walkingPath: arrayPathToObject(this._currentPath),
         });
 
         Core.emitAll('character.update.position', {

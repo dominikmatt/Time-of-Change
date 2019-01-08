@@ -23,5 +23,7 @@ export default class CharacterUpdateCommand extends Command {
         }
 
         aliveCharacters[req._id].position = req.position;
+        aliveCharacters[req._id].walkingPath = req.walkingPath;
+        aliveCharacters[req._id].isWalking = req.isWalking;
     }
 }

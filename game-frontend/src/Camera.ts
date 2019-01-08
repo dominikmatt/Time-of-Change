@@ -71,18 +71,14 @@ export default class Camera {
     }
 
     private onMousewheelHandler(event: WheelEvent) {
-        this.zoomCamera(event.wheelDelta);
+        this.zoomCamera(event.deltaY);
     }
 
     /**
      * Zoom in or out when mousewheel has been wheeled.
      */
     private zoomCamera(wheelDelta: number) {
-        if (0 < wheelDelta) {
-            this._camera.position.y += 0.5;
-        } else {
-            this._camera.position.y -= 0.5;
-        }
+        this._camera.position.y += wheelDelta/100;
 
         if (2.5 > this._camera.position.y) {
             this._camera.position.y = 2.5;

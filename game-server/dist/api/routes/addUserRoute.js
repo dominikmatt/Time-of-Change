@@ -18,6 +18,9 @@ const addUserToGame = (req, res) => {
     });
 };
 const addUserRoute = (app) => {
+    const gameToken = 'test';
+    Core_1.default.db.hset(`players:${gameToken}`, 'username', 'domready');
+    Core_1.default.db.hset(`players:${gameToken}`, 'token', 'test');
     app.post('/api/add-player', addUserToGame);
 };
 exports.default = addUserRoute;

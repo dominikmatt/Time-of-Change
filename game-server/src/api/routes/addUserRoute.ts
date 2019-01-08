@@ -21,6 +21,10 @@ const addUserToGame = (req: express.Request, res: express.Response): void => {
 };
 
 const addUserRoute = (app: expressCore.Express) => {
+    const gameToken = 'test';
+    Core.db.hset(`players:${gameToken}`, 'username', 'domready',);
+    Core.db.hset(`players:${gameToken}`, 'token', 'test',);
+
     app.post('/api/add-player', addUserToGame);
 };
 

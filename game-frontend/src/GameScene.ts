@@ -3,6 +3,7 @@ import Terrain from "./Terrain";
 import assetsManager from "./AssetsManager";
 import game from "./Game";
 import Camera from "./Camera";
+import { Inspector } from "babylonjs-inspector";
 
 interface TreesInterface {
     [propName: string]: BABYLON.InstancedMesh;
@@ -37,6 +38,8 @@ export default class GameScene {
         const scene = new BABYLON.Scene(engine);
 
         this._scene = scene;
+        // @ts-ignore
+        window.scene = scene;
 
         this._engine.enableOfflineSupport = false;
         // This creates and positions a free camera (non-mesh)
@@ -56,6 +59,9 @@ export default class GameScene {
         this._shadowGenerator.useBlurExponentialShadowMap = true;
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
+
+
+        new Inspector(this._scene, false, 0, null);
     }
 
     /**

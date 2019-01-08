@@ -3,9 +3,6 @@ import express from 'express';
 import * as expressCore from "express-serve-static-core";
 
 const getServerInfo = (req: express.Request, res: express.Response): void => {
-
-    console.log(process.env);
-
     Core.db.keys(`players:*`)
         .then((players: string[]) => {
             res.status(200)

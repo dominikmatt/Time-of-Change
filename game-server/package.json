@@ -9,7 +9,8 @@
     "node": "10.11.0"
   },
   "scripts": {
-    "start:dev": "nodemon dist/index.js",
+    "start:dev": "concurrently -k \"npm run server:dev\" \"npm run watch\"",
+    "server:dev": "nodemon dist/index.js",
     "start:prod": "node dist/index.js",
     "watch": "tsc --watch",
     "version": "node -v"

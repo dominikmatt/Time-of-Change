@@ -14,8 +14,10 @@ services:
         restart: always
         command: "npm run start:dev"
         volumes:
-            - ./dist:/usr/src/game-server/dist:cached
-            - ./views:/usr/src/game-server/views:cached
+            - ./src:/usr/src/game-server/src
+            - ./dist:/usr/src/game-server/dist
+            - ./views:/usr/src/game-server/views
+            - ./tsconfig.json:/usr/src/game-server/tsconfig.json
         depends_on:
           - redis
 

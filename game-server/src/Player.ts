@@ -51,10 +51,10 @@ export default class Player {
 
     public initializeTown() {
         /** @var Storehouse storehouse */
-        this.addCharacter(CharacterFactory('hero', 'start', this));
+        //this.addCharacter(CharacterFactory('hero', 'start', this));
+        //this.addCharacter(CharacterFactory('serf', 'start', this));
         this.addCharacter(CharacterFactory('serf', 'start', this));
-        this.addCharacter(CharacterFactory('serf', 'start', this));
-        this.addCharacter(CharacterFactory('laborer', 'start', this));
+        //this.addCharacter(CharacterFactory('laborer', 'start', this));
         const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 8 * (this._playerId), z: 3 * (this._playerId)}, this, true));
         const schoolhouse: Schoolhouse = this.addBuilding(BuildingFactory('schoolhouse', {x: 8 * (this._playerId), z: 8 * (this._playerId)}, this, true));
 

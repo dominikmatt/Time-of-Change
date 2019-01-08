@@ -8,6 +8,7 @@ const PositionComponent_1 = require("../Components/PositionComponent");
 const Core_1 = __importDefault(require("../Core"));
 const Map_1 = __importDefault(require("../Map/Map"));
 const gameSettings_1 = require("../gameSettings");
+const path_1 = require("../utils/path");
 class Character {
     constructor(player, buildingId) {
         this._id = uuid_1.v1();
@@ -81,6 +82,8 @@ class Character {
             type: this.getType(),
             data: this.getCharacterData(),
             position: this.position.position,
+            isWalking: 0 < this._currentPath.length,
+            walkingPath: path_1.arrayPathToObject(this._currentPath),
         });
         Core_1.default.emitAll('character.update.position', {
             _id: this._id,

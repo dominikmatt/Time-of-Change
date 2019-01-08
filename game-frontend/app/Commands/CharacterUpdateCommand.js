@@ -16,6 +16,8 @@ class CharacterUpdateCommand extends Command_1.default {
             aliveCharacters[req._id] = new Character_1.default(req._id, req.position);
         }
         aliveCharacters[req._id].position = req.position;
+        aliveCharacters[req._id].walkingPath = req.walkingPath;
+        aliveCharacters[req._id].isWalking = req.isWalking;
     }
 }
 exports.default = CharacterUpdateCommand;
