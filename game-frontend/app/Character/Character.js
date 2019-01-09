@@ -18,26 +18,6 @@ class Character {
         this._position = position;
         this._id = id;
         this.load();
-        let lastPosition = position;
-        Game_1.default.gameScene.scene.registerBeforeRender(() => {
-            if (!this._walkAnimation || !this._mesh) {
-                return;
-            }
-            const currentPosition = this._mesh.position;
-            if (currentPosition.x < lastPosition.x) {
-                this._mesh.rotation.y = Math.PI / 2 * 2;
-            }
-            else if (currentPosition.x > lastPosition.x) {
-                this._mesh.rotation.y = Math.PI / 2 * 4;
-            }
-            else if (currentPosition.z > lastPosition.z) {
-                this._mesh.rotation.y = Math.PI / 2 * 3;
-            }
-            else {
-                this._mesh.rotation.y = Math.PI / 2 * 1;
-            }
-            lastPosition = this._mesh.position;
-        });
     }
     set position(position) {
         this._position = position;
@@ -75,32 +55,46 @@ class Character {
     }
     startWalking() {
         //Create a scaling animaation at 30 FPS
-        var animationBox = new BABYLON.Animation(`walkAnimation${this._id}`, "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        var animationBox = new BABYLON.Animation(`walkAnimationPod${this._id}`, "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        const animationRotation = new BABYLON.Animation(`walkAnimationPod${this._id}`, 'rotation', 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
         // Animation keys
         const keys = [];
+        const keysRotation = [];
         let frame = 0;
         const debugPath = [];
         this._walkingPath.forEach((point, index) => {
             frame = index * 30;
             const vector = new Vector3(point.x + 0.5, Game_1.default.gameScene.terrain.getHeight(point.x, point.z, true), point.z + 0.5);
             debugPath.push(vector);
-            keys.push({
-                frame: frame,
-                value: vector,
-            });
         });
-        var catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(debugPath, 30);
+        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(debugPath, 30);
+        const path3d = new BABYLON.Path3D(catmullRom.getPoints());
+        const tangents = path3d.getTangents(); // array of tangents to the curve
+        const normals = path3d.getNormals(); // array of normals to the curve
+        const binormals = path3d.getBinormals(); // array of binormals to curve
+        for (let p = 0; p < catmullRom.getPoints().length; p++) {
+            keys.push({
+                frame: p,
+                value: catmullRom.getPoints()[p]
+            });
+            keysRotation.push({
+                frame: p,
+                value: BABYLON.Vector3.RotationFromAxis(tangents[p], normals[p], binormals[p])
+            });
+        }
         this._walkingDebugPath = BABYLON.Mesh.CreateLines("catmullRom", catmullRom.getPoints(), Game_1.default.gameScene.scene);
         if (1 === keys.length) {
             return;
         }
         animationBox.setKeys(keys);
+        animationRotation.setKeys(keysRotation);
         this._mesh.animations.push(animationBox);
+        this._mesh.animations.push(animationRotation);
         setTimeout(() => __awaiter(this, void 0, void 0, function* () {
             this._walkAnimation = Game_1.default.gameScene.scene.beginAnimation(this._mesh, 0, frame, false);
-            this._walkAnimation.onAnimationEnd = (() => {
+            this._walkAnimation.onAnimationEnd = () => {
                 this._walkingDebugPath.dispose();
-            });
+            };
         }));
     }
     set walkingPath(path) {
