@@ -3,6 +3,7 @@ import PositionInterface, {WalkPositionInterface} from "../interfaces/PositionIn
 import assetsManager from "../AssetsManager";
 import Vector3 = BABYLON.Vector3;
 import IAnimationKey = BABYLON.IAnimationKey;
+import LinesMesh = BABYLON.LinesMesh;
 
 export default class Character {
     private _position: PositionInterface;
@@ -22,8 +23,6 @@ export default class Character {
 
     set position(position: PositionInterface) {
         this._position = position;
-
-        //this.setPosition();
     }
 
     /**
@@ -40,6 +39,9 @@ export default class Character {
         this._mesh.isVisible = true;
     }
 
+    /**
+     * @deprecated
+     */
     private setPosition() {
         if (!this._mesh) {
             return;
@@ -87,8 +89,9 @@ export default class Character {
         const keys: Array<IAnimationKey> = [];
         const keysRotation: Array<IAnimationKey> = [];
         let frame = 0;
-        const debugPath: BABYLON.Vector3[] = [];
+        const path: BABYLON.Vector3[] = [];
 
+        //
         this._walkingPath.forEach((point: WalkPositionInterface, index: number) => {
             frame = index * 30;
             const vector: BABYLON.Vector3 = new Vector3(
@@ -97,36 +100,40 @@ export default class Character {
                 point.z + 0.5
             );
 
-            debugPath.push(vector);
+            path.push(vector);
         });
 
-        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(debugPath, 30);
+        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 30);
 
-        const path3d = new BABYLON.Path3D(catmullRom.getPoints());
-        const tangents = path3d.getTangents(); // array of tangents to the curve
-        const normals = path3d.getNormals(); // array of normals to the curve
-        const binormals = path3d.getBinormals(); // array of binormals to curve
+        const path3d: BABYLON.Path3D = new BABYLON.Path3D(catmullRom.getPoints());
+        const tangents: BABYLON.Vector3[] = path3d.getTangents(); // array of tangents to the curve
+        const normals: BABYLON.Vector3[] = path3d.getNormals(); // array of normals to the curve
+        const binormals: BABYLON.Vector3[] = path3d.getBinormals(); // array of binormals to curve
 
-
-        for (let p = 0; p < catmullRom.getPoints().length; p++) {
+        catmullRom.getPoints().forEach((point: BABYLON.Vector3, frame: number) => {
+            // Add walking point to walk animation.
             keys.push({
-                frame: p,
-                value: catmullRom.getPoints()[p]
+                frame: frame,
+                value: point
             });
-sa
+
+            // Add rotation to rotate animation.
             keysRotation.push({
-                frame: p,
+                frame: frame,
                 value: BABYLON.Vector3.RotationFromAxis(
-                    normals[p],
-                    binormals[p],
-                    tangents[p]
+                    normals[frame],
+                    binormals[frame],
+                    tangents[frame]
                 )
             });
-        }
+        });
 
-
-
-        this._walkingDebugPath = BABYLON.Mesh.CreateLines("catmullRom", catmullRom.getPoints(), game.gameScene.scene);
+        // Print debug walking path.
+        this._walkingDebugPath = BABYLON.Mesh.CreateLines(
+            `walkAnimationDebugPath${this._id}`,
+            catmullRom.getPoints(),
+            game.gameScene.scene
+        );
 
 
         if (1 === keys.length) {
@@ -139,10 +146,12 @@ sa
         this._mesh.animations.push(animationBox);
         this._mesh.animations.push(animationRotation);
 
+        // Begin animation.
         setTimeout(async () => {
             this._walkAnimation = game.gameScene.scene.beginAnimation(this._mesh, 0, frame, false);
 
             this._walkAnimation.onAnimationEnd = () => {
+                // Remove debug path after animation has been completed.
                 this._walkingDebugPath.dispose();
             };
         });

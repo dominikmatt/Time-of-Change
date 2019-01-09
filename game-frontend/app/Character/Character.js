@@ -21,7 +21,6 @@ class Character {
     }
     set position(position) {
         this._position = position;
-        //this.setPosition();
     }
     /**
      * Load character and place it to the scene.
@@ -34,6 +33,9 @@ class Character {
         // Show meshes.
         this._mesh.isVisible = true;
     }
+    /**
+     * @deprecated
+     */
     setPosition() {
         if (!this._mesh) {
             return;
@@ -61,29 +63,32 @@ class Character {
         const keys = [];
         const keysRotation = [];
         let frame = 0;
-        const debugPath = [];
+        const path = [];
+        //
         this._walkingPath.forEach((point, index) => {
             frame = index * 30;
             const vector = new Vector3(point.x + 0.5, Game_1.default.gameScene.terrain.getHeight(point.x, point.z, true), point.z + 0.5);
-            debugPath.push(vector);
+            path.push(vector);
         });
-        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(debugPath, 30);
+        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 30);
         const path3d = new BABYLON.Path3D(catmullRom.getPoints());
         const tangents = path3d.getTangents(); // array of tangents to the curve
         const normals = path3d.getNormals(); // array of normals to the curve
         const binormals = path3d.getBinormals(); // array of binormals to curve
-        for (let p = 0; p < catmullRom.getPoints().length; p++) {
+        catmullRom.getPoints().forEach((point, frame) => {
+            // Add walking point to walk animation.
             keys.push({
-                frame: p,
-                value: catmullRom.getPoints()[p]
+                frame: frame,
+                value: point
             });
-            sa;
+            // Add rotation to rotate animation.
             keysRotation.push({
-                frame: p,
-                value: BABYLON.Vector3.RotationFromAxis(normals[p], binormals[p], tangents[p])
+                frame: frame,
+                value: BABYLON.Vector3.RotationFromAxis(normals[frame], binormals[frame], tangents[frame])
             });
-        }
-        this._walkingDebugPath = BABYLON.Mesh.CreateLines("catmullRom", catmullRom.getPoints(), Game_1.default.gameScene.scene);
+        });
+        // Print debug walking path.
+        this._walkingDebugPath = BABYLON.Mesh.CreateLines(`walkAnimationDebugPath${this._id}`, catmullRom.getPoints(), Game_1.default.gameScene.scene);
         if (1 === keys.length) {
             return;
         }
@@ -91,9 +96,11 @@ class Character {
         animationRotation.setKeys(keysRotation);
         this._mesh.animations.push(animationBox);
         this._mesh.animations.push(animationRotation);
+        // Begin animation.
         setTimeout(() => __awaiter(this, void 0, void 0, function* () {
             this._walkAnimation = Game_1.default.gameScene.scene.beginAnimation(this._mesh, 0, frame, false);
             this._walkAnimation.onAnimationEnd = () => {
+                // Remove debug path after animation has been completed.
                 this._walkingDebugPath.dispose();
             };
         }));
