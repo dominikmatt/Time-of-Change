@@ -77,9 +77,10 @@ class Character {
                 frame: p,
                 value: catmullRom.getPoints()[p]
             });
+            sa;
             keysRotation.push({
                 frame: p,
-                value: BABYLON.Vector3.RotationFromAxis(tangents[p], normals[p], binormals[p])
+                value: BABYLON.Vector3.RotationFromAxis(normals[p], binormals[p], tangents[p])
             });
         }
         this._walkingDebugPath = BABYLON.Mesh.CreateLines("catmullRom", catmullRom.getPoints(), Game_1.default.gameScene.scene);
