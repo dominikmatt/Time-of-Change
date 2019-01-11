@@ -4,15 +4,6 @@ class BuildingManager {
     constructor(player) {
         this._player = player;
     }
-    findStorehouseWithResource(resourceType) {
-        const building = this._player.buildings.find((building) => {
-            if ('storehouse' === building.getType()) {
-                const stones = building.getResourceCountByType(resourceType);
-                return 0 < stones;
-            }
-        });
-        return building;
-    }
     findBuildingById(id) {
         const building = this._player.buildings.find((building) => {
             return id === building.id;
@@ -32,6 +23,22 @@ class BuildingManager {
             return 'storehouse' === building.getType()
                 && true === building.completelyBuilt
                 && building.hasStoreableResource(resourceType);
+        });
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
+        return null;
+    }
+    /**
+     * Find a storehouse with minimum one resource stored.
+     *
+     * @param resourceType
+     */
+    findStorehouseWithResource(resourceType) {
+        const buildings = this._player.buildings.filter((building) => {
+            return 'storehouse' === building.getType()
+                && true === building.completelyBuilt
+                && 0 < building.getResourceCountByType(resourceType);
         });
         if (0 < buildings.length) {
             return buildings[0];

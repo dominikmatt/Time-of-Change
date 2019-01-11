@@ -5,6 +5,9 @@ class JobStore {
         this._player = player;
     }
     addJob(job) {
+        if (!job.getType) {
+            console.log(job);
+        }
         this._player.db.rpush(`jobs:${job.getType()}`, job.toJSON());
         // Remove job from ram.
         job = null;

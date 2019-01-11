@@ -23,7 +23,7 @@ class Woodworking extends Job_1.default {
     update() {
         switch (this._currentStep) {
             case 0:
-                if (this._character.isInHouse) {
+                if (this._character && this._character.isInHouse) {
                     this._currentStep++;
                 }
                 break;

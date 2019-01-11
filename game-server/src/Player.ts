@@ -54,7 +54,7 @@ export default class Player {
     public initializeTown() {
         /** @var Storehouse storehouse */
         //this.addCharacter(CharacterFactory('hero', 'start', this));
-        //this.addCharacter(CharacterFactory('serf', 'start', this));
+        this.addCharacter(CharacterFactory('serf', 'start', this));
         this.addCharacter(CharacterFactory('serf', 'start', this));
         //this.addCharacter(CharacterFactory('laborer', 'start', this));
         const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 8 * (this._playerId), z: 3 * (this._playerId)}, this, true));
@@ -63,6 +63,7 @@ export default class Player {
         const sawmill: Sawmill = this.addBuilding(BuildingFactory('sawmill', {x: 8 * (this._playerId), z: 21 * (this._playerId)}, this, true));
 
         storehouse.addResources({
+            treeTrunks: 5,
             stones: 60,
             timber: 50,
             gold: 60,

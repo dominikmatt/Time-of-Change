@@ -29,6 +29,9 @@ class Serf extends Character_1.default {
             const building = this._player.buildingManager.findStorehouseWithResource(job.resourceType);
             const targetBuilding = this._player.buildingManager.findBuildingById(job.targetBuilding);
             let startPosition = job.startPosition;
+            if (!building) {
+                this._player.jobStore.addJob(new TransportJob_1.default(this._player, startPosition, job.resourceType, targetBuilding));
+            }
             this._job = new TransportJob_1.default(this._player, building.doorPosition, job.resourceType, targetBuilding, this, building);
             this._walkTarget = startPosition;
             // No Storehouse found with resource append job to job-list.
@@ -37,6 +40,9 @@ class Serf extends Character_1.default {
                 this._job = null;
                 this._walkTarget = null;
             }
+        })
+            .catch((error) => {
+            console.log(error);
         });
     }
 }

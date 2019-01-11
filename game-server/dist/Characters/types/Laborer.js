@@ -21,6 +21,9 @@ class Laborer extends Character_1.default {
             }
             const targetBuilding = this._player.buildingManager.findBuildingById(job.targetBuilding);
             this._job = new BuildJob_1.default(this._player, targetBuilding, this);
+        })
+            .catch((error) => {
+            console.log(error);
         });
     }
 }

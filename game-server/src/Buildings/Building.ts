@@ -36,6 +36,8 @@ export default abstract class Building {
        timber: 0
     };
 
+    protected _resources: object = {};
+
     protected constructor(player: Player, position: PositionInterface) {
         this._player = player;
         this._position = new PositionComponent(position);
@@ -149,6 +151,10 @@ export default abstract class Building {
         (<any>this._buildResources)[type]++;
 
         this.addBuildJob();
+    }
+
+    public addResource(type: string) {
+        (<any>this._resources)[type]++;
     }
 
     public increaseHealth() {

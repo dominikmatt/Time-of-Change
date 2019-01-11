@@ -38,6 +38,7 @@ class TransportToStorehouseJob extends Job_1.default {
             // Walk to productionBuilding.
             case 0:
                 if (!this._isCharacterWalking && !this._isCharacterAtStart) {
+                    console.log('test');
                     const path = Map_1.default.findRunnablePath(this._character.position.position, this._building.doorPosition);
                     this._character.walkByPath(path);
                     this._isCharacterWalking = true;

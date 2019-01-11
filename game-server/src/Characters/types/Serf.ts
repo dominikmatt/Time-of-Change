@@ -41,6 +41,10 @@ export default class Serf extends Character implements CharacterInterface {
                 const targetBuilding: Building = this._player.buildingManager.findBuildingById(job.targetBuilding);
                 let startPosition = job.startPosition;
 
+                if (!building) {
+                    this._player.jobStore.addJob(new TransportJob(this._player, startPosition, job.resourceType, targetBuilding));
+                }
+
                 this._job = new TransportJob(
                     this._player,
                     building.doorPosition,
@@ -58,6 +62,9 @@ export default class Serf extends Character implements CharacterInterface {
                     this._job = null;
                     this._walkTarget = null;
                 }
+            })
+            .catch((error) => {
+                console.log(error);
             });
     }
 }

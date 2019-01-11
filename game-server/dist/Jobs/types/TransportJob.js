@@ -45,6 +45,7 @@ class TransportJob extends Job_1.default {
                     const storeHasResource = this._storehouse.takeOutResource(this._resourceType);
                     this._isCharacterAtStart = true;
                     this._isCharacterWalking = false;
+                    console.log(storeHasResource);
                     // No resource found on Storehouse.
                     if (!storeHasResource) {
                         this._player.jobStore.addJob(this);
@@ -63,7 +64,12 @@ class TransportJob extends Job_1.default {
             case 3:
                 if (this._character.position.x === this._targetBuilding.doorPosition.x &&
                     this._character.position.z === this._targetBuilding.doorPosition.z) {
-                    this._targetBuilding.addBuildResource(this._resourceType);
+                    if (true === this._targetBuilding.completelyBuilt) {
+                        this._targetBuilding.addResource(this._resourceType);
+                    }
+                    else {
+                        this._targetBuilding.addBuildResource(this._resourceType);
+                    }
                     this._character.job = null;
                 }
                 break;

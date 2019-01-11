@@ -31,7 +31,7 @@ export default class Woodworking extends Job implements JobInterface {
     public update(): void {
         switch (this._currentStep) {
             case 0:
-                if (this._character.isInHouse) {
+                if (this._character && this._character.isInHouse) {
                     this._currentStep++;
                 }
                 break;
