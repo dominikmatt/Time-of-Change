@@ -38,6 +38,8 @@ class Player {
         //this.addCharacter(CharacterFactory('laborer', 'start', this));
         const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 8 * (this._playerId), z: 3 * (this._playerId) }, this, true));
         const schoolhouse = this.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8 * (this._playerId), z: 8 * (this._playerId) }, this, true));
+        const woodcutters = this.addBuilding(BuildingFactory_1.default('woodcutters', { x: 8 * (this._playerId), z: 15 * (this._playerId) }, this, true));
+        const sawmill = this.addBuilding(BuildingFactory_1.default('sawmill', { x: 8 * (this._playerId), z: 21 * (this._playerId) }, this, true));
         storehouse.addResources({
             stones: 60,
             timber: 50,

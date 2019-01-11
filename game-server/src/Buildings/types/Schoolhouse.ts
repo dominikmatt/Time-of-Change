@@ -34,10 +34,6 @@ export default class Schoolhouse extends EconomyBuilding implements BuildingInte
         this.build(alreadyBuilt);
     }
 
-    public getType() {
-        return 'schoolhouse';
-    }
-
     protected getBuildingData() {
         return {
             maxGoldStore: this._maxGoldStore,

@@ -5,6 +5,7 @@ import Laborer from "./types/Laborer";
 import Character from "./Character";
 import Hero from "./types/Hero";
 import Woodkutter from "./types/Woodkutter";
+import Carpenter from "./types/Carpenter";
 
 interface CharacterMapping {
     [key:string]: any;
@@ -15,6 +16,7 @@ const characterMapping: CharacterMapping = {
     laborer: Laborer,
     hero: Hero,
     woodkutter: Woodkutter,
+    carpenter: Carpenter,
 };
 
 /**

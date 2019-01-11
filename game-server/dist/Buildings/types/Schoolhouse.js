@@ -28,9 +28,6 @@ class Schoolhouse extends EconomyBuilding_1.default {
         });
         this.build(alreadyBuilt);
     }
-    getType() {
-        return 'schoolhouse';
-    }
     getBuildingData() {
         return {
             maxGoldStore: this._maxGoldStore,

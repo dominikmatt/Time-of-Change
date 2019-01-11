@@ -5,7 +5,7 @@ import {PositionInterface} from "../../Components/PositionComponent";
 import Character from "../../Characters/Character";
 import Map from "../../Map/Map";
 import {GAME_SPEED} from "../../gameSettings";
-import Woodkutters from "../../Buildings/types/Woodkutters";
+import Woodcutters from "../../Buildings/types/Woodcutters";
 
 export default class ChopWood extends Job implements JobInterface {
     protected readonly _type: string = 'chopWood';
@@ -91,7 +91,7 @@ export default class ChopWood extends Job implements JobInterface {
                     this._character.position.z === this._character.building.doorPosition.z
                 ) {
                     this._character.job = null;
-                    (<Woodkutters>this._character.building).increaseStore();
+                    (<Woodcutters>this._character.building).increaseStore();
 
                     this._currentStep++;
                 }

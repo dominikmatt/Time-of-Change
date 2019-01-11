@@ -29,7 +29,17 @@ class AssetsManager {
         this.loadAssets('tree', 'terrain', 'tree001.babylon');
         this.loadAssets('storehouse', 'buildings', 'storehouse.babylon');
         this.loadAssets('schoolhouse', 'buildings', 'schoolhouse.babylon');
-        this.loadAssets('woodkutters', 'buildings', 'woodkutters.babylon');
+        this.loadAssets('woodcutters', 'buildings', 'woodcutters.babylon');
+        this.loadAssets('bakery', 'buildings', 'storehouse.babylon');
+        this.loadAssets('brewery', 'buildings', 'storehouse.babylon');
+        this.loadAssets('butchers', 'buildings', 'storehouse.babylon');
+        this.loadAssets('farm', 'buildings', 'storehouse.babylon');
+        this.loadAssets('inn', 'buildings', 'storehouse.babylon');
+        this.loadAssets('mill', 'buildings', 'storehouse.babylon');
+        this.loadAssets('mine', 'buildings', 'storehouse.babylon');
+        this.loadAssets('quarry', 'buildings', 'storehouse.babylon');
+        this.loadAssets('sawmill', 'buildings', 'storehouse.babylon');
+        this.loadAssets('smithy', 'buildings', 'storehouse.babylon');
         this.loadAssets('character', 'characters', 'character1.babylon');
         this._assetsManager.load();
     }

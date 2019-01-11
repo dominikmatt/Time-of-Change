@@ -85,7 +85,7 @@ class Building {
      * Returns building type as a string.
      */
     getType() {
-        throw new Error('Building: Add getType and return your type as a string.');
+        return this.constructor.name.toLowerCase();
     }
     /**
      * Returns all building specific data as a object.

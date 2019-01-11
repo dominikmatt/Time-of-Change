@@ -31,8 +31,8 @@ class Camera {
         if (false === this._changeRotation) {
             return;
         }
-        this._camera.rotation.y += event.movementX / 7;
-        this._camera.rotation.x += event.movementY / 7;
+        this._camera.rotation.y += event.movementX / 60;
+        this._camera.rotation.x += event.movementY / 60;
         if (1.5 < this._camera.rotation.x) {
             this._camera.rotation.x = 1.5;
         }

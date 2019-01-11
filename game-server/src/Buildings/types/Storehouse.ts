@@ -184,10 +184,6 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
         }
     }
 
-    public getType() {
-        return 'storehouse';
-    }
-
     protected getBuildingData() {
         return {
             resources: this._resources

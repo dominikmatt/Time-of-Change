@@ -115,8 +115,8 @@ export default abstract class Building {
     /**
      * Returns building type as a string.
      */
-    public getType (): string {
-        throw new Error('Building: Add getType and return your type as a string.')
+    public getType() {
+        return this.constructor.name.toLowerCase();
     }
 
     /**

@@ -10,8 +10,6 @@ import assetsManager from "./AssetsManager";
 
 new GameUi();
 
-
-
 addUserEvent.addCallBack(
     (options: AddUserOptionsInterface) => {
         connectionService

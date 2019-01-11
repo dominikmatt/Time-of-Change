@@ -18,6 +18,7 @@ export default class Character {
     protected _walkTarget: PositionInterface | null = null;
     protected _currentPath: number[][] = [];
     private _walkDelta: number = 0;
+    private _isInHouse: boolean = false;
 
     constructor(player: Player, buildingId: string) {
         let schoolhouse: Building;
@@ -72,6 +73,8 @@ export default class Character {
             return this.searchBuilding();
         }
 
+        this.checkInHouse();
+
         if (null === this._job) {
             this.findJob();
         } else {
@@ -113,6 +116,14 @@ export default class Character {
         });
     }
 
+    private checkInHouse() {
+        if (!this._position || !this._building) {
+            return;
+        }
+
+        this._isInHouse = this._position.position.x === this._building.doorPosition.x && this._position.position.z === this._building.doorPosition.z;
+    }
+
     private searchBuilding() {
         const building: Building | null = this._player.getBuildingByType(this.getBuildingType(), false, true);
 
@@ -146,5 +157,9 @@ export default class Character {
 
     get building(): Building {
         return this._building;
+    }
+
+    get isInHouse(): boolean {
+        return this._isInHouse;
     }
 }

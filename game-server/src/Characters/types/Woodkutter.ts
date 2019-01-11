@@ -1,16 +1,13 @@
 import Character from "../Character";
 import CharacterInterface from "../CharacterInterface";
-import TransportJob from "../../Jobs/types/TransportJob";
-import Storehouse from "../../Buildings/types/Storehouse";
-import Building from "../../Buildings/Building";
 
-export default class Woodkutter extends Character implements CharacterInterface {
+export default class Woodcutter extends Character implements CharacterInterface {
     public getType(): string {
-        return 'woodkutter';
+        return 'woodcutter';
     }
 
     public getBuildingType(): string {
-        return 'woodkutters';
+        return 'woodcutters';
     }
 
     public getNeedBuilding(): boolean {
@@ -19,10 +16,6 @@ export default class Woodkutter extends Character implements CharacterInterface 
 
     protected getCharacterData(): object {
         return {};
-    }
-
-    protected findBuilding() {
-
     }
 
     protected findJob() {

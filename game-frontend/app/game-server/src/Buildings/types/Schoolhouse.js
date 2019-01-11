@@ -25,9 +25,6 @@ class Schoolhouse extends EconomyBuilding_1.default {
         });
         this.build(alreadyBuilt);
     }
-    getType() {
-        return 'schoolhouse';
-    }
     getBuildingData() {
         return {
             maxGoldStore: this._maxGoldStore,
@@ -46,11 +43,10 @@ class Schoolhouse extends EconomyBuilding_1.default {
             return;
         }
         this._runningQueue = this._queue.pop();
-        console.log(this._runningQueue);
         setTimeout(() => {
             this.player.addCharacter(CharacterFactory_1.default(this._runningQueue, this.id, this.player));
             this._runningQueue = null;
-        }, 5000 * gameSettings_1.GAME_SPEED);
+        }, 5000 / gameSettings_1.GAME_SPEED);
     }
     get currentGoldStore() {
         return this._currentGoldStore;
