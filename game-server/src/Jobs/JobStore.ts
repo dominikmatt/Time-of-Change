@@ -9,9 +9,6 @@ export default class JobStore {
     }
 
     public addJob(job: Job) {
-        if (!job.getType) {
-            console.log(job);
-        }
         this._player.db.rpush(`jobs:${job.getType()}`, job.toJSON());
 
         // Remove job from ram.

@@ -23,6 +23,7 @@ class Sawmill extends EconomyBuilding_1.default {
             [1, 1, 1],
             [1, 2, 1],
         ];
+        this._treeTrunksTransportJobsCount = 0;
         this._cost = new CostComponent_1.default({
             timber: 4,
             stones: 3
@@ -38,7 +39,8 @@ class Sawmill extends EconomyBuilding_1.default {
     }
     addNextJob() {
         // Add transport job.
-        if (this._resources.treeTrunks < this._maxTreeTrunksStore) {
+        if (this._resources.treeTrunks + this._treeTrunksTransportJobsCount < this._maxTreeTrunksStore) {
+            this._treeTrunksTransportJobsCount++;
             this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'treeTrunks', this));
         }
         // Add working job.
@@ -51,6 +53,13 @@ class Sawmill extends EconomyBuilding_1.default {
     }
     increaseTreeTrunkStore() {
         this._resources.treeTrunks++;
+        this._treeTrunksTransportJobsCount--;
+        if (0 > this._treeTrunksTransportJobsCount) {
+            this._treeTrunksTransportJobsCount = 0;
+        }
+    }
+    addResource(type) {
+        this.increaseTreeTrunkStore();
     }
     decreaseTreeTrunkStore() {
         this._resources.treeTrunks--;

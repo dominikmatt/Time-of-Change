@@ -37,8 +37,8 @@ export default class Serf extends Character implements CharacterInterface {
                     return;
                 }
 
-                const building: Storehouse = this._player.buildingManager.findStorehouseWithResource(job.resourceType);
                 const targetBuilding: Building = this._player.buildingManager.findBuildingById(job.targetBuilding);
+                const building: Storehouse = this._player.buildingManager.findNearestStorehouseWithResource(job.resourceType, this.position.position);
                 let startPosition = job.startPosition;
 
                 if (!building) {

@@ -28,8 +28,6 @@ export default class TransportToBuildingJob extends Job implements JobInterface 
         this._character = character;
         this._toBuilding = toBuilding;
         this._resourceType = resourceType;
-
-        console.log('add');
     }
 
     public toJSON(): string {

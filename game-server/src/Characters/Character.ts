@@ -23,8 +23,8 @@ export default class Character {
     constructor(player: Player, buildingId: string) {
         let schoolhouse: Building;
         let position: PositionInterface = {
-            x: 2,
-            z: 2
+            x: Math.floor(Math.random() * 10) + 1,
+            z: Math.floor(Math.random() * 10) + 1
         };
 
         this._player = player;

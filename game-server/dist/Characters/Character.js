@@ -20,8 +20,8 @@ class Character {
         this._isInHouse = false;
         let schoolhouse;
         let position = {
-            x: 2,
-            z: 2
+            x: Math.floor(Math.random() * 10) + 1,
+            z: Math.floor(Math.random() * 10) + 1
         };
         this._player = player;
         if ('start' !== buildingId) {

@@ -7,6 +7,9 @@ import Map from "../../Map/Map";
 import Storehouse from "../../Buildings/types/Storehouse";
 import Building from "../../Buildings/Building";
 
+/**
+ * Transport resource to building.
+ */
 export default class TransportJob extends Job implements JobInterface {
     protected readonly _type: string = 'transport';
     private readonly _resourceType: string = '';
@@ -65,7 +68,6 @@ export default class TransportJob extends Job implements JobInterface {
                     this._isCharacterAtStart = true;
                     this._isCharacterWalking = false;
 
-                    console.log(storeHasResource);
                     // No resource found on Storehouse.
                     if (!storeHasResource) {
                             this._player.jobStore.addJob(this);

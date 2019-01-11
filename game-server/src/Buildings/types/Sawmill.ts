@@ -31,6 +31,7 @@ export default class Sawmill extends EconomyBuilding implements ProductionBuildi
         [1,1,1],
         [1,2,1],
     ];
+    private _treeTrunksTransportJobsCount: number = 0;
 
     constructor(player: Player, position: PositionInterface, alreadyBuilt: boolean = false) {
         super(player, position);
@@ -54,8 +55,9 @@ export default class Sawmill extends EconomyBuilding implements ProductionBuildi
 
     private addNextJob() {
         // Add transport job.
-        if (this._resources.treeTrunks < this._maxTreeTrunksStore
+        if (this._resources.treeTrunks + this._treeTrunksTransportJobsCount < this._maxTreeTrunksStore
         ) {
+            this._treeTrunksTransportJobsCount++;
             this._player.jobStore.addJob(
                 new TransportJob(
                     this._player,
@@ -81,6 +83,15 @@ export default class Sawmill extends EconomyBuilding implements ProductionBuildi
 
     public increaseTreeTrunkStore() {
         this._resources.treeTrunks++;
+        this._treeTrunksTransportJobsCount--;
+
+        if (0 > this._treeTrunksTransportJobsCount) {
+            this._treeTrunksTransportJobsCount = 0;
+        }
+    }
+
+    public addResource(type: string) {
+        this.increaseTreeTrunkStore();
     }
 
     public decreaseTreeTrunkStore() {

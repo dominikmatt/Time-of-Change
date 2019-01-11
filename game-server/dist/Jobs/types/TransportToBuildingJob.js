@@ -16,7 +16,6 @@ class TransportToBuildingJob extends Job_1.default {
         this._character = character;
         this._toBuilding = toBuilding;
         this._resourceType = resourceType;
-        console.log('add');
     }
     toJSON() {
         let storehouseId = null;

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const coordinates_1 = require("../utils/coordinates");
 class BuildingManager {
     constructor(player) {
         this._player = player;
@@ -29,16 +30,34 @@ class BuildingManager {
         }
         return null;
     }
+    // Find a storehouse with storeable resource.
+    findNearestStorehouseByResource(resourceType, position) {
+        const buildings = this._player.buildings.filter((building) => {
+            return 'storehouse' === building.getType()
+                && true === building.completelyBuilt
+                && building.hasStoreableResource(resourceType);
+        });
+        buildings.sort((buildingA, buildingB) => {
+            return coordinates_1.getDistanceFromPoints(buildingA.doorPosition, position) - coordinates_1.getDistanceFromPoints(buildingB.doorPosition, position);
+        });
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
+        return null;
+    }
     /**
      * Find a storehouse with minimum one resource stored.
      *
      * @param resourceType
      */
-    findStorehouseWithResource(resourceType) {
+    findNearestStorehouseWithResource(resourceType, position) {
         const buildings = this._player.buildings.filter((building) => {
             return 'storehouse' === building.getType()
                 && true === building.completelyBuilt
                 && 0 < building.getResourceCountByType(resourceType);
+        });
+        buildings.sort((buildingA, buildingB) => {
+            return coordinates_1.getDistanceFromPoints(buildingA.doorPosition, position) - coordinates_1.getDistanceFromPoints(buildingB.doorPosition, position);
         });
         if (0 < buildings.length) {
             return buildings[0];

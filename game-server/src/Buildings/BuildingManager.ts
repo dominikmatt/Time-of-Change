@@ -2,6 +2,8 @@ import Player from "../Player";
 import Building from "./Building";
 import Storehouse from "./types/Storehouse";
 import ProductionBuildingInterface from "./ProductionBuildingInterface";
+import {getDistanceFromPoints} from "../utils/coordinates";
+import {PositionInterface} from "../Components/PositionComponent";
 
 export default class BuildingManager {
     private readonly _player: Player;
@@ -42,16 +44,39 @@ export default class BuildingManager {
         return null;
     }
 
+    // Find a storehouse with storeable resource.
+    public findNearestStorehouseByResource(resourceType: string, position: PositionInterface): Storehouse {
+        const buildings = this._player.buildings.filter((building: Building) => {
+            return 'storehouse' === building.getType()
+                && true === building.completelyBuilt
+                && (<Storehouse>building).hasStoreableResource(resourceType);
+        });
+
+        buildings.sort((buildingA: Storehouse, buildingB: Storehouse) => {
+            return getDistanceFromPoints(buildingA.doorPosition, position) - getDistanceFromPoints(buildingB.doorPosition, position);
+        });
+
+        if (0 < buildings.length) {
+            return (<Storehouse>buildings[0]);
+        }
+
+        return null;
+    }
+
     /**
      * Find a storehouse with minimum one resource stored.
      *
      * @param resourceType
      */
-    public findStorehouseWithResource(resourceType: string): Storehouse {
+    public findNearestStorehouseWithResource(resourceType: string, position: PositionInterface): Storehouse {
         const buildings = this._player.buildings.filter((building: Building) => {
             return 'storehouse' === building.getType()
                 && true === building.completelyBuilt
                 && 0 < (<Storehouse>building).getResourceCountByType(resourceType);
+        });
+
+        buildings.sort((buildingA: Storehouse, buildingB: Storehouse) => {
+            return getDistanceFromPoints(buildingA.doorPosition, position) - getDistanceFromPoints(buildingB.doorPosition, position);
         });
 
         if (0 < buildings.length) {

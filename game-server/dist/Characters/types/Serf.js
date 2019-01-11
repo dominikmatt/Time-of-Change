@@ -26,8 +26,8 @@ class Serf extends Character_1.default {
                 this._walkTarget = job.startPosition;
                 return;
             }
-            const building = this._player.buildingManager.findStorehouseWithResource(job.resourceType);
             const targetBuilding = this._player.buildingManager.findBuildingById(job.targetBuilding);
+            const building = this._player.buildingManager.findNearestStorehouseWithResource(job.resourceType, this.position.position);
             let startPosition = job.startPosition;
             if (!building) {
                 this._player.jobStore.addJob(new TransportJob_1.default(this._player, startPosition, job.resourceType, targetBuilding));

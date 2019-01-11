@@ -53,23 +53,32 @@ export default class Player {
 
     public initializeTown() {
         /** @var Storehouse storehouse */
-        //this.addCharacter(CharacterFactory('hero', 'start', this));
+        this.addCharacter(CharacterFactory('hero', 'start', this));
         this.addCharacter(CharacterFactory('serf', 'start', this));
         this.addCharacter(CharacterFactory('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('laborer', 'start', this));
+        this.addCharacter(CharacterFactory('serf', 'start', this));
+        this.addCharacter(CharacterFactory('serf', 'start', this));
+        this.addCharacter(CharacterFactory('laborer', 'start', this));
+        this.addCharacter(CharacterFactory('laborer', 'start', this));
+        this.addCharacter(CharacterFactory('laborer', 'start', this));
         const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 8 * (this._playerId), z: 3 * (this._playerId)}, this, true));
         const schoolhouse: Schoolhouse = this.addBuilding(BuildingFactory('schoolhouse', {x: 8 * (this._playerId), z: 8 * (this._playerId)}, this, true));
         const woodcutters: Woodcutters = this.addBuilding(BuildingFactory('woodcutters', {x: 8 * (this._playerId), z: 15 * (this._playerId)}, this, true));
         const sawmill: Sawmill = this.addBuilding(BuildingFactory('sawmill', {x: 8 * (this._playerId), z: 21 * (this._playerId)}, this, true));
+        const storehouse1: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 17 * (this._playerId), z: 21 * (this._playerId)}, this, true));
 
         storehouse.addResources({
-            treeTrunks: 5,
+            treeTrunks: 30,
             stones: 60,
             timber: 50,
             gold: 60,
             wine: 40,
             loaves: 30,
             sausages: 20,
+        });
+
+        storehouse1.addResources({
+            treeTrunks: 30,
         });
     }
 
