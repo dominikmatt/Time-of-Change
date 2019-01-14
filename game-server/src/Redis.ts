@@ -85,6 +85,18 @@ export default class Redis {
         });
     }
 
+    public lrange(key: string, from: number, to: number) {
+        return new Promise((resolve, reject) => {
+            this._client.lrange(key, from, to, (error: any, value: any) => {
+                if (error) {
+                    return reject(error);
+                }
+
+                return resolve(value);
+            });
+        });
+    }
+
     public spop(key: string) {
         return new Promise((resolve, reject) => {
             this._client.spop(key, (error: any, value: any) => {

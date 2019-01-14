@@ -32,14 +32,14 @@ class Player {
     }
     initializeTown() {
         /** @var Storehouse storehouse */
-        this.addCharacter(CharacterFactory_1.default('hero', 'start', this));
+        //this.addCharacter(CharacterFactory('hero', 'start', this));
         this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('laborer', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('laborer', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('laborer', 'start', this));
+        //this.addCharacter(CharacterFactory('serf', 'start', this));
+        //this.addCharacter(CharacterFactory('serf', 'start', this));
+        //this.addCharacter(CharacterFactory('serf', 'start', this));
+        //this.addCharacter(CharacterFactory('laborer', 'start', this));
+        //this.addCharacter(CharacterFactory('laborer', 'start', this));
+        //this.addCharacter(CharacterFactory('laborer', 'start', this));
         const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 8 * (this._playerId), z: 3 * (this._playerId) }, this, true));
         const schoolhouse = this.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8 * (this._playerId), z: 8 * (this._playerId) }, this, true));
         const woodcutters = this.addBuilding(BuildingFactory_1.default('woodcutters', { x: 8 * (this._playerId), z: 15 * (this._playerId) }, this, true));

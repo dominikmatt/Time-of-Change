@@ -119,7 +119,7 @@ export default class Character {
         var animationBox = new BABYLON.Animation(
             `walkAnimationPod${this._id}`,
             "position",
-            5,
+            30,
             BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
             BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
         );
@@ -131,7 +131,7 @@ export default class Character {
 
         //
         this._walkingPath.forEach((point: WalkPositionInterface, index: number) => {
-            frame = index * 10;
+            frame = index * 30;
             const vector: BABYLON.Vector3 = new Vector3(
                 point.x + 0.5,
                 game.gameScene.terrain.getHeight(point.x, point.z, true),
@@ -141,7 +141,7 @@ export default class Character {
             path.push(vector);
         });
 
-        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 5);
+        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 30);
 
         catmullRom.getPoints().forEach((point: BABYLON.Vector3, frame: number) => {
             // Add walking point to walk animation.

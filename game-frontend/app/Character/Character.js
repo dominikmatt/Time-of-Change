@@ -95,18 +95,18 @@ class Character {
     }
     startWalking() {
         //Create a scaling animaation at 30 FPS
-        var animationBox = new BABYLON.Animation(`walkAnimationPod${this._id}`, "position", 5, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        var animationBox = new BABYLON.Animation(`walkAnimationPod${this._id}`, "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
         // Animation keys
         const keys = [];
         let frame = 0;
         const path = [];
         //
         this._walkingPath.forEach((point, index) => {
-            frame = index * 10;
+            frame = index * 30;
             const vector = new Vector3(point.x + 0.5, Game_1.default.gameScene.terrain.getHeight(point.x, point.z, true), point.z + 0.5);
             path.push(vector);
         });
-        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 5);
+        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 30);
         catmullRom.getPoints().forEach((point, frame) => {
             // Add walking point to walk animation.
             keys.push({

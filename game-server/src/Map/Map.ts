@@ -40,7 +40,7 @@ class Map {
     ): number[][] {
         const runnableGrid = this._runnableGrid.clone();
         const finder = new PF.AStarFinder({
-            //allowDiagonal: true
+            allowDiagonal: true
         });
 
         if (true === lastPositionRunnable) {

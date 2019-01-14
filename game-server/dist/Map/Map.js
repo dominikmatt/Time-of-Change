@@ -25,7 +25,7 @@ class Map {
     findRunnablePath(start, target, lastPositionRunnable = false) {
         const runnableGrid = this._runnableGrid.clone();
         const finder = new pathfinding_1.default.AStarFinder({
-        //allowDiagonal: true
+            allowDiagonal: true
         });
         if (true === lastPositionRunnable) {
             runnableGrid.setWalkableAt(target.x, target.z, true);

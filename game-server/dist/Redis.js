@@ -72,6 +72,16 @@ class Redis {
             });
         });
     }
+    lrange(key, from, to) {
+        return new Promise((resolve, reject) => {
+            this._client.lrange(key, from, to, (error, value) => {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(value);
+            });
+        });
+    }
     spop(key) {
         return new Promise((resolve, reject) => {
             this._client.spop(key, (error, value) => {
