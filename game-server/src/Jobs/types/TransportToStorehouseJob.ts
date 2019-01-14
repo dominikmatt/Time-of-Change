@@ -5,6 +5,7 @@ import Character from "../../Characters/Character";
 import Map from "../../Map/Map";
 import Storehouse from "../../Buildings/types/Storehouse";
 import ProductionBuildingInterface from "../../Buildings/ProductionBuildingInterface";
+import Building from "../../Buildings/Building";
 
 export default class TransportToStorehouseJob extends Job implements JobInterface {
     protected readonly _type: string = 'transport';
@@ -72,7 +73,11 @@ export default class TransportToStorehouseJob extends Job implements JobInterfac
                 break;
             // Walk to Storehouse.
             case 2:
-                this._storehouse = this._player.buildingManager.findStorehouseByResource(this._resourceType);
+                this._storehouse = this._player.buildingManager
+                    .findNearestStorehouseByResource(
+                        this._resourceType,
+                        this._character.position.position
+                    );
                 const path = Map.findRunnablePath(this._character.position.position, this._storehouse.doorPosition);
                 this._character.walkByPath(path);
                 this._isCharacterWalking = true;

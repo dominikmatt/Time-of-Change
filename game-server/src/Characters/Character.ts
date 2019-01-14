@@ -6,6 +6,7 @@ import Job from "../Jobs/Job";
 import Building from "../Buildings/Building";
 import Map from "../Map/Map";
 import {GAME_SPEED} from "../gameSettings";
+import {arrayPathToObject} from "../utils/path";
 
 export default class Character {
     protected _id: string =  uuidv1();
@@ -17,12 +18,13 @@ export default class Character {
     protected _walkTarget: PositionInterface | null = null;
     protected _currentPath: number[][] = [];
     private _walkDelta: number = 0;
+    private _isInHouse: boolean = false;
 
     constructor(player: Player, buildingId: string) {
         let schoolhouse: Building;
         let position: PositionInterface = {
-            x: 2,
-            z: 2
+            x: Math.floor(Math.random() * 10) + 1,
+            z: Math.floor(Math.random() * 10) + 1
         };
 
         this._player = player;
@@ -71,6 +73,8 @@ export default class Character {
             return this.searchBuilding();
         }
 
+        this.checkInHouse();
+
         if (null === this._job) {
             this.findJob();
         } else {
@@ -83,6 +87,7 @@ export default class Character {
 
             if (1 <= this._walkDelta) {
                 const next = this._currentPath.shift();
+
 
                 if (next) {
                     this.position.position = {
@@ -100,6 +105,8 @@ export default class Character {
             type: this.getType(),
             data: this.getCharacterData(),
             position: this.position.position,
+            isWalking: 0 < this._currentPath.length,
+            walkingPath: arrayPathToObject(this._currentPath),
         });
 
         Core.emitAll('character.update.position', {
@@ -107,6 +114,14 @@ export default class Character {
             type: this.getType(),
             position: this._position.position
         });
+    }
+
+    private checkInHouse() {
+        if (!this._position || !this._building) {
+            return;
+        }
+
+        this._isInHouse = this._position.position.x === this._building.doorPosition.x && this._position.position.z === this._building.doorPosition.z;
     }
 
     private searchBuilding() {
@@ -142,5 +157,9 @@ export default class Character {
 
     get building(): Building {
         return this._building;
+    }
+
+    get isInHouse(): boolean {
+        return this._isInHouse;
     }
 }

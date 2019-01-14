@@ -24,6 +24,9 @@ export default class Laborer extends Character implements CharacterInterface {
 
 
                 this._job = new BuildJob(this._player, targetBuilding, this);
+            })
+            .catch((error) => {
+                console.log(error);
             });
     }
 }

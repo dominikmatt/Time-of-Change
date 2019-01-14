@@ -1,18 +1,22 @@
 import * as BABYLON from 'babylonjs';
 import Terrain from "./Terrain";
+import assetsManager from "./AssetsManager";
+import game from "./Game";
+import Camera from "./Camera";
+import { Inspector } from "babylonjs-inspector";
 
 interface TreesInterface {
     [propName: string]: BABYLON.InstancedMesh;
 }
 
 export default class GameScene {
-    private tree: BABYLON.Mesh;
     private _trees: TreesInterface = {};
     private _canvas: HTMLCanvasElement;
     private _engine: BABYLON.Engine;
     private _scene: BABYLON.Scene;
     private _terrain: Terrain;
     private _shadowGenerator: BABYLON.ShadowGenerator;
+    private _camera: Camera;
 
     public constructor() {
 
@@ -21,10 +25,6 @@ export default class GameScene {
     public createScene() {
         const canvas: HTMLCanvasElement = document.getElementById('render-canvas') as HTMLCanvasElement;
         const engine: BABYLON.Engine = new BABYLON.Engine(canvas, true);
-
-        engine.runRenderLoop(() => {
-            this._scene.render();
-        });
 
         window.addEventListener('resize', function () {
             engine.resize();
@@ -38,18 +38,12 @@ export default class GameScene {
         const scene = new BABYLON.Scene(engine);
 
         this._scene = scene;
+        // @ts-ignore
+        window.scene = scene;
 
         this._engine.enableOfflineSupport = false;
         // This creates and positions a free camera (non-mesh)
-        const camera: BABYLON.FreeCamera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-        // This targets the camera to scene origin
-        camera.setTarget(BABYLON.Vector3.Zero());
-
-        //Set the ellipsoid around the camera (e.g. your player's size)
-        camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
-
-        // This attaches the camera to the canvas
-        camera.attachControl(canvas, true);
+        this._camera = new Camera(this._scene, this._canvas);
 
         const light = new BABYLON.HemisphericLight("Hemi0", new BABYLON.Vector3(0, 1, 0), scene);
         light.diffuse = new BABYLON.Color3(1, 1, 1);
@@ -66,26 +60,26 @@ export default class GameScene {
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
 
-        BABYLON.SceneLoader.ImportMeshAsync(
-            null,
-            'assets/models/terrain/',
-            'tree001.babylon',
-            this._scene)
-            .then((result) => {
-                this.tree = (<BABYLON.Mesh>result.meshes[0]);
 
-                this.tree.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
-                this.tree.position = BABYLON.Vector3.Zero();
+        new Inspector(this._scene, false, 0, null);
+    }
 
-                this._terrain = new Terrain();
-            });
+    /**
+     * This method is called by the assetsManager after all assets has been loaded.
+     */
+    public onAssetsLoaded() {
+        this._terrain = new Terrain();
 
+        game.gameScene.engine.runRenderLoop(() => {
+            this._scene.render();
+            this._camera.update();
+        });
     }
 
     public updateCoordinate(data: any) {
         /**
          * Fixme: Replace this function with a global library.
-         * @param n
+         * @param number
          * @param width
          */
         function pad(number: string, width: number) {
@@ -96,11 +90,11 @@ export default class GameScene {
         const instanceName: string = 'tree' + pad(data.x, 2) + pad(data.z, 2);
 
         if ('true' === data.hasTree) {
-            const tree = this.tree.createInstance(instanceName);
+            const tree = assetsManager.getTreeMeshByName('tree', instanceName);
 
-            tree.position.x = data.x + 0.5;
+            tree.position.x = data.x + Math.random();
             tree.position.y = this._terrain.getHeight(data.x, data.z);
-            tree.position.z = data.z + 0.5;
+            tree.position.z = data.z + Math.random();
 
             this._trees[instanceName] = tree;
 
@@ -130,5 +124,9 @@ export default class GameScene {
 
     get shadowGenerator(): any {
         return this._shadowGenerator;
+    }
+
+    get camera(): Camera {
+        return this._camera;
     }
 }

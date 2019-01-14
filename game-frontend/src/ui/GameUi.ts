@@ -15,8 +15,6 @@ export default class GameUi {
         const element: HTMLElement = event.target as HTMLElement;
         const action: string = element.dataset.uiAction;
 
-        event.preventDefault();
-
         if (!action) {
             return;
         }

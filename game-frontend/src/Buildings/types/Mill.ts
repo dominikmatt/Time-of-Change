@@ -1,10 +1,8 @@
 import Building from "../Building";
 import PositionInterface from "../../interfaces/PositionInterface";
 
-export default class Woodkutters extends Building {
-    static asset: string = 'woodkutters.babylon';
-
+export default class Mill extends Building {
     constructor(position: PositionInterface, id: string, playerId: number) {
-        super(id, position, 'woodkutters', playerId);
+        super(id, position, 'mill', playerId);
     }
 }

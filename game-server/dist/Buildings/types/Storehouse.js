@@ -141,9 +141,6 @@ class Storehouse extends EconomyBuilding_1.default {
             this._resources[resKey].store += resources[resKey];
         }
     }
-    getType() {
-        return 'storehouse';
-    }
     getBuildingData() {
         return {
             resources: this._resources

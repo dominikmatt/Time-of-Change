@@ -3,9 +3,20 @@ import Player from "./Player";
 import http from 'http';
 import Server, {Socket} from 'socket.io';
 import panel from "./Panel/panel";
+import express from 'express';
+import addUserRoute from "./api/routes/addUserRoute";
+import getServerInfoRoute from "./api/routes/getServerInfoRoute";
+import * as expressCore from "express-serve-static-core";
+import bodyParser = require("body-parser");
+import Core from "./Core";
+import cors from 'cors';
+import IPlayerData from "./Interfaces/PlayerData";
 
-const app = http.createServer(() => {});
-const io = Server(app);
+const app: expressCore.Express = express();
+app.use(bodyParser());
+
+const server = http.createServer(app);
+const io = Server(server);
 let playerId: number = 1;
 
 interface QueryInterface {
@@ -14,7 +25,10 @@ interface QueryInterface {
     [key: string]: string;
 };
 
-app.listen(9100);
+app.use(cors());
+addUserRoute(app);
+getServerInfoRoute(app);
+
 
 /**
  * Check if connectiondata like token and username has been set on the connection request.
@@ -22,13 +36,15 @@ app.listen(9100);
 io.use((socket: Socket, next: Function) => {
     const query: QueryInterface = socket.handshake.query;
     const token: string = query.token || '';
-    const username: string = query.username || '';
 
-    if ('' !== token && '' !== username) {
-        return next();
-    } else {
-        return next(new Error('Authentication error'));
-    }
+    Core.db.hgetall(`players:${token}`)
+        .then((result) => {
+            if (null !== result) {
+                return next();
+            } else {
+                return next(new Error('Authentication error'));
+            }
+        });
 });
 
 /**
@@ -36,32 +52,36 @@ io.use((socket: Socket, next: Function) => {
  * Create a new player or connect to the given player-instance.
  */
 io.on('connection', (socket: any) => {
-    console.log('connected');
     const query: QueryInterface = socket.handshake.query;
     const token: string = query.token;
 
-    // Player is already connected set the new socket to player and bind listeners.
-    if ((<any>core).players[token]) {
-        (<any>core).players[token].wsSocket = socket;
-        (<any>core).players[token].listenWs();
+    Core.db.hgetall(`players:${token}`)
+        .then((playerData: IPlayerData) => {
+            // Player is already connected set the new socket to player and bind listeners.
+            if ((<any>core).players[token]) {
+                (<any>core).players[token].wsSocket = socket;
+                (<any>core).players[token].listenWs();
 
-        return;
-    }
+                return;
+            }
 
-    // Create a new player.
-    const newPlayer = new Player(query.username, token, playerId);
-    playerId++;
+            // Create a new player.
+            const newPlayer = new Player(playerData.username, token, playerId);
+            playerId++;
 
-    core.addPlayer(newPlayer);
-    newPlayer.wsSocket = socket;
-    newPlayer.listenWs();
-    newPlayer.initializeTown();
+            core.addPlayer(newPlayer);
+            newPlayer.wsSocket = socket;
+            newPlayer.listenWs();
+            newPlayer.initializeTown();
 
-    panel.player = newPlayer;
+            panel.player = newPlayer;
 
-    panel.initialize();
+            panel.initialize();
 
-    socket.on('disconnect', function () {
-        console.log('disconnected');
-    });
+            socket.on('disconnect', function () {
+                console.log('disconnected');
+            });
+        });
 });
+
+server.listen(9100);

@@ -10,14 +10,13 @@ class ConnectionService {
         }
         return instance;
     }
-    connect(username) {
+    connect(token) {
         return new Promise((resolve) => {
             console.info(`ToC: Connected to game-server. ${config_1.default.get('connection').ws}`);
             this._socket = io(config_1.default.get('connection').ws, {
                 secure: config_1.default.get('connection').ssl,
                 query: {
-                    username: username,
-                    token: `${username}-token`
+                    token: token
                 }
             });
             this._socket.on('connect', resolve);

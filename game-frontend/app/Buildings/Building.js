@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Game_1 = require("../Game");
-const buildingMapping_1 = require("./buildingMapping");
+const AssetsManager_1 = require("../AssetsManager");
 ;
 class Building {
     constructor(id, position, key, playerId) {
@@ -18,47 +18,32 @@ class Building {
         this._playerId = playerId;
         this.load();
     }
+    /**
+     * Load Building and add to the scene.
+     */
     load() {
-        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/buildings/', buildingMapping_1.default[this._key].asset, Game_1.default.gameScene.scene)
-            .then((results) => {
-            let banner = null;
-            let building;
-            results.meshes.forEach((mesh) => {
-                if ('banner' === mesh.id) {
-                    banner = mesh;
-                }
-                else {
-                    building = mesh;
-                }
-            });
-            this._mesh = building;
-            this._banner = banner;
-            this._mesh.checkCollisions = true;
-            this._mesh.metadata = {
-                key: this._key,
-                isBuilding: true,
-                buildingId: this._id,
-            };
-            this.setPosition();
-            if (this._banner) {
-                this.setBannerPosition();
-                this.setBannerMaterial();
-            }
-            Game_1.default.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
-        });
+        this._mesh = AssetsManager_1.default.getBuildingMeshByName(this._key, this._id);
+        this._banner = this._mesh.getChildMeshes()[0];
+        this._mesh.checkCollisions = true;
+        this._mesh.metadata = {
+            key: this._key,
+            isBuilding: true,
+            buildingId: this._id,
+        };
+        this.setPosition();
+        if (this._banner) {
+            this.setBannerMaterial();
+        }
+        Game_1.default.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
+        // Show meshes.
+        this._mesh.isVisible = true;
+        this._banner.isVisible = true;
     }
     setPosition() {
         this._mesh.position = BABYLON.Vector3.Zero();
         this._mesh.position.x = this._position.x - this._positionFixture.x;
         this._mesh.position.y = Game_1.default.gameScene.terrain.getHeight(this._position.x, this._position.z);
         this._mesh.position.z = this._position.z - this._positionFixture.z;
-    }
-    setBannerPosition() {
-        const bannerPosition = this._banner.position;
-        this._banner.position = BABYLON.Vector3.Zero();
-        this._banner.position.x = this._mesh.position.x + bannerPosition.x;
-        this._banner.position.y = this._mesh.position.y + bannerPosition.y;
-        this._banner.position.z = this._mesh.position.z + bannerPosition.z;
     }
     setBannerMaterial() {
         const material = new BABYLON.StandardMaterial('banner-material', Game_1.default.gameScene.scene);

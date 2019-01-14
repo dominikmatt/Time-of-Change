@@ -1,0 +1,17 @@
+<% if (true === completelyBuilt) { %>
+    <div class="panel-content">
+        <h3>Saegewerk</h3>
+    </div>
+
+    Arbeiter:
+    <% if (character) { %>
+        Ja
+    <% } else { %>
+        Nein
+    <% } %>
+    <br />
+    Holzstamm: <%= currentTreeTrunksStore %><br/>
+    Bretter: <%= currentTimberStore %>
+<% } else { %>
+    Baubarbeiten laufen...
+<% } %>

@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Job_1 = __importDefault(require("../Job"));
 const Map_1 = __importDefault(require("../../Map/Map"));
+/**
+ * Transport resource to building.
+ */
 class TransportJob extends Job_1.default {
     constructor(player, startPosition, resourceType, targetBuilding, character, storehouse) {
         super(player);
@@ -63,7 +66,12 @@ class TransportJob extends Job_1.default {
             case 3:
                 if (this._character.position.x === this._targetBuilding.doorPosition.x &&
                     this._character.position.z === this._targetBuilding.doorPosition.z) {
-                    this._targetBuilding.addBuildResource(this._resourceType);
+                    if (true === this._targetBuilding.completelyBuilt) {
+                        this._targetBuilding.addResource(this._resourceType);
+                    }
+                    else {
+                        this._targetBuilding.addBuildResource(this._resourceType);
+                    }
                     this._character.job = null;
                 }
                 break;

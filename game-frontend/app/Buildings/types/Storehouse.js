@@ -6,6 +6,5 @@ class Storehouse extends Building_1.default {
         super(id, position, 'storehouse', playerId);
     }
 }
-Storehouse.asset = 'storehouse.babylon';
 exports.default = Storehouse;
 //# sourceMappingURL=Storehouse.js.map

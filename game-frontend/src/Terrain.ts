@@ -2,6 +2,7 @@ import Building from "./Buildings/Building";
 import game, {Game} from "./Game";
 import connectionService from "./services/connection";
 import * as BABYLON from "babylonjs";
+import assetsManager from "./AssetsManager";
 
 export default class Terrain {
     private readonly _game: Game;
@@ -11,26 +12,22 @@ export default class Terrain {
     constructor() {
         this._game = game;
 
-        BABYLON.SceneLoader.ImportMesh(
-            '',
-            'assets/models/maps/slishou/',
-            'slishou.babylon',
-            this._game.gameScene.scene,
-            (meshes) => {
-                this._mesh = meshes[0];
-                this._mesh.position.x = 0;
-                this._mesh.position.z = 0;
-                this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));
-                this._mesh.material.wireframe = false;
-                this._mesh.metadata = {
-                    key: 'map',
-                };
-                this._mesh.receiveShadows = true;
+        this._mesh = assetsManager.getTerrainMeshByName('terrain');
+        console.log(this._mesh);
+        this._mesh.position.x = 0;
+        this._mesh.position.z = 0;
+        this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));
+        this._mesh.material.wireframe = false;
+        this._mesh.metadata = {
+            key: 'map',
+        };
+        this._mesh.receiveShadows = true;
 
-                this.generateHeightData();
+        this._mesh.isVisible = true;
 
-                connectionService.socket.emit('map.data');
-            });
+        this.generateHeightData();
+
+        connectionService.socket.emit('map.data');
     }
 
     /**

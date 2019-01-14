@@ -11,7 +11,7 @@ const BuildingManager_1 = require("./Buildings/BuildingManager");
 const CharacterFactory_1 = require("./Characters/CharacterFactory");
 const PanelBuildingSelected_1 = require("./Commands/PanelBuildingSelected");
 class Player {
-    constructor(name, token) {
+    constructor(name, token, playerId) {
         this._buildings = [];
         this._characters = [];
         this._name = name;
@@ -19,22 +19,22 @@ class Player {
         this._db = new Redis_1.default(Object.keys(Core_1.default.players).length + 1);
         this._jobStore = new JobStore_1.default(this);
         this._buildingManager = new BuildingManager_1.default(this);
+        this._playerId = playerId;
         this._db.flushdb()
             .then(() => console.log('database cleared'))
             .catch((error) => {
             throw new Error(error);
         });
-        Core_1.default.db.hset(`players:${this._token}`, 'name', this._name);
         Core_1.default.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core_1.default.players).length === 0);
     }
     initializeTown() {
         /** @var Storehouse storehouse */
-        this.addCharacter(CharacterFactory_1.default('hero', 'start', this));
+        //this.addCharacter(CharacterFactory('hero', 'start', this));
+        //this.addCharacter(CharacterFactory('serf', 'start', this));
         this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('laborer', 'start', this));
-        const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 3, z: 3 }, this, true));
-        const schoolhouse = this.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 3, z: 8 }, this, true));
+        //this.addCharacter(CharacterFactory('laborer', 'start', this));
+        const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 8 * (this._playerId), z: 3 * (this._playerId) }, this, true));
+        const schoolhouse = this.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8 * (this._playerId), z: 8 * (this._playerId) }, this, true));
         storehouse.addResources({
             stones: 60,
             timber: 50,
@@ -80,6 +80,17 @@ class Player {
         }
         return null;
     }
+    getBuildingByType(buildingType, hasCharacter = false, isBuilt = true) {
+        const buildings = this._buildings.filter((building) => {
+            return buildingType === building.getType()
+                && (null === building.character || true === hasCharacter)
+                && (true === building.completelyBuilt || false === isBuilt);
+        });
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
+        return null;
+    }
     /**
      * Add a new building to the buildings list.
      */
@@ -110,6 +121,9 @@ class Player {
     }
     get buildingManager() {
         return this._buildingManager;
+    }
+    get playerId() {
+        return this._playerId;
     }
 }
 exports.default = Player;

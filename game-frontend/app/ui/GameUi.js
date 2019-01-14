@@ -13,7 +13,6 @@ class GameUi {
     onDocumentClick(event) {
         const element = event.target;
         const action = element.dataset.uiAction;
-        event.preventDefault();
         if (!action) {
             return;
         }

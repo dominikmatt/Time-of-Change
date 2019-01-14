@@ -1,11 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Building_1 = require("../Building");
-class Woodkutters extends Building_1.default {
+class Woodcutters extends Building_1.default {
     constructor(position, id, playerId) {
-        super(id, position, 'woodkutters', playerId);
+        super(id, position, 'woodcutters', playerId);
     }
 }
-Woodkutters.asset = 'woodkutters.babylon';
-exports.default = Woodkutters;
+exports.default = Woodcutters;
 //# sourceMappingURL=Woodkutters.js.map

@@ -19,9 +19,11 @@ export default class CharacterUpdateCommand extends Command {
 
     execute(req: RequestInterface) {
         if (!aliveCharacters[req._id]) {
-            aliveCharacters[req._id] = new Character(req.position);
+            aliveCharacters[req._id] = new Character(req._id, req.position);
         }
 
         aliveCharacters[req._id].position = req.position;
+        aliveCharacters[req._id].walkingPath = req.walkingPath;
+        aliveCharacters[req._id].isWalking = req.isWalking;
     }
 }

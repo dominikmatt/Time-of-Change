@@ -3,3 +3,8 @@ export default interface PositionInterface {
     y: number,
     z: number
 }
+
+export interface WalkPositionInterface {
+    x: number,
+    z: number
+}

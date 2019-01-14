@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const BABYLON = require("babylonjs");
 const Terrain_1 = require("./Terrain");
+const AssetsManager_1 = require("./AssetsManager");
+const Game_1 = require("./Game");
+const Camera_1 = require("./Camera");
+const babylonjs_inspector_1 = require("babylonjs-inspector");
 class GameScene {
     constructor() {
         this._trees = {};
@@ -9,9 +13,6 @@ class GameScene {
     createScene() {
         const canvas = document.getElementById('render-canvas');
         const engine = new BABYLON.Engine(canvas, true);
-        engine.runRenderLoop(() => {
-            this._scene.render();
-        });
         window.addEventListener('resize', function () {
             engine.resize();
         });
@@ -20,15 +21,11 @@ class GameScene {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new BABYLON.Scene(engine);
         this._scene = scene;
+        // @ts-ignore
+        window.scene = scene;
         this._engine.enableOfflineSupport = false;
         // This creates and positions a free camera (non-mesh)
-        const camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-        // This targets the camera to scene origin
-        camera.setTarget(BABYLON.Vector3.Zero());
-        //Set the ellipsoid around the camera (e.g. your player's size)
-        camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
-        // This attaches the camera to the canvas
-        camera.attachControl(canvas, true);
+        this._camera = new Camera_1.default(this._scene, this._canvas);
         const light = new BABYLON.HemisphericLight("Hemi0", new BABYLON.Vector3(0, 1, 0), scene);
         light.diffuse = new BABYLON.Color3(1, 1, 1);
         light.specular = new BABYLON.Color3(0, 0, 0);
@@ -40,18 +37,22 @@ class GameScene {
         this._shadowGenerator.useBlurExponentialShadowMap = true;
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
-        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/terrain/', 'tree001.babylon', this._scene)
-            .then((result) => {
-            this.tree = result.meshes[0];
-            this.tree.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
-            this.tree.position = BABYLON.Vector3.Zero();
-            this._terrain = new Terrain_1.default();
+        new babylonjs_inspector_1.Inspector(this._scene, false, 0, null);
+    }
+    /**
+     * This method is called by the assetsManager after all assets has been loaded.
+     */
+    onAssetsLoaded() {
+        this._terrain = new Terrain_1.default();
+        Game_1.default.gameScene.engine.runRenderLoop(() => {
+            this._scene.render();
+            this._camera.update();
         });
     }
     updateCoordinate(data) {
         /**
          * Fixme: Replace this function with a global library.
-         * @param n
+         * @param number
          * @param width
          */
         function pad(number, width) {
@@ -60,10 +61,10 @@ class GameScene {
         }
         const instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
         if ('true' === data.hasTree) {
-            const tree = this.tree.createInstance(instanceName);
-            tree.position.x = data.x + 0.5;
+            const tree = AssetsManager_1.default.getTreeMeshByName('tree', instanceName);
+            tree.position.x = data.x + Math.random();
             tree.position.y = this._terrain.getHeight(data.x, data.z);
-            tree.position.z = data.z + 0.5;
+            tree.position.z = data.z + Math.random();
             this._trees[instanceName] = tree;
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
         }
@@ -86,6 +87,9 @@ class GameScene {
     }
     get shadowGenerator() {
         return this._shadowGenerator;
+    }
+    get camera() {
+        return this._camera;
     }
 }
 exports.default = GameScene;

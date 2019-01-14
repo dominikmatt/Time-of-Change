@@ -9,9 +9,9 @@ import TransportToStorehouseJob from "../../Jobs/types/TransportToStorehouseJob"
 import ProductionBuildingInterface from "../ProductionBuildingInterface";
 
 /**
- * The Woodkutters will take tree trunks from a tree.
+ * The Woodcutters will take tree trunks from a tree.
  */
-export default class Woodkutters extends EconomyBuilding implements BuildingInterface, ProductionBuildingInterface {
+export default class Woodcutters extends EconomyBuilding implements BuildingInterface, ProductionBuildingInterface {
     private readonly _maxTreeTrunksStore: number = 5;
 
     readonly _matrix: number[][] = [
@@ -32,10 +32,6 @@ export default class Woodkutters extends EconomyBuilding implements BuildingInte
         this.build(alreadyBuilt);
 
         this.increaseStore();
-    }
-
-    public getType() {
-        return 'woodkutters';
     }
 
     protected getBuildingData() {
@@ -74,7 +70,6 @@ export default class Woodkutters extends EconomyBuilding implements BuildingInte
                 this
             )
         );
-
     }
 
     public decreaseStore(): Number {

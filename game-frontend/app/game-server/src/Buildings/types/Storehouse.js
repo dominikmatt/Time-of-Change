@@ -138,9 +138,6 @@ class Storehouse extends EconomyBuilding_1.default {
             this._resources[resKey].store += resources[resKey];
         }
     }
-    getType() {
-        return 'storehouse';
-    }
     getBuildingData() {
         return {
             resources: this._resources
@@ -155,6 +152,13 @@ class Storehouse extends EconomyBuilding_1.default {
             return true;
         }
         return false;
+    }
+    putInResource(resourceType) {
+        this._resources[resourceType].store++;
+        return true;
+    }
+    hasStoreableResource(resourceType) {
+        return this._resources[resourceType].storable;
     }
     get resources() {
         return this._resources;

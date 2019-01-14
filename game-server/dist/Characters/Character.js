@@ -8,6 +8,7 @@ const PositionComponent_1 = require("../Components/PositionComponent");
 const Core_1 = __importDefault(require("../Core"));
 const Map_1 = __importDefault(require("../Map/Map"));
 const gameSettings_1 = require("../gameSettings");
+const path_1 = require("../utils/path");
 class Character {
     constructor(player, buildingId) {
         this._id = uuid_1.v1();
@@ -16,10 +17,11 @@ class Character {
         this._walkTarget = null;
         this._currentPath = [];
         this._walkDelta = 0;
+        this._isInHouse = false;
         let schoolhouse;
         let position = {
-            x: 2,
-            z: 2
+            x: Math.floor(Math.random() * 10) + 1,
+            z: Math.floor(Math.random() * 10) + 1
         };
         this._player = player;
         if ('start' !== buildingId) {
@@ -56,6 +58,7 @@ class Character {
         if (true === this.getNeedBuilding() && null === this._building) {
             return this.searchBuilding();
         }
+        this.checkInHouse();
         if (null === this._job) {
             this.findJob();
         }
@@ -81,12 +84,20 @@ class Character {
             type: this.getType(),
             data: this.getCharacterData(),
             position: this.position.position,
+            isWalking: 0 < this._currentPath.length,
+            walkingPath: path_1.arrayPathToObject(this._currentPath),
         });
         Core_1.default.emitAll('character.update.position', {
             _id: this._id,
             type: this.getType(),
             position: this._position.position
         });
+    }
+    checkInHouse() {
+        if (!this._position || !this._building) {
+            return;
+        }
+        this._isInHouse = this._position.position.x === this._building.doorPosition.x && this._position.position.z === this._building.doorPosition.z;
     }
     searchBuilding() {
         const building = this._player.getBuildingByType(this.getBuildingType(), false, true);
@@ -110,6 +121,9 @@ class Character {
     }
     get building() {
         return this._building;
+    }
+    get isInHouse() {
+        return this._isInHouse;
     }
 }
 exports.default = Character;

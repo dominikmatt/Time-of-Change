@@ -54,7 +54,8 @@ class TransportToStorehouseJob extends Job_1.default {
                 break;
             // Walk to Storehouse.
             case 2:
-                this._storehouse = this._player.buildingManager.findStorehouseByResource(this._resourceType);
+                this._storehouse = this._player.buildingManager
+                    .findNearestStorehouseByResource(this._resourceType, this._character.position.position);
                 const path = Map_1.default.findRunnablePath(this._character.position.position, this._storehouse.doorPosition);
                 this._character.walkByPath(path);
                 this._isCharacterWalking = true;

@@ -7,6 +7,9 @@ import Map from "../../Map/Map";
 import Storehouse from "../../Buildings/types/Storehouse";
 import Building from "../../Buildings/Building";
 
+/**
+ * Transport resource to building.
+ */
 export default class TransportJob extends Job implements JobInterface {
     protected readonly _type: string = 'transport';
     private readonly _resourceType: string = '';
@@ -87,7 +90,12 @@ export default class TransportJob extends Job implements JobInterface {
                 if (this._character.position.x === this._targetBuilding.doorPosition.x &&
                     this._character.position.z === this._targetBuilding.doorPosition.z
                 ) {
-                    this._targetBuilding.addBuildResource(this._resourceType);
+                    if (true === this._targetBuilding.completelyBuilt) {
+                        this._targetBuilding.addResource(this._resourceType);
+                    } else {
+                        this._targetBuilding.addBuildResource(this._resourceType);
+                    }
+
                     this._character.job = null;
                 }
                 break;

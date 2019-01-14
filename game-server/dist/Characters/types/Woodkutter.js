@@ -4,20 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Character_1 = __importDefault(require("../Character"));
-class Woodkutter extends Character_1.default {
+class Woodcutter extends Character_1.default {
     getType() {
-        return 'woodkutter';
+        return 'woodcutter';
     }
     getBuildingType() {
-        return 'woodkutters';
+        return 'woodcutters';
     }
     getNeedBuilding() {
         return true;
     }
     getCharacterData() {
         return {};
-    }
-    findBuilding() {
     }
     findJob() {
         if (null === this._building.nextJob) {
@@ -27,5 +25,5 @@ class Woodkutter extends Character_1.default {
         this._job = this._building.nextJob;
     }
 }
-exports.default = Woodkutter;
+exports.default = Woodcutter;
 //# sourceMappingURL=Woodkutter.js.map

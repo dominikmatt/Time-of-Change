@@ -22,6 +22,7 @@ class Building {
             stones: 0,
             timber: 0
         };
+        this._resources = {};
         this._completelyBuilt = false;
         this._player = player;
         this._position = new PositionComponent_1.PositionComponent(position);
@@ -85,7 +86,7 @@ class Building {
      * Returns building type as a string.
      */
     getType() {
-        throw new Error('Building: Add getType and return your type as a string.');
+        return this.constructor.name.toLowerCase();
     }
     /**
      * Returns all building specific data as a object.
@@ -112,6 +113,9 @@ class Building {
     addBuildResource(type) {
         this._buildResources[type]++;
         this.addBuildJob();
+    }
+    addResource(type) {
+        this._resources[type]++;
     }
     increaseHealth() {
         this._health.currentHealth += 50;

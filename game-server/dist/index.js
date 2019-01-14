@@ -6,6 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const gameEngine_1 = __importDefault(require("./gameEngine"));
 require("./WsConnection");
 require("./Map/Map");
-console.log('v0.1.2');
 gameEngine_1.default.startGame();
 //# sourceMappingURL=index.js.map
