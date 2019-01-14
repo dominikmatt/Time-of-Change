@@ -33,6 +33,15 @@ export default class Terrain {
     /**
      * Generate the height data of the map.
      * TODO: Move it to a helper class and store it to a json file.
+     *
+     const coordinates = [];
+     const trunkVerts = ground.geometry.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+     for (var i = 0; i < trunkVerts.length; i += 3) {
+         const coordinate = {x: trunkVerts[i], y: trunkVerts[i + 1], z: trunkVerts[i + 2]};
+
+         coordinates.push(coordinate);
+     }
+
      */
     private generateHeightData() {
         const heightData: any = {};
