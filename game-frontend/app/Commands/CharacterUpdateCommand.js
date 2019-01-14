@@ -15,6 +15,9 @@ class CharacterUpdateCommand extends Command_1.default {
         if (!aliveCharacters[req._id]) {
             aliveCharacters[req._id] = new Character_1.default(req._id, req.position);
         }
+        if (req.walkingPath && 1 < req.walkingPath.length) {
+            aliveCharacters[req._id].nextPosition = new BABYLON.Vector3(req.walkingPath[1].x + 0.5, 0, req.walkingPath[1].z + 0.5);
+        }
         aliveCharacters[req._id].position = req.position;
         aliveCharacters[req._id].walkingPath = req.walkingPath;
         aliveCharacters[req._id].isWalking = req.isWalking;

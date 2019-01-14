@@ -10,16 +10,20 @@ import assetsManager from "./AssetsManager";
 
 new GameUi();
 
+game.initialize();
+
 addUserEvent.addCallBack(
     (options: AddUserOptionsInterface) => {
-        connectionService
-            .connect(options.token)
+
+        assetsManager.initialize()
             .then(() => {
-                game.initialize();
-                assetsManager.initialize();
-                new MapUpdateCommand();
-                new BuildingUpdateCommand();
-                new CharacterUpdateCommand();
-                new PanelUpdateCommand();
+                connectionService
+                    .connect(options.token)
+                    .then(() => {
+
+                        game.gameScene.onAssetsLoaded();
+                    });
             });
     });
+
+

@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const xMax = 10;
-const zMax = 10;
+/**
+ * Plant trees on the map.
+ */
 class MapGenerator {
     constructor(map) {
         this._map = map;

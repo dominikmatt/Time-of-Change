@@ -3,7 +3,6 @@ import PositionInterface, {WalkPositionInterface} from "../interfaces/PositionIn
 import assetsManager from "../AssetsManager";
 import Vector3 = BABYLON.Vector3;
 import IAnimationKey = BABYLON.IAnimationKey;
-import LinesMesh = BABYLON.LinesMesh;
 
 export default class Character {
     private _position: PositionInterface;
@@ -13,11 +12,16 @@ export default class Character {
     private _isWalking: boolean = false;
     private _walkAnimation: BABYLON.Animatable;
     private _walkingDebugPath: BABYLON.LinesMesh;
+    private _nextPosition: BABYLON.Vector3 = new BABYLON.Vector3(0, 0, 0);
+    private _nextPositionDebugSphere: BABYLON.Mesh;
+    private _skeleton: BABYLON.Skeleton;
 
     constructor(id: string, position: PositionInterface) {
         this._position = position;
         this._id = id;
 
+        this._nextPositionDebugSphere = BABYLON.Mesh.CreateSphere("sphere", 0.5, 0.5, game.gameScene.scene);
+        this._nextPositionDebugSphere.material = new BABYLON.StandardMaterial("sphereMat", game.gameScene.scene);
         this.load();
     }
 
@@ -32,11 +36,53 @@ export default class Character {
         this._mesh = assetsManager.getCharacterMeshByName('character', this._id);
         this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
         this.setPosition();
+        this.findSkeleton();
+
+
+        this.addAnimation('idle', 0, 320);
+        this.addAnimation('walk', 323, 364);
+        this.addAnimation('dance', 367, 738);
+        this.playAnimation('idle', true);
 
         game.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
 
+        game.gameScene.scene.registerBeforeRender(() => {
+            this._nextPositionDebugSphere.position = this._nextPosition;
+            this.lookAt(this._nextPosition);
+        });
+
         // Show meshes.
         this._mesh.isVisible = true;
+    }
+
+    /**
+     * Attach the given mesh to this controller, and found the character skeleton.
+     * The skeleton used for the mesh animation (and the debug viewer) is the first found one.
+     */
+    public findSkeleton() {
+        // Stop mesh animations
+        this._mesh.getScene().stopAnimation(this._mesh);
+
+        // Find skeleton if possible
+        if (this._mesh.skeleton) {
+            console.log('animation');
+            this._skeleton = this._mesh.skeleton;
+            // Stop skeleton animations
+            this._mesh.getScene().stopAnimation(this._skeleton);
+            // Activate animation blending
+            this._skeleton.enableBlending(0.08);
+        }
+
+        this._skeleton.beginAnimation('idle', true, 1);
+    }
+
+    /**
+     * Play the given animation if skeleton found
+     */
+    public playAnimation(name:string, loop:boolean, speed:number = 1) {
+        if (this._skeleton){
+            this._skeleton.beginAnimation(name, loop, speed);
+        }
     }
 
     /**
@@ -73,27 +119,19 @@ export default class Character {
         var animationBox = new BABYLON.Animation(
             `walkAnimationPod${this._id}`,
             "position",
-            30,
+            5,
             BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
             BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-        );
-        const animationRotation = new BABYLON.Animation(
-            `walkAnimationPod${this._id}`,
-            'rotation',
-            30,
-            BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-            BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
         );
 
         // Animation keys
         const keys: Array<IAnimationKey> = [];
-        const keysRotation: Array<IAnimationKey> = [];
         let frame = 0;
         const path: BABYLON.Vector3[] = [];
 
         //
         this._walkingPath.forEach((point: WalkPositionInterface, index: number) => {
-            frame = index * 30;
+            frame = index * 10;
             const vector: BABYLON.Vector3 = new Vector3(
                 point.x + 0.5,
                 game.gameScene.terrain.getHeight(point.x, point.z, true),
@@ -103,12 +141,7 @@ export default class Character {
             path.push(vector);
         });
 
-        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 30);
-
-        const path3d: BABYLON.Path3D = new BABYLON.Path3D(catmullRom.getPoints());
-        const tangents: BABYLON.Vector3[] = path3d.getTangents(); // array of tangents to the curve
-        const normals: BABYLON.Vector3[] = path3d.getNormals(); // array of normals to the curve
-        const binormals: BABYLON.Vector3[] = path3d.getBinormals(); // array of binormals to curve
+        let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 5);
 
         catmullRom.getPoints().forEach((point: BABYLON.Vector3, frame: number) => {
             // Add walking point to walk animation.
@@ -117,15 +150,6 @@ export default class Character {
                 value: point
             });
 
-            // Add rotation to rotate animation.
-            keysRotation.push({
-                frame: frame,
-                value: BABYLON.Vector3.RotationFromAxis(
-                    normals[frame],
-                    binormals[frame],
-                    tangents[frame]
-                )
-            });
 
             // https://github.com/Temechon/ms-experiences16/tree/master/ts
         });
@@ -143,25 +167,42 @@ export default class Character {
         }
 
         animationBox.setKeys(keys);
-        animationRotation.setKeys(keysRotation);
 
         this._mesh.animations.push(animationBox);
-        this._mesh.animations.push(animationRotation);
 
         // Begin animation.
         setTimeout(async () => {
             this._walkAnimation = game.gameScene.scene.beginAnimation(this._mesh, 0, frame, false);
+            this.playAnimation('walk', true);
 
             this._walkAnimation.onAnimationEnd = () => {
                 // Remove debug path after animation has been completed.
                 this._walkingDebugPath.dispose();
+                this.playAnimation('idle', true);
             };
         });
     }
 
+    /**
+     * The character looks at the given position, but rotates only along Y-axis
+     * */
+    private lookAt(value:BABYLON.Vector3){
+        var dv = value.subtract(this._mesh.position);
+        var yaw = -Math.atan2(dv.z, dv.x) - Math.PI / 2;
+        this._mesh.rotation.y = yaw ;
+    }
+
+    /**
+     * Add an animation to this character
+     */
+    public addAnimation(name:string, from:number, to:number) {
+        if (this._skeleton) {
+            this._skeleton.createAnimationRange(name, from, to);
+        }
+    }
+
     set walkingPath(path: WalkPositionInterface[]) {
         if (false === this._isWalking && 0 < path.length) {
-            console.log('start');
             this._walkingPath = path;
 
             this.startWalking();
@@ -172,5 +213,9 @@ export default class Character {
 
     set isWalking(value: boolean) {
         this._isWalking = value;
+    }
+
+    set nextPosition(position: BABYLON.Vector3) {
+        this._nextPosition = position;
     }
 }

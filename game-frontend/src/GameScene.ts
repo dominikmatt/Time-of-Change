@@ -4,6 +4,10 @@ import assetsManager from "./AssetsManager";
 import game from "./Game";
 import Camera from "./Camera";
 import { Inspector } from "babylonjs-inspector";
+import MapUpdateCommand from "./Commands/MapUpdateCommand";
+import BuildingUpdateCommand from "./Commands/BuildingUpdateCommand";
+import CharacterUpdateCommand from "./Commands/CharacterUpdateCommand";
+import PanelUpdateCommand from "./Commands/PanelUpdateCommand";
 
 interface TreesInterface {
     [propName: string]: BABYLON.InstancedMesh;
@@ -69,6 +73,11 @@ export default class GameScene {
      */
     public onAssetsLoaded() {
         this._terrain = new Terrain();
+
+        new MapUpdateCommand();
+        new BuildingUpdateCommand();
+        new CharacterUpdateCommand();
+        new PanelUpdateCommand();
 
         game.gameScene.engine.runRenderLoop(() => {
             this._scene.render();

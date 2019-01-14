@@ -22,6 +22,7 @@ export class AssetsManager {
     }
 
     initialize() {
+        return new Promise((resolve) => {
         this._assetsManager = new BABYLON.AssetsManager(game.gameScene.scene);
 
         this._assetsManager.onProgress = function(remainingCount, totalCount, lastFinishedTask) {
@@ -33,9 +34,7 @@ export class AssetsManager {
             console.log('task failed', task.errorObject.message, task.errorObject.exception);
         });
 
-        this._assetsManager.onFinish = function(tasks) {
-            game.gameScene.onAssetsLoaded();
-        };
+        this._assetsManager.onFinish = resolve;
 
         this.loadAssets('terrain', 'maps/slishou', 'slishou.babylon');
         this.loadAssets('tree', 'terrain', 'tree001.babylon');
@@ -52,9 +51,10 @@ export class AssetsManager {
         this.loadAssets('quarry', 'buildings', 'storehouse.babylon');
         this.loadAssets('sawmill', 'buildings', 'storehouse.babylon');
         this.loadAssets('smithy', 'buildings', 'storehouse.babylon');
-        this.loadAssets('character', 'characters', 'character1.babylon');
+        this.loadAssets('character', 'characters/viking', 'viking.babylon');
 
         this._assetsManager.load();
+        });
     }
 
     loadAssets(name: string, path: string, filename: string) {
@@ -100,7 +100,9 @@ export class AssetsManager {
 
     getCharacterMeshByName(name: string, key: string): BABYLON.Mesh | null {
         if (this._meshesStore[name]) {
-            return (<BABYLON.Mesh>this._meshesStore[name][0]).clone(`${name}-${key}`);
+            const mesh = (<BABYLON.Mesh>this._meshesStore[name][0]).clone(`${name}-${key}`);
+            mesh.skeleton = this._meshesStore[name][0].skeleton.clone('skeleton', `${name}-skeleton-${key}`);
+            return mesh;
         }
 
         return null;
@@ -120,7 +122,6 @@ export class AssetsManager {
     }
 
     getTerrainMeshByName(name: string): BABYLON.Mesh | null {
-        console.log(this._meshesStore[name]);
         if (this._meshesStore[name]) {
             return <BABYLON.Mesh>this._meshesStore[name][0];
         }

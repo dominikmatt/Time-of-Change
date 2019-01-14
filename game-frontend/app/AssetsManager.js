@@ -15,33 +15,33 @@ class AssetsManager {
         return instance;
     }
     initialize() {
-        this._assetsManager = new BABYLON.AssetsManager(Game_1.default.gameScene.scene);
-        this._assetsManager.onProgress = function (remainingCount, totalCount, lastFinishedTask) {
-            Game_1.default.gameScene.engine.loadingUIText = 'We are loading the scene. ' + remainingCount + ' out of ' + totalCount + ' items still need to be loaded.';
-        };
-        this._assetsManager.onTaskErrorObservable.add(function (task) {
-            console.log('task failed', task.errorObject.message, task.errorObject.exception);
+        return new Promise((resolve) => {
+            this._assetsManager = new BABYLON.AssetsManager(Game_1.default.gameScene.scene);
+            this._assetsManager.onProgress = function (remainingCount, totalCount, lastFinishedTask) {
+                Game_1.default.gameScene.engine.loadingUIText = 'We are loading the scene. ' + remainingCount + ' out of ' + totalCount + ' items still need to be loaded.';
+            };
+            this._assetsManager.onTaskErrorObservable.add(function (task) {
+                console.log('task failed', task.errorObject.message, task.errorObject.exception);
+            });
+            this._assetsManager.onFinish = resolve;
+            this.loadAssets('terrain', 'maps/slishou', 'slishou.babylon');
+            this.loadAssets('tree', 'terrain', 'tree001.babylon');
+            this.loadAssets('storehouse', 'buildings', 'storehouse.babylon');
+            this.loadAssets('schoolhouse', 'buildings', 'schoolhouse.babylon');
+            this.loadAssets('woodcutters', 'buildings', 'woodcutters.babylon');
+            this.loadAssets('bakery', 'buildings', 'storehouse.babylon');
+            this.loadAssets('brewery', 'buildings', 'storehouse.babylon');
+            this.loadAssets('butchers', 'buildings', 'storehouse.babylon');
+            this.loadAssets('farm', 'buildings', 'storehouse.babylon');
+            this.loadAssets('inn', 'buildings', 'storehouse.babylon');
+            this.loadAssets('mill', 'buildings', 'storehouse.babylon');
+            this.loadAssets('mine', 'buildings', 'storehouse.babylon');
+            this.loadAssets('quarry', 'buildings', 'storehouse.babylon');
+            this.loadAssets('sawmill', 'buildings', 'storehouse.babylon');
+            this.loadAssets('smithy', 'buildings', 'storehouse.babylon');
+            this.loadAssets('character', 'characters/viking', 'viking.babylon');
+            this._assetsManager.load();
         });
-        this._assetsManager.onFinish = function (tasks) {
-            Game_1.default.gameScene.onAssetsLoaded();
-        };
-        this.loadAssets('terrain', 'maps/slishou', 'slishou.babylon');
-        this.loadAssets('tree', 'terrain', 'tree001.babylon');
-        this.loadAssets('storehouse', 'buildings', 'storehouse.babylon');
-        this.loadAssets('schoolhouse', 'buildings', 'schoolhouse.babylon');
-        this.loadAssets('woodcutters', 'buildings', 'woodcutters.babylon');
-        this.loadAssets('bakery', 'buildings', 'storehouse.babylon');
-        this.loadAssets('brewery', 'buildings', 'storehouse.babylon');
-        this.loadAssets('butchers', 'buildings', 'storehouse.babylon');
-        this.loadAssets('farm', 'buildings', 'storehouse.babylon');
-        this.loadAssets('inn', 'buildings', 'storehouse.babylon');
-        this.loadAssets('mill', 'buildings', 'storehouse.babylon');
-        this.loadAssets('mine', 'buildings', 'storehouse.babylon');
-        this.loadAssets('quarry', 'buildings', 'storehouse.babylon');
-        this.loadAssets('sawmill', 'buildings', 'storehouse.babylon');
-        this.loadAssets('smithy', 'buildings', 'storehouse.babylon');
-        this.loadAssets('character', 'characters', 'character1.babylon');
-        this._assetsManager.load();
     }
     loadAssets(name, path, filename) {
         const meshTask = this._assetsManager.addMeshTask(`${name}-task`, '', `${assetsPath}${path}/`, filename);
@@ -75,7 +75,9 @@ class AssetsManager {
     }
     getCharacterMeshByName(name, key) {
         if (this._meshesStore[name]) {
-            return this._meshesStore[name][0].clone(`${name}-${key}`);
+            const mesh = this._meshesStore[name][0].clone(`${name}-${key}`);
+            mesh.skeleton = this._meshesStore[name][0].skeleton.clone('skeleton', `${name}-skeleton-${key}`);
+            return mesh;
         }
         return null;
     }
@@ -89,7 +91,6 @@ class AssetsManager {
         return null;
     }
     getTerrainMeshByName(name) {
-        console.log(this._meshesStore[name]);
         if (this._meshesStore[name]) {
             return this._meshesStore[name][0];
         }

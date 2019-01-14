@@ -6,6 +6,10 @@ const AssetsManager_1 = require("./AssetsManager");
 const Game_1 = require("./Game");
 const Camera_1 = require("./Camera");
 const babylonjs_inspector_1 = require("babylonjs-inspector");
+const MapUpdateCommand_1 = require("./Commands/MapUpdateCommand");
+const BuildingUpdateCommand_1 = require("./Commands/BuildingUpdateCommand");
+const CharacterUpdateCommand_1 = require("./Commands/CharacterUpdateCommand");
+const PanelUpdateCommand_1 = require("./Commands/PanelUpdateCommand");
 class GameScene {
     constructor() {
         this._trees = {};
@@ -44,6 +48,10 @@ class GameScene {
      */
     onAssetsLoaded() {
         this._terrain = new Terrain_1.default();
+        new MapUpdateCommand_1.default();
+        new BuildingUpdateCommand_1.default();
+        new CharacterUpdateCommand_1.default();
+        new PanelUpdateCommand_1.default();
         Game_1.default.gameScene.engine.runRenderLoop(() => {
             this._scene.render();
             this._camera.update();
