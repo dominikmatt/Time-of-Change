@@ -1,6 +1,6 @@
-const xMax = 10;
-const zMax = 10;
-
+/**
+ * Plant trees on the map.
+ */
 export default class MapGenerator {
     private readonly _map: any;
 
