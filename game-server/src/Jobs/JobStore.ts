@@ -24,7 +24,6 @@ export default class JobStore {
      * @param position
      */
     public getNearestFreeJobByType(jobType: string, position: PositionInterface) {
-        console.log(position);
         return new Promise((resolve, reject) => {
             let nearestDistance: number = 0;
             let nearestJob: object = null;
@@ -46,8 +45,6 @@ export default class JobStore {
                         }
                     });
 
-
-                    console.log(nearestJob);
                     resolve(nearestJob);
                 })
                 .catch((error) => {

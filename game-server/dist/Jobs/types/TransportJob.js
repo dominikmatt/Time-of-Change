@@ -72,6 +72,18 @@ class TransportJob extends Job_1.default {
                     else {
                         this._targetBuilding.addBuildResource(this._resourceType);
                     }
+                    this._currentStep++;
+                }
+                break;
+            case 4:
+                const outsidePath = Map_1.default.findRunnablePath(this._character.position.position, this._targetBuilding.outsidePosition);
+                this._character.walkByPath(outsidePath);
+                this._isCharacterWalking = true;
+                this._currentStep++;
+                break;
+            case 5:
+                if (this._character.position.x === this._targetBuilding.outsidePosition.x &&
+                    this._character.position.z === this._targetBuilding.outsidePosition.z) {
                     this._character.job = null;
                 }
                 break;

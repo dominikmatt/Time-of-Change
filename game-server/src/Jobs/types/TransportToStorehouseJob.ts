@@ -67,6 +67,7 @@ export default class TransportToStorehouseJob extends Job implements JobInterfac
                     this._character.position.z === this._building.doorPosition.z
                 ) {
                     this._building.decreaseStore();
+                    this._reAddOnDestroy = false;
 
                     this._currentStep++;
                 }
@@ -78,6 +79,7 @@ export default class TransportToStorehouseJob extends Job implements JobInterfac
                         this._resourceType,
                         this._character.position.position
                     );
+
                 const path = Map.findRunnablePath(this._character.position.position, this._storehouse.doorPosition);
                 this._character.walkByPath(path);
                 this._isCharacterWalking = true;
@@ -89,8 +91,22 @@ export default class TransportToStorehouseJob extends Job implements JobInterfac
                 if (this._character.position.x === this._storehouse.doorPosition.x &&
                     this._character.position.z === this._storehouse.doorPosition.z
                 ) {
-                    this._character.job = null;
+                    this._currentStep++;
                     this._storehouse.putInResource(this._resourceType);
+                }
+                break;
+            case 4:
+                const outsidePath = Map.findRunnablePath(this._character.position.position, this._storehouse.outsidePosition);
+                this._character.walkByPath(outsidePath);
+                this._isCharacterWalking = true;
+
+                this._currentStep++;
+                break;
+            case 5:
+                if (this._character.position.x === this._storehouse.outsidePosition.x &&
+                    this._character.position.z === this._storehouse.outsidePosition.z
+                ) {
+                    this._character.job = null;
                 }
                 break;
         }

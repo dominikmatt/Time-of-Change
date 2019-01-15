@@ -64,6 +64,24 @@ class BuildingManager {
         }
         return null;
     }
+    /**
+     * Find a storehouse with minimum one resource stored.
+     *
+     * @param resourceType
+     */
+    findNearestInn(position) {
+        const buildings = this._player.buildings.filter((building) => {
+            return 'inn' === building.getType()
+                && true === building.completelyBuilt;
+        });
+        buildings.sort((buildingA, buildingB) => {
+            return coordinates_1.getDistanceFromPoints(buildingA.doorPosition, position) - coordinates_1.getDistanceFromPoints(buildingB.doorPosition, position);
+        });
+        if (0 < buildings.length) {
+            return buildings[0];
+        }
+        return null;
+    }
 }
 exports.default = BuildingManager;
 //# sourceMappingURL=BuildingManager.js.map

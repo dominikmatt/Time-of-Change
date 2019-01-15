@@ -17,7 +17,7 @@ export default class BuildingManager {
             return id === building.id;
         });
 
-        return building;
+        return (<Building>building);
     }
 
     public findProductionBuildingById(id: string): ProductionBuildingInterface {
@@ -31,10 +31,10 @@ export default class BuildingManager {
 
     // Find a storehouse with storeable resource.
     public findStorehouseByResource(resourceType: string): Storehouse {
-        const buildings = this._player.buildings.filter((building: Building) => {
+        const buildings = this._player.buildings.filter((building: Storehouse) => {
             return 'storehouse' === building.getType()
                 && true === building.completelyBuilt
-                && (<Storehouse>building).hasStoreableResource(resourceType);
+                && building.hasStoreableResource(resourceType);
         });
 
         if (0 < buildings.length) {
@@ -46,10 +46,10 @@ export default class BuildingManager {
 
     // Find a storehouse with storeable resource.
     public findNearestStorehouseByResource(resourceType: string, position: PositionInterface): Storehouse {
-        const buildings = this._player.buildings.filter((building: Building) => {
+        const buildings = this._player.buildings.filter((building: Storehouse) => {
             return 'storehouse' === building.getType()
                 && true === building.completelyBuilt
-                && (<Storehouse>building).hasStoreableResource(resourceType);
+                && building.hasStoreableResource(resourceType);
         });
 
         buildings.sort((buildingA: Storehouse, buildingB: Storehouse) => {
@@ -69,18 +69,40 @@ export default class BuildingManager {
      * @param resourceType
      */
     public findNearestStorehouseWithResource(resourceType: string, position: PositionInterface): Storehouse {
-        const buildings = this._player.buildings.filter((building: Building) => {
+        const buildings = this._player.buildings.filter((building: Storehouse) => {
             return 'storehouse' === building.getType()
                 && true === building.completelyBuilt
-                && 0 < (<Storehouse>building).getResourceCountByType(resourceType);
+                && 0 < building.getResourceCountByType(resourceType);
         });
 
-        buildings.sort((buildingA: Storehouse, buildingB: Storehouse) => {
+        buildings.sort((buildingA: Building, buildingB: Building): number => {
             return getDistanceFromPoints(buildingA.doorPosition, position) - getDistanceFromPoints(buildingB.doorPosition, position);
         });
 
         if (0 < buildings.length) {
             return (<Storehouse>buildings[0]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Find a storehouse with minimum one resource stored.
+     *
+     * @param resourceType
+     */
+    public findNearestInn<T extends Building>(position: PositionInterface): T {
+        const buildings = this._player.buildings.filter((building: T) => {
+            return 'inn' === building.getType()
+                && true === building.completelyBuilt;
+        });
+
+        buildings.sort((buildingA: Building, buildingB: Building): number => {
+            return getDistanceFromPoints(buildingA.doorPosition, position) - getDistanceFromPoints(buildingB.doorPosition, position);
+        });
+
+        if (0 < buildings.length) {
+            return (<T>buildings[0]);
         }
 
         return null;

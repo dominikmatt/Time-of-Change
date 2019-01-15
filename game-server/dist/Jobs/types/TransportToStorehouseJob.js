@@ -49,6 +49,7 @@ class TransportToStorehouseJob extends Job_1.default {
                 if (this._character.position.x === this._building.doorPosition.x &&
                     this._character.position.z === this._building.doorPosition.z) {
                     this._building.decreaseStore();
+                    this._reAddOnDestroy = false;
                     this._currentStep++;
                 }
                 break;
@@ -65,8 +66,20 @@ class TransportToStorehouseJob extends Job_1.default {
             case 3:
                 if (this._character.position.x === this._storehouse.doorPosition.x &&
                     this._character.position.z === this._storehouse.doorPosition.z) {
-                    this._character.job = null;
+                    this._currentStep++;
                     this._storehouse.putInResource(this._resourceType);
+                }
+                break;
+            case 4:
+                const outsidePath = Map_1.default.findRunnablePath(this._character.position.position, this._storehouse.outsidePosition);
+                this._character.walkByPath(outsidePath);
+                this._isCharacterWalking = true;
+                this._currentStep++;
+                break;
+            case 5:
+                if (this._character.position.x === this._storehouse.outsidePosition.x &&
+                    this._character.position.z === this._storehouse.outsidePosition.z) {
+                    this._character.job = null;
                 }
                 break;
         }

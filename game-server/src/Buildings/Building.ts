@@ -9,18 +9,19 @@ import BuildJob from "../Jobs/types/BuildJob";
 import Core from "./../Core";
 import Character from "../Characters/Character";
 import Job from "../Jobs/Job";
+import DestroyAbleInterface from "../Components/DestroyAbleInterface";
 
 /**
  * Base class for all Buildings.
  */
-export default abstract class Building {
+export default abstract class Building implements DestroyAbleInterface {
     private readonly _id: string =  uuidv1();
 
     protected _character: Character | null = null;
 
     private _position: PositionComponent;
 
-    private _health: HealthComponent;
+    private _health: HealthComponent<Building>;
 
     protected _player: Player;
 
@@ -30,6 +31,7 @@ export default abstract class Building {
 
     readonly _matrix: number[][];
     public doorPosition: PositionInterface;
+    public outsidePosition: PositionInterface;
 
     private _buildResources: object = {
        stones: 0,
@@ -38,12 +40,12 @@ export default abstract class Building {
 
     protected _resources: object = {};
 
+    private _completelyBuilt: boolean = false;
+
     protected constructor(player: Player, position: PositionInterface) {
         this._player = player;
         this._position = new PositionComponent(position);
     }
-
-    private _completelyBuilt: boolean = false;
 
     /**
      * Perpare start of building.
@@ -82,6 +84,13 @@ export default abstract class Building {
                         x: x,
                         z: z
                     };
+
+                    this.outsidePosition = {
+                        x: x,
+                        z: z
+                    };
+
+                    this.outsidePosition.x++;
                 }
             });
         });
@@ -111,7 +120,7 @@ export default abstract class Building {
     }
 
     protected addHealthComponent(alreadyBuilt: boolean = false) {
-        this._health = new HealthComponent(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
+        this._health = new HealthComponent<Building>(this, this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
     }
 
     /**
@@ -147,6 +156,10 @@ export default abstract class Building {
         });
     }
 
+    public destroy() {
+        throw new Error('Implement destroy on Buildings.');
+    }
+
     public addBuildResource(type: string) {
         (<any>this._buildResources)[type]++;
 
@@ -173,7 +186,7 @@ export default abstract class Building {
         return this._player;
     }
 
-    get health(): HealthComponent {
+    get health(): HealthComponent<Building> {
         return this._health;
     }
 

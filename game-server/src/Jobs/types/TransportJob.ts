@@ -96,6 +96,20 @@ export default class TransportJob extends Job implements JobInterface {
                         this._targetBuilding.addBuildResource(this._resourceType);
                     }
 
+                    this._currentStep++;
+                }
+                break;
+            case 4:
+                const outsidePath = Map.findRunnablePath(this._character.position.position, this._targetBuilding.outsidePosition);
+                this._character.walkByPath(outsidePath);
+                this._isCharacterWalking = true;
+
+                this._currentStep++;
+                break;
+            case 5:
+                if (this._character.position.x === this._targetBuilding.outsidePosition.x &&
+                    this._character.position.z === this._targetBuilding.outsidePosition.z
+                ) {
                     this._character.job = null;
                 }
                 break;

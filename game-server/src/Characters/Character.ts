@@ -7,12 +7,17 @@ import Building from "../Buildings/Building";
 import Map from "../Map/Map";
 import {GAME_SPEED} from "../gameSettings";
 import {arrayPathToObject} from "../utils/path";
+import HealthComponent from "../Components/HealthComponent";
+import DestroyAbleInterface from "../Components/DestroyAbleInterface";
+import GoEatJob from "../Jobs/types/GoEatJob";
 
-export default class Character {
+export default class Character implements DestroyAbleInterface {
     protected _id: string =  uuidv1();
 
     protected readonly _player: Player;
     private _position: PositionComponent;
+    private _health: HealthComponent<Character>;
+    private _isAlive: boolean = true;
     protected _job?: Job = null;
     protected _building?: Building = null;
     protected _walkTarget: PositionInterface | null = null;
@@ -35,12 +40,23 @@ export default class Character {
         }
 
         this._position = new PositionComponent(position);
+        this._health = new HealthComponent<Character>(this, 100, 100);
     }
 
     public getNeedBuilding(): boolean {
         return false;
     }
 
+    /**
+     * Character is death now destroy it.
+     */
+    public destroy() {
+        if (true === this._job.reAddOnDestroy) {
+            this._player.jobStore.addJob(this._job);
+        }
+
+        this._isAlive = false;
+    }
 
     /**
      * Returns all character specific data as a object.
@@ -63,40 +79,59 @@ export default class Character {
         throw new Error('Character: Implement "findJob" method.')
     }
 
+    /**
+     * Add goEatJob when currentHealt is smaller or equal 20.
+     */
+    protected mustGoEat(): boolean {
+        if (20 >= this._health.currentHealth) {
+            this._job = new GoEatJob(this._player, this);
+            return true;
+        }
+
+        return false;
+    }
+
     public getBuildingType(): string {
         throw new Error('Character: Implement "getBuildingType" method.')
     }
 
 
     update() {
-        if (true === this.getNeedBuilding() && null === this._building) {
-            return this.searchBuilding();
-        }
+        // Character is alive.
+        if (true === this.isAlive) {
+            if (true === this.getNeedBuilding() && null === this._building) {
+                return this.searchBuilding();
+            }
 
-        this.checkInHouse();
+            this.checkInHouse();
 
-        if (null === this._job) {
-            this.findJob();
-        } else {
-            this._job.update();
-        }
-
-        // Do walk - ever second to the next field.
-        if (0 < this._currentPath.length) {
-            this._walkDelta += Core.currentTick.delta * GAME_SPEED;
-
-            if (1 <= this._walkDelta) {
-                const next = this._currentPath.shift();
-
-
-                if (next) {
-                    this.position.position = {
-                        x: next[0],
-                        z: next[1]
-                    };
+            if (null === this._job) {
+                if (false === this.mustGoEat()) {
+                    this.findJob();
                 }
+            } else {
+                this._job.update();
+            }
 
-                this._walkDelta = 0;
+            // Do walk - ever second to the next field.
+            if (0 < this._currentPath.length) {
+                this._walkDelta += Core.currentTick.delta * GAME_SPEED;
+
+                if (1 <= this._walkDelta) {
+                    const next = this._currentPath.shift();
+
+
+                    if (next) {
+                        this.position.position = {
+                            x: next[0],
+                            z: next[1]
+                        };
+
+                        this._health.decreaseHealt(0.5);
+                    }
+
+                    this._walkDelta = 0;
+                }
             }
         }
 
@@ -107,6 +142,11 @@ export default class Character {
             position: this.position.position,
             isWalking: 0 < this._currentPath.length,
             walkingPath: arrayPathToObject(this._currentPath),
+            isAlive: this._isAlive,
+            health: {
+                current: this._health.currentHealth,
+                max: this._health.maxHealth,
+            }
         });
 
         Core.emitAll('character.update.position', {
@@ -161,5 +201,13 @@ export default class Character {
 
     get isInHouse(): boolean {
         return this._isInHouse;
+    }
+
+    get isAlive(): boolean {
+        return this._isAlive;
+    }
+
+    get health(): HealthComponent<Character> {
+        return this._health;
     }
 }

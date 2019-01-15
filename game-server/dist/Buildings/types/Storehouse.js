@@ -49,7 +49,7 @@ class Storehouse extends EconomyBuilding_1.default {
                 store: 0,
                 storable: true
             },
-            wine: {
+            beer: {
                 store: 0,
                 storable: true
             },

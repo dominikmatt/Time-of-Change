@@ -1,14 +1,10 @@
 import EconomyBuilding from "../EconomyBuilding";
-import BuildingInterface from "../BuildingInterface";
 import CostComponent from "../../Components/CostComponent";
 import {PositionInterface} from "../../Components/PositionComponent";
 import Player from "../../Player";
 import TransportToStorehouseJob from "../../Jobs/types/TransportToStorehouseJob";
-import ChopWood from "../../Jobs/types/ChopWood";
-import Map from "../../Map/Map";
 import Woodworking from "../../Jobs/types/Woodworking";
 import ProductionBuildingInterface from "../ProductionBuildingInterface";
-import TransportToBuildingJob from "../../Jobs/types/TransportToBuildingJob";
 import TransportJob from "../../Jobs/types/TransportJob";
 
 interface ResourceInterface {
@@ -78,7 +74,6 @@ export default class Sawmill extends EconomyBuilding implements ProductionBuildi
 
             this._nextJob = new Woodworking(this._player, this._character);
         }
-
     }
 
     public increaseTreeTrunkStore() {

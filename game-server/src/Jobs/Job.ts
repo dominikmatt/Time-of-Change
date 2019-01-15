@@ -1,10 +1,14 @@
 import {v1 as uuidv1} from "uuid";
-import uuid = require("uuid");
 import Player from "../Player";
 
 export default class Job {
     protected readonly _id: string = uuidv1();
     protected readonly _type: string;
+
+    /**
+     * If this property is true the job will be readded to the list when the working-character is killed.
+     */
+    protected _reAddOnDestroy: boolean = true;
 
     private _inProgress: boolean = false;
 
@@ -48,5 +52,9 @@ export default class Job {
 
     get id(): string {
         return this._id;
+    }
+
+    get reAddOnDestroy(): boolean {
+        return this._reAddOnDestroy;
     }
 }

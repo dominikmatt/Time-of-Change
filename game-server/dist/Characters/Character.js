@@ -9,9 +9,12 @@ const Core_1 = __importDefault(require("../Core"));
 const Map_1 = __importDefault(require("../Map/Map"));
 const gameSettings_1 = require("../gameSettings");
 const path_1 = require("../utils/path");
+const HealthComponent_1 = __importDefault(require("../Components/HealthComponent"));
+const GoEatJob_1 = __importDefault(require("../Jobs/types/GoEatJob"));
 class Character {
     constructor(player, buildingId) {
         this._id = uuid_1.v1();
+        this._isAlive = true;
         this._job = null;
         this._building = null;
         this._walkTarget = null;
@@ -29,9 +32,19 @@ class Character {
             position = schoolhouse.doorPosition;
         }
         this._position = new PositionComponent_1.PositionComponent(position);
+        this._health = new HealthComponent_1.default(this, 100, 100);
     }
     getNeedBuilding() {
         return false;
+    }
+    /**
+     * Character is death now destroy it.
+     */
+    destroy() {
+        if (true === this._job.reAddOnDestroy) {
+            this._player.jobStore.addJob(this._job);
+        }
+        this._isAlive = false;
     }
     /**
      * Returns all character specific data as a object.
@@ -51,32 +64,48 @@ class Character {
     findJob() {
         throw new Error('Character: Implement "findJob" method.');
     }
+    /**
+     * Add goEatJob when currentHealt is smaller or equal 20.
+     */
+    mustGoEat() {
+        if (20 >= this._health.currentHealth) {
+            this._job = new GoEatJob_1.default(this._player, this);
+            return true;
+        }
+        return false;
+    }
     getBuildingType() {
         throw new Error('Character: Implement "getBuildingType" method.');
     }
     update() {
-        if (true === this.getNeedBuilding() && null === this._building) {
-            return this.searchBuilding();
-        }
-        this.checkInHouse();
-        if (null === this._job) {
-            this.findJob();
-        }
-        else {
-            this._job.update();
-        }
-        // Do walk - ever second to the next field.
-        if (0 < this._currentPath.length) {
-            this._walkDelta += Core_1.default.currentTick.delta * gameSettings_1.GAME_SPEED;
-            if (1 <= this._walkDelta) {
-                const next = this._currentPath.shift();
-                if (next) {
-                    this.position.position = {
-                        x: next[0],
-                        z: next[1]
-                    };
+        // Character is alive.
+        if (true === this.isAlive) {
+            if (true === this.getNeedBuilding() && null === this._building) {
+                return this.searchBuilding();
+            }
+            this.checkInHouse();
+            if (null === this._job) {
+                if (false === this.mustGoEat()) {
+                    this.findJob();
                 }
-                this._walkDelta = 0;
+            }
+            else {
+                this._job.update();
+            }
+            // Do walk - ever second to the next field.
+            if (0 < this._currentPath.length) {
+                this._walkDelta += Core_1.default.currentTick.delta * gameSettings_1.GAME_SPEED;
+                if (1 <= this._walkDelta) {
+                    const next = this._currentPath.shift();
+                    if (next) {
+                        this.position.position = {
+                            x: next[0],
+                            z: next[1]
+                        };
+                        this._health.decreaseHealt(0.5);
+                    }
+                    this._walkDelta = 0;
+                }
             }
         }
         this._player.wsSocket.emit('character.update', {
@@ -86,6 +115,11 @@ class Character {
             position: this.position.position,
             isWalking: 0 < this._currentPath.length,
             walkingPath: path_1.arrayPathToObject(this._currentPath),
+            isAlive: this._isAlive,
+            health: {
+                current: this._health.currentHealth,
+                max: this._health.maxHealth,
+            }
         });
         Core_1.default.emitAll('character.update.position', {
             _id: this._id,
@@ -124,6 +158,12 @@ class Character {
     }
     get isInHouse() {
         return this._isInHouse;
+    }
+    get isAlive() {
+        return this._isAlive;
+    }
+    get health() {
+        return this._health;
     }
 }
 exports.default = Character;

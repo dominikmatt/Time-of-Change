@@ -1,10 +1,8 @@
 import Job from "../Job";
 import JobInterface from "../JobInterface";
 import Player from "../../Player";
-import {PositionInterface} from "../../Components/PositionComponent";
 import Character from "../../Characters/Character";
 import Map from "../../Map/Map";
-import Storehouse from "../../Buildings/types/Storehouse";
 import Building from "../../Buildings/Building";
 
 export default class BuildJob extends Job implements JobInterface {
@@ -68,7 +66,21 @@ export default class BuildJob extends Job implements JobInterface {
                 break;
             case 2:
                 this._targetBuilding.increaseHealth();
-                this._character.job = null;
+                this._currentStep++;
+                break;
+            case 3:
+                const outsidePath = Map.findRunnablePath(this._character.position.position, this._targetBuilding.outsidePosition);
+                this._character.walkByPath(outsidePath);
+                this._isCharacterWalking = true;
+
+                this._currentStep++;
+                break;
+            case 4:
+                if (this._character.position.x === this._targetBuilding.outsidePosition.x &&
+                    this._character.position.z === this._targetBuilding.outsidePosition.z
+                ) {
+                    this._character.job = null;
+                }
                 break;
         }
     }

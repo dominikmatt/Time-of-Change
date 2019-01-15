@@ -7,7 +7,7 @@ export interface ResourceInterface {
     coal: any;
     iron: any;
     gold: any;
-    wine: any;
+    beer: any;
     corn: any;
     loaves: any;
     flour: any;

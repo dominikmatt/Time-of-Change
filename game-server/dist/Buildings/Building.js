@@ -57,6 +57,11 @@ class Building {
                         x: x,
                         z: z
                     };
+                    this.outsidePosition = {
+                        x: x,
+                        z: z
+                    };
+                    this.outsidePosition.x++;
                 }
             });
         });
@@ -80,7 +85,7 @@ class Building {
         this._player.jobStore.addJob(new BuildJob_1.default(this._player, this));
     }
     addHealthComponent(alreadyBuilt = false) {
-        this._health = new HealthComponent_1.default(this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
+        this._health = new HealthComponent_1.default(this, this._cost.getHealth(), alreadyBuilt ? this._cost.getHealth() : 0);
     }
     /**
      * Returns building type as a string.
@@ -109,6 +114,9 @@ class Building {
             maxHealth: this.health.maxHealth,
             matrix: this._matrix
         });
+    }
+    destroy() {
+        throw new Error('Implement destroy on Buildings.');
     }
     addBuildResource(type) {
         this._buildResources[type]++;

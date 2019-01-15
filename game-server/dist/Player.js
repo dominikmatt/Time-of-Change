@@ -33,7 +33,7 @@ class Player {
     initializeTown() {
         /** @var Storehouse storehouse */
         //this.addCharacter(CharacterFactory('hero', 'start', this));
-        this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
+        const serf1 = this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
         //this.addCharacter(CharacterFactory('serf', 'start', this));
         //this.addCharacter(CharacterFactory('serf', 'start', this));
         //this.addCharacter(CharacterFactory('serf', 'start', this));
@@ -42,20 +42,19 @@ class Player {
         //this.addCharacter(CharacterFactory('laborer', 'start', this));
         const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 8 * (this._playerId), z: 3 * (this._playerId) }, this, true));
         const schoolhouse = this.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8 * (this._playerId), z: 8 * (this._playerId) }, this, true));
-        const woodcutters = this.addBuilding(BuildingFactory_1.default('woodcutters', { x: 8 * (this._playerId), z: 15 * (this._playerId) }, this, true));
-        const sawmill = this.addBuilding(BuildingFactory_1.default('sawmill', { x: 8 * (this._playerId), z: 21 * (this._playerId) }, this, true));
-        const storehouse1 = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 17 * (this._playerId), z: 21 * (this._playerId) }, this, true));
+        //const woodcutters: Woodcutters = this.addBuilding(BuildingFactory('woodcutters', {x: 8 * (this._playerId), z: 15 * (this._playerId)}, this, true));
+        //const sawmill: Sawmill = this.addBuilding(BuildingFactory('sawmill', {x: 8 * (this._playerId), z: 21 * (this._playerId)}, this, true));
+        //const storehouse1: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 17 * (this._playerId), z: 21 * (this._playerId)}, this, true));
+        const inn = this.addBuilding(BuildingFactory_1.default('inn', { x: 8 * (this._playerId), z: 15 * (this._playerId) }, this, true));
+        serf1.health.decreaseHealt(80);
         storehouse.addResources({
             treeTrunks: 30,
             stones: 60,
             timber: 50,
             gold: 60,
-            wine: 40,
+            beer: 40,
             loaves: 30,
             sausages: 20,
-        });
-        storehouse1.addResources({
-            treeTrunks: 30,
         });
     }
     /**
@@ -71,7 +70,7 @@ class Player {
         this._buildings.forEach((building) => {
             building.update();
         });
-        this._characters.forEach((character) => {
+        this._characters.forEach((character, index) => {
             character.update();
         });
         this._jobStore.update();

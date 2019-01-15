@@ -19,7 +19,7 @@ interface ResourceInterface extends AllResourceInterface {
     coal: ResourceItemInterface;
     iron: ResourceItemInterface;
     gold: ResourceItemInterface;
-    wine: ResourceItemInterface;
+    beer: ResourceItemInterface;
     corn: ResourceItemInterface;
     loaves: ResourceItemInterface;
     flour: ResourceItemInterface;
@@ -52,7 +52,7 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
         [1,2,1],
     ];
 
-    private _resources: ResourceInterface = {
+    protected _resources: ResourceInterface = {
         treeTrunks: {
             store: 0,
             storable: true
@@ -85,7 +85,7 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
             store: 0,
             storable: true
         },
-        wine: {
+        beer: {
             store: 0,
             storable: true
         },

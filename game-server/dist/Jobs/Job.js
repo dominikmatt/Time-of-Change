@@ -4,6 +4,10 @@ const uuid_1 = require("uuid");
 class Job {
     constructor(player) {
         this._id = uuid_1.v1();
+        /**
+         * If this property is true the job will be readded to the list when the working-character is killed.
+         */
+        this._reAddOnDestroy = true;
         this._inProgress = false;
         this._isFinished = true;
         this._currentStep = 0;
@@ -32,6 +36,9 @@ class Job {
     }
     get id() {
         return this._id;
+    }
+    get reAddOnDestroy() {
+        return this._reAddOnDestroy;
     }
 }
 exports.default = Job;

@@ -39,6 +39,7 @@ export default class Woodworking extends Job implements JobInterface {
                 if (false === this._isWorking) {
                     (<Sawmill>this._character.building).decreaseTreeTrunkStore();
                     this._isWorking = true;
+                    this._reAddOnDestroy = false;
                 }
 
                 setTimeout(() => {

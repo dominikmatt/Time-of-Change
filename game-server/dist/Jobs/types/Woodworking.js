@@ -31,6 +31,7 @@ class Woodworking extends Job_1.default {
                 if (false === this._isWorking) {
                     this._character.building.decreaseTreeTrunkStore();
                     this._isWorking = true;
+                    this._reAddOnDestroy = false;
                 }
                 setTimeout(() => {
                     this._currentStep++;
