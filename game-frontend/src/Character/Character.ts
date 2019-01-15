@@ -201,6 +201,10 @@ export default class Character {
         }
     }
 
+    public kill() {
+        this._mesh.dispose();
+    }
+
     set walkingPath(path: WalkPositionInterface[]) {
         if (false === this._isWalking && 0 < path.length) {
             this._walkingPath = path;

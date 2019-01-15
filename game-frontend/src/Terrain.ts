@@ -13,7 +13,6 @@ export default class Terrain {
         this._game = game;
 
         this._mesh = assetsManager.getTerrainMeshByName('terrain');
-        console.log(this._mesh);
         this._mesh.position.x = 0;
         this._mesh.position.z = 0;
         this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));

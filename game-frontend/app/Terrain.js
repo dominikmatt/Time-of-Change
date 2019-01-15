@@ -8,7 +8,6 @@ class Terrain {
     constructor() {
         this._game = Game_1.default;
         this._mesh = AssetsManager_1.default.getTerrainMeshByName('terrain');
-        console.log(this._mesh);
         this._mesh.position.x = 0;
         this._mesh.position.z = 0;
         this._mesh.setPivotMatrix(BABYLON.Matrix.Translation(-8, 0, -8));

@@ -149,6 +149,9 @@ class Character {
             this._skeleton.createAnimationRange(name, from, to);
         }
     }
+    kill() {
+        this._mesh.dispose();
+    }
     set walkingPath(path) {
         if (false === this._isWalking && 0 < path.length) {
             this._walkingPath = path;

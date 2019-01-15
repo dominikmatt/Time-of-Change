@@ -18,6 +18,15 @@ export default class CharacterUpdateCommand extends Command {
     }
 
     execute(req: RequestInterface) {
+        if (false === req.isAlive) {
+            if (aliveCharacters[req._id]) {
+                aliveCharacters[req._id].kill();
+                delete aliveCharacters[req._id];
+            }
+
+            return;
+        }
+
         if (!aliveCharacters[req._id]) {
             aliveCharacters[req._id] = new Character(req._id, req.position);
         }
