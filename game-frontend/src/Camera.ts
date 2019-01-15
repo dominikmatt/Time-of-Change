@@ -13,6 +13,7 @@ export default class Camera {
 
     public constructor(scene: BABYLON.Scene, canvas: HTMLCanvasElement) {
         this._canvas = canvas;
+        // TODO: Use ArcRotateCamera.
         this._camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
         // This targets the camera to scene origin
         this._camera.setTarget(BABYLON.Vector3.Zero());
