@@ -8,6 +8,7 @@ import MapUpdateCommand from "./Commands/MapUpdateCommand";
 import BuildingUpdateCommand from "./Commands/BuildingUpdateCommand";
 import CharacterUpdateCommand from "./Commands/CharacterUpdateCommand";
 import PanelUpdateCommand from "./Commands/PanelUpdateCommand";
+import config from "./configuration/config";
 
 interface TreesInterface {
     [propName: string]: BABYLON.InstancedMesh;
@@ -64,8 +65,9 @@ export default class GameScene {
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
 
-
-        new Inspector(this._scene, false, 0, null);
+        if (config.get('app').debug) {
+            new Inspector(this._scene, false, 0, null);
+        }
     }
 
     /**

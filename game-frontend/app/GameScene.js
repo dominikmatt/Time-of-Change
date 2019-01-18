@@ -10,6 +10,7 @@ const MapUpdateCommand_1 = require("./Commands/MapUpdateCommand");
 const BuildingUpdateCommand_1 = require("./Commands/BuildingUpdateCommand");
 const CharacterUpdateCommand_1 = require("./Commands/CharacterUpdateCommand");
 const PanelUpdateCommand_1 = require("./Commands/PanelUpdateCommand");
+const config_1 = require("./configuration/config");
 class GameScene {
     constructor() {
         this._trees = {};
@@ -41,7 +42,9 @@ class GameScene {
         this._shadowGenerator.useBlurExponentialShadowMap = true;
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
-        new babylonjs_inspector_1.Inspector(this._scene, false, 0, null);
+        if (config_1.default.get('app').debug) {
+            new babylonjs_inspector_1.Inspector(this._scene, false, 0, null);
+        }
     }
     /**
      * This method is called by the assetsManager after all assets has been loaded.
