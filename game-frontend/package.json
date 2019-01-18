@@ -4,11 +4,10 @@
   "description": "Time of Changes Game",
   "main": "./app/main.js",
   "scripts": {
-    "build": "tsc",
+    "build:js": "node_modules/typescript/bin/tsc",
+    "build": "ELECTRON_ENV=prod electron-builder -m",
     "start": "ELECTRON_ENV=dev electron ./app/main.js",
-    "dist": "ELECTRON_ENV=prod build",
-    "dist:osx": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dist": "ELECTRON_ENV=prod npm run build"
   },
   "author": "Dominik Matt <mail@matt-dominik.at>",
   "license": "ISC",
