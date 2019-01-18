@@ -4,7 +4,7 @@ services:
         image: domready/tocgs:0.1.4
         build:
             context: ""
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile-dev
         ports:
             - "9100:9100"
         environment:
