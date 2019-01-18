@@ -29,6 +29,7 @@
   },
   "build": {
     "appId": "time-of-changes",
+    "artifactName": "toc-nightly.${ext}",
     "dmg": {
       "contents": [
         {
