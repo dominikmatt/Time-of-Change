@@ -2,7 +2,7 @@ import core from "./Core";
 import Player from "./Player";
 import http from 'http';
 import Server, {Socket} from 'socket.io';
-import panel from "./Panel/panel";
+import Panel from "./Panel/panel";
 import express from 'express';
 import addUserRoute from "./api/routes/addUserRoute";
 import getServerInfoRoute from "./api/routes/getServerInfoRoute";
@@ -67,16 +67,17 @@ io.on('connection', (socket: any) => {
 
             // Create a new player.
             const newPlayer = new Player(playerData.username, token, playerId);
+            const panel = new Panel();
+            panel.player = newPlayer;
+            panel.initialize();
+
+            newPlayer.panel = panel;
             playerId++;
 
             core.addPlayer(newPlayer);
             newPlayer.wsSocket = socket;
             newPlayer.listenWs();
             newPlayer.initializeTown();
-
-            panel.player = newPlayer;
-
-            panel.initialize();
 
             socket.on('disconnect', function () {
                 console.log('disconnected');

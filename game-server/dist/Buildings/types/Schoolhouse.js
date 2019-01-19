@@ -7,7 +7,6 @@ const EconomyBuilding_1 = __importDefault(require("../EconomyBuilding"));
 const CostComponent_1 = __importDefault(require("../../Components/CostComponent"));
 const CharacterFactory_1 = __importDefault(require("../../Characters/CharacterFactory"));
 const gameSettings_1 = require("../../gameSettings");
-const panel_1 = __importDefault(require("../../Panel/panel"));
 /**
  * The storehouse will store all Resources from the player.
  */
@@ -39,7 +38,7 @@ class Schoolhouse extends EconomyBuilding_1.default {
     }
     addToQueue(type) {
         this._queue.push(type);
-        panel_1.default.update();
+        this._player.panel.update();
     }
     updateQueue() {
         if (0 === this._queue.length || null !== this._runningQueue) {

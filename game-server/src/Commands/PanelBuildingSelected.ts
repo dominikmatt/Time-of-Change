@@ -16,13 +16,13 @@ export default class PanelBuildingSelected extends Command {
         const building: Building|null = this.player.getBuildingById(buildingId);
 
         if (null !== building) {
-            panel.setPanelInfo({
+            this.player.panel.setPanelInfo({
                 id: building.id,
                 type: `building-${building.getType()}`,
                 data: building,
             });
         } else {
-            panel.setPanelInfo({
+            this.player.panel.setPanelInfo({
                 id: null,
                 type: 'default',
                 data: {},

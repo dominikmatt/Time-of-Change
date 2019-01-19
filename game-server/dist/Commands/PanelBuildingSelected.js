@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __importDefault(require("./Command"));
-const panel_1 = __importDefault(require("../Panel/panel"));
 /**
  * This command is executed when a player builds a new building.
  */
@@ -16,14 +15,14 @@ class PanelBuildingSelected extends Command_1.default {
         const buildingId = req.buildingId;
         const building = this.player.getBuildingById(buildingId);
         if (null !== building) {
-            panel_1.default.setPanelInfo({
+            this.player.panel.setPanelInfo({
                 id: building.id,
                 type: `building-${building.getType()}`,
                 data: building,
             });
         }
         else {
-            panel_1.default.setPanelInfo({
+            this.player.panel.setPanelInfo({
                 id: null,
                 type: 'default',
                 data: {},

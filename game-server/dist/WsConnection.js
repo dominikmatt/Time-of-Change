@@ -56,13 +56,15 @@ io.on('connection', (socket) => {
         }
         // Create a new player.
         const newPlayer = new Player_1.default(playerData.username, token, playerId);
+        const panel = new panel_1.default();
+        panel.player = newPlayer;
+        panel.initialize();
+        newPlayer.panel = panel;
         playerId++;
         Core_1.default.addPlayer(newPlayer);
         newPlayer.wsSocket = socket;
         newPlayer.listenWs();
         newPlayer.initializeTown();
-        panel_1.default.player = newPlayer;
-        panel_1.default.initialize();
         socket.on('disconnect', function () {
             console.log('disconnected');
         });

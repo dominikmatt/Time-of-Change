@@ -22,9 +22,19 @@ class Core {
         this._db.flushdb()
             .then(() => console.log('database cleared'))
             .catch((error) => { throw new Error(error); });
+        const player1redis = new Redis(1);
+        player1redis.flushdb()
+            .then(() => console.log('database cleared player 1'))
+            .catch((error) => { throw new Error(error); });
+        const player2redis = new Redis(1);
+        player2redis.flushdb()
+            .then(() => console.log('database cleared player 2'))
+            .catch((error) => { throw new Error(error); });
     }
 
     addPlayer(player: Player) {
+        console.log('add player');
+        console.log(player);
         this._players[player.token] = player;
     }
 

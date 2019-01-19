@@ -22,9 +22,15 @@ class Player {
         this._buildingManager = new BuildingManager_1.default(this);
         this._playerId = playerId;
         this._index = this._playerId - 1;
+        this._db.flushdb()
+            .then(() => console.log('database cleared for player ', this._playerId))
+            .catch((error) => {
+            throw new Error(error);
+        });
         Core_1.default.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core_1.default.players).length === 0);
     }
     initializeTown() {
+        console.log('init');
         const startup = require('./Map/maps/slishou/startup')[this._index];
         startup.player = this;
         startup.placeHouses();
@@ -94,6 +100,12 @@ class Player {
     }
     set wsSocket(value) {
         this._wsSocket = value;
+    }
+    set panel(value) {
+        this._panel = value;
+    }
+    get panel() {
+        return this._panel;
     }
     get jobStore() {
         return this._jobStore;

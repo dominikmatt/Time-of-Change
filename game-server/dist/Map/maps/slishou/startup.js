@@ -33,6 +33,7 @@ class Player2 {
     placeHouses() {
         this._player.addCharacter(CharacterFactory_1.default('serf', 'start', this._player));
         const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', { x: 90, z: 3 }, this._player, true));
+        this._player.addBuilding(BuildingFactory_1.default('storehouse', { x: 110, z: 3 }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 90, z: 8 }, this._player, true));
         storehouse.addResources({
             treeTrunks: 30,

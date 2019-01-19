@@ -35,12 +35,13 @@ class Panel {
     }
 
     setPanelInfo(panelInfo: PanelInfo) {
-        this._panelInfo = panelInfo
+        this._panelInfo = panelInfo;
 
         this.update();
     }
 
     render() {
+        console.log(this._panelInfo, this._player.playerId);
         const templateString: string = fs.readFileSync(`${__dirname}/../../views/Panels/${this._panelInfo.type}.ejs`, 'utf-8');
 
         return ejs.render(templateString, this._panelInfo.data);
@@ -55,4 +56,4 @@ class Panel {
     }
 }
 
-export default Panel.Instance;
+export default Panel;

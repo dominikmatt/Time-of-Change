@@ -135,11 +135,10 @@ export default class Character implements DestroyAbleInterface {
             }
         }
 
-        this._player.wsSocket.emit('character.update', {
+        Core.emitAll('character.update', {
             _id: this._id,
             type: this.getType(),
-            data: this.getCharacterData(),
-            position: this.position.position,
+            position: this._position.position,
             isWalking: 0 < this._currentPath.length,
             walkingPath: arrayPathToObject(this._currentPath),
             isAlive: this._isAlive,
@@ -147,12 +146,6 @@ export default class Character implements DestroyAbleInterface {
                 current: this._health.currentHealth,
                 max: this._health.maxHealth,
             }
-        });
-
-        Core.emitAll('character.update.position', {
-            _id: this._id,
-            type: this.getType(),
-            position: this._position.position
         });
     }
 

@@ -5,7 +5,6 @@ import {PositionInterface} from "../../Components/PositionComponent";
 import Player from "../../Player";
 import CharacterFactory from "../../Characters/CharacterFactory";
 import {GAME_SPEED} from "../../gameSettings";
-import panel from "../../Panel/panel";
 
 /**
  * The storehouse will store all Resources from the player.
@@ -48,7 +47,7 @@ export default class Schoolhouse extends EconomyBuilding implements BuildingInte
     public addToQueue(type: string) {
         this._queue.push(type);
 
-        panel.update();
+        this._player.panel.update();
     }
 
     private updateQueue() {

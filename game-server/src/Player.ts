@@ -1,4 +1,3 @@
-import BuildingFactory from "./Buildings/BuildingFactory";
 import Building from "./Buildings/Building";
 import BuildBuildingCommand from "./Commands/BuildBuildingCommand";
 import Storehouse from "./Buildings/types/Storehouse";
@@ -9,15 +8,9 @@ import GetMapDataCommand from "./Commands/GetMapDataCommand";
 import CreateCharacterCommand from "./Commands/CreateCharacterCommand";
 import Character from "./Characters/Character";
 import BuildingManager from "./Buildings/BuildingManager";
-import CharacterFactory from "./Characters/CharacterFactory";
 import PanelBuildingSelected from "./Commands/PanelBuildingSelected";
-import Schoolhouse from "./Buildings/types/Schoolhouse";
-import Sawmill from "./Buildings/types/Sawmill";
-import Woodcutters from "./Buildings/types/Woodcutters";
-import Inn from "./Buildings/types/Inn";
-import Serf from "./Characters/types/Serf";
 import MapStartupInterface from "./Interfaces/MapStartup";
-import {start} from "repl";
+import Panel from "./Panel/panel";
 
 export default class Player {
     private readonly _name: string;
@@ -28,6 +21,7 @@ export default class Player {
     private _characters: Array<Character> = [];
     private readonly _jobStore: JobStore;
     private readonly _buildingManager: BuildingManager;
+    private _panel: Panel;
 
     private readonly _db: Redis;
 
@@ -48,10 +42,18 @@ export default class Player {
         this._playerId = playerId;
         this._index = this._playerId - 1;
 
+        this._db.flushdb()
+            .then(() => console.log('database cleared for player ', this._playerId))
+            .catch((error) => {
+                throw new Error(error);
+            });
+
+
         Core.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core.players).length === 0);
     }
 
     public initializeTown() {
+        console.log('init');
         const startup: MapStartupInterface = require('./Map/maps/slishou/startup')[this._index];
         startup.player = this;
         startup.placeHouses();
@@ -139,6 +141,14 @@ export default class Player {
 
     set wsSocket(value: any) {
         this._wsSocket = value;
+    }
+
+    set panel(value: Panel) {
+        this._panel = value;
+    }
+
+    get panel() {
+        return this._panel;
     }
 
     get jobStore(): JobStore {

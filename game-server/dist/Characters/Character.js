@@ -108,11 +108,10 @@ class Character {
                 }
             }
         }
-        this._player.wsSocket.emit('character.update', {
+        Core_1.default.emitAll('character.update', {
             _id: this._id,
             type: this.getType(),
-            data: this.getCharacterData(),
-            position: this.position.position,
+            position: this._position.position,
             isWalking: 0 < this._currentPath.length,
             walkingPath: path_1.arrayPathToObject(this._currentPath),
             isAlive: this._isAlive,
@@ -120,11 +119,6 @@ class Character {
                 current: this._health.currentHealth,
                 max: this._health.maxHealth,
             }
-        });
-        Core_1.default.emitAll('character.update.position', {
-            _id: this._id,
-            type: this.getType(),
-            position: this._position.position
         });
     }
     checkInHouse() {
