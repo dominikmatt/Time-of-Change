@@ -65,6 +65,11 @@ class Building {
                 }
             });
         });
+        Map_1.default.updateCoordinate(this.outsidePosition.x, this.outsidePosition.z, {
+            runnable: true,
+            building: this._id,
+            hasTree: false,
+        });
     }
     beforeUpdate() { }
     /**

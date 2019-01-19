@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const BuildingFactory_1 = __importDefault(require("./Buildings/BuildingFactory"));
 const BuildBuildingCommand_1 = __importDefault(require("./Commands/BuildBuildingCommand"));
 const JobStore_1 = __importDefault(require("./Jobs/JobStore"));
 const Redis_1 = __importDefault(require("./Redis"));
@@ -11,7 +10,6 @@ const Core_1 = __importDefault(require("./Core"));
 const GetMapDataCommand_1 = __importDefault(require("./Commands/GetMapDataCommand"));
 const CreateCharacterCommand_1 = __importDefault(require("./Commands/CreateCharacterCommand"));
 const BuildingManager_1 = __importDefault(require("./Buildings/BuildingManager"));
-const CharacterFactory_1 = __importDefault(require("./Characters/CharacterFactory"));
 const PanelBuildingSelected_1 = __importDefault(require("./Commands/PanelBuildingSelected"));
 class Player {
     constructor(name, token, playerId) {
@@ -23,39 +21,13 @@ class Player {
         this._jobStore = new JobStore_1.default(this);
         this._buildingManager = new BuildingManager_1.default(this);
         this._playerId = playerId;
-        this._db.flushdb()
-            .then(() => console.log('database cleared'))
-            .catch((error) => {
-            throw new Error(error);
-        });
+        this._index = this._playerId - 1;
         Core_1.default.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core_1.default.players).length === 0);
     }
     initializeTown() {
-        /** @var Storehouse storehouse */
-        //this.addCharacter(CharacterFactory('hero', 'start', this));
-        const serf1 = this.addCharacter(CharacterFactory_1.default('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('laborer', 'start', this));
-        //this.addCharacter(CharacterFactory('laborer', 'start', this));
-        //this.addCharacter(CharacterFactory('laborer', 'start', this));
-        const storehouse = this.addBuilding(BuildingFactory_1.default('storehouse', { x: 8 * (this._playerId), z: 3 * (this._playerId) }, this, true));
-        const schoolhouse = this.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8 * (this._playerId), z: 8 * (this._playerId) }, this, true));
-        //const woodcutters: Woodcutters = this.addBuilding(BuildingFactory('woodcutters', {x: 8 * (this._playerId), z: 15 * (this._playerId)}, this, true));
-        //const sawmill: Sawmill = this.addBuilding(BuildingFactory('sawmill', {x: 8 * (this._playerId), z: 21 * (this._playerId)}, this, true));
-        //const storehouse1: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 17 * (this._playerId), z: 21 * (this._playerId)}, this, true));
-        const inn = this.addBuilding(BuildingFactory_1.default('inn', { x: 8 * (this._playerId), z: 15 * (this._playerId) }, this, true));
-        serf1.health.decreaseHealt(80);
-        storehouse.addResources({
-            treeTrunks: 30,
-            stones: 60,
-            timber: 50,
-            gold: 60,
-            beer: 40,
-            loaves: 30,
-            sausages: 20,
-        });
+        const startup = require('./Map/maps/slishou/startup')[this._index];
+        startup.player = this;
+        startup.placeHouses();
     }
     /**
      * Bin websocket event listeners.

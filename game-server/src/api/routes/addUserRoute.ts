@@ -25,6 +25,10 @@ const addUserRoute = (app: expressCore.Express) => {
     Core.db.hset(`players:${gameToken}`, 'username', 'domready',);
     Core.db.hset(`players:${gameToken}`, 'token', 'test',);
 
+    const gameToken1 = 'test1';
+    Core.db.hset(`players:${gameToken1}`, 'username', 'domready1',);
+    Core.db.hset(`players:${gameToken1}`, 'token', 'test1',);
+
     app.post('/api/add-player', addUserToGame);
 };
 

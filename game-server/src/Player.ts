@@ -16,6 +16,8 @@ import Sawmill from "./Buildings/types/Sawmill";
 import Woodcutters from "./Buildings/types/Woodcutters";
 import Inn from "./Buildings/types/Inn";
 import Serf from "./Characters/types/Serf";
+import MapStartupInterface from "./Interfaces/MapStartup";
+import {start} from "repl";
 
 export default class Player {
     private readonly _name: string;
@@ -35,6 +37,7 @@ export default class Player {
      * socket.io Socket.
      */
     private _wsSocket: any;
+    private readonly _index: number;
 
     constructor(name: string, token: string, playerId: number) {
         this._name = name;
@@ -43,44 +46,15 @@ export default class Player {
         this._jobStore = new JobStore(this);
         this._buildingManager = new BuildingManager(this);
         this._playerId = playerId;
-
-        this._db.flushdb()
-            .then(() => console.log('database cleared'))
-            .catch((error) => {
-                throw new Error(error);
-            });
+        this._index = this._playerId - 1;
 
         Core.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core.players).length === 0);
     }
 
     public initializeTown() {
-        /** @var Storehouse storehouse */
-        //this.addCharacter(CharacterFactory('hero', 'start', this));
-        const serf1: Serf = this.addCharacter(CharacterFactory('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('serf', 'start', this));
-        //this.addCharacter(CharacterFactory('laborer', 'start', this));
-        //this.addCharacter(CharacterFactory('laborer', 'start', this));
-        //this.addCharacter(CharacterFactory('laborer', 'start', this));
-        const storehouse: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 8 * (this._playerId), z: 3 * (this._playerId)}, this, true));
-        const schoolhouse: Schoolhouse = this.addBuilding(BuildingFactory('schoolhouse', {x: 8 * (this._playerId), z: 8 * (this._playerId)}, this, true));
-        //const woodcutters: Woodcutters = this.addBuilding(BuildingFactory('woodcutters', {x: 8 * (this._playerId), z: 15 * (this._playerId)}, this, true));
-        //const sawmill: Sawmill = this.addBuilding(BuildingFactory('sawmill', {x: 8 * (this._playerId), z: 21 * (this._playerId)}, this, true));
-        //const storehouse1: Storehouse = this.addBuilding(BuildingFactory('storehouse', {x: 17 * (this._playerId), z: 21 * (this._playerId)}, this, true));
-        const inn: Inn = this.addBuilding(BuildingFactory('inn', {x: 8 * (this._playerId), z: 15 * (this._playerId)}, this, true));
-
-        serf1.health.decreaseHealt(80);
-
-        storehouse.addResources({
-            treeTrunks: 30,
-            stones: 60,
-            timber: 50,
-            gold: 60,
-            beer: 40,
-            loaves: 30,
-            sausages: 20,
-        });
+        const startup: MapStartupInterface = require('./Map/maps/slishou/startup')[this._index];
+        startup.player = this;
+        startup.placeHouses();
     }
 
     /**

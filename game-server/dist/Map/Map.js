@@ -12,6 +12,9 @@ class Map {
         this._zMax = 100;
         this._streetMatrix = [];
         this._treeMatrix = [];
+        this._mapSettings = require('./maps/slishou/map-settings');
+        this._xMax = this._mapSettings.size.x;
+        this._zMax = this._mapSettings.size.z;
         this.generateMatrix();
         this._mapGenerator = new MapGenerator_1.default(this);
         this._mapGenerator.generate();
@@ -24,6 +27,7 @@ class Map {
      */
     findRunnablePath(start, target, lastPositionRunnable = false) {
         const runnableGrid = this._runnableGrid.clone();
+        // @ts-ignore
         const finder = new pathfinding_1.default.AStarFinder({
             allowDiagonal: true
         });

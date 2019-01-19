@@ -24,7 +24,7 @@ class AssetsManager {
                 console.log('task failed', task.errorObject.message, task.errorObject.exception);
             });
             this._assetsManager.onFinish = resolve;
-            this.loadAssets('terrain', 'maps/slishou', 'slishou.babylon');
+            this.loadAssets('terrain', 'maps/slishou', 'slishou1.babylon');
             this.loadAssets('tree', 'terrain', 'tree001.babylon');
             this.loadAssets('storehouse', 'buildings', 'storehouse.babylon');
             this.loadAssets('schoolhouse', 'buildings', 'schoolhouse.babylon');

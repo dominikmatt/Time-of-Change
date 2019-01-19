@@ -2,6 +2,7 @@ import MapGenerator from "./MapGenerator";
 import Core from "../Core";
 import {PositionInterface} from "../Components/PositionComponent";
 import PF from "pathfinding";
+import MapSettingsInterface from "../Interfaces/MapSettings";
 
 class Map {
     private static instance: Map;
@@ -17,8 +18,13 @@ class Map {
     public _treeMatrix: number[][] = [];
 
     private _runnableGrid: PF.Grid;
+    private _mapSettings: MapSettingsInterface;
 
     constructor() {
+        this._mapSettings = require('./maps/slishou/map-settings');
+        this._xMax = this._mapSettings.size.x;
+        this._zMax = this._mapSettings.size.z;
+
         this.generateMatrix();
 
         this._mapGenerator = new MapGenerator(this);
@@ -39,6 +45,7 @@ class Map {
         lastPositionRunnable: boolean = false
     ): number[][] {
         const runnableGrid = this._runnableGrid.clone();
+        // @ts-ignore
         const finder = new PF.AStarFinder({
             allowDiagonal: true
         });
