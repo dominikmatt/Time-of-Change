@@ -33,8 +33,6 @@ class Core {
     }
 
     addPlayer(player: Player) {
-        console.log('add player');
-        console.log(player);
         this._players[player.token] = player;
     }
 

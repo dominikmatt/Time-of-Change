@@ -1,7 +1,6 @@
 version: '3.7'
 services:
     web:
-        image: domready/tocgs:0.2.0-alpha
         build:
             context: ""
             dockerfile: Dockerfile

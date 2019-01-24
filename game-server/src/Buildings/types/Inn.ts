@@ -10,6 +10,7 @@ interface ResourceInterface {
     sausages: number;
     beer: number;
     loaves: number;
+    [key: string]: number;
 }
 
 export default class Inn extends EconomyBuilding implements BuildingInterface {
@@ -63,7 +64,7 @@ export default class Inn extends EconomyBuilding implements BuildingInterface {
         }
 
         // Add loaves transport job.
-        if (this._resources.loaves + this._currentTransportJobs.loaves < this._maxFoodStore
+         if (this._resources.loaves + this._currentTransportJobs.loaves < this._maxFoodStore
         ) {
             this._currentTransportJobs.loaves++;
             this._player.jobStore.addJob(
@@ -89,6 +90,13 @@ export default class Inn extends EconomyBuilding implements BuildingInterface {
                 )
             );
         }
+    }
+
+    protected afterResourceAdded(type: string) {
+        super.afterResourceAdded(type);
+
+
+        this._currentTransportJobs[type]--;
     }
 
     /**

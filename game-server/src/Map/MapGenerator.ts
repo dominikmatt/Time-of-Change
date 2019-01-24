@@ -10,6 +10,7 @@ export default class MapGenerator {
 
     generate() {
         const rawTreeMatrix = require('./maps/slishou/tree-matrix.js');
+        const rawStoneMatrix = require('./maps/slishou/stone-matrix.js');
         const rawRunnableMatrix = require('./maps/slishou/runnable-matrix.js');
 
         for (let x = 0; x < this._map.xMax; x++) {
@@ -26,13 +27,18 @@ export default class MapGenerator {
                     rawTreeMatrix[x][z] = hasTree;
                 }
 
+                if ('undefined' === typeof rawStoneMatrix[x][z]) {
+                    rawStoneMatrix[x][z] = false;
+                }
+
                 this._map.updateCoordinate(x, z, {
                     x,
                     z,
                     runnable: !!(!rawTreeMatrix[x][z] && rawRunnableMatrix[x][z]),
                     street: false,
                     resourceKey: 'grass',
-                    hasTree: rawTreeMatrix[x][z] || false
+                    hasTree: rawTreeMatrix[x][z],
+                    hasStone: rawStoneMatrix[x][z],
                 });
             }
         }

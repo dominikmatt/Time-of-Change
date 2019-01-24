@@ -50,6 +50,7 @@ class Building {
                     runnable: type === 2,
                     building: this._id,
                     hasTree: false,
+                    hasStone: false,
                 });
                 // Set door position;
                 if (2 === type) {
@@ -69,6 +70,7 @@ class Building {
             runnable: true,
             building: this._id,
             hasTree: false,
+            hasStone: false,
         });
     }
     beforeUpdate() { }
@@ -123,12 +125,14 @@ class Building {
     destroy() {
         throw new Error('Implement destroy on Buildings.');
     }
+    afterResourceAdded(type) { }
     addBuildResource(type) {
         this._buildResources[type]++;
         this.addBuildJob();
     }
     addResource(type) {
         this._resources[type]++;
+        this.afterResourceAdded(type);
     }
     increaseHealth() {
         this._health.currentHealth += 50;

@@ -26,8 +26,6 @@ class Core {
             .catch((error) => { throw new Error(error); });
     }
     addPlayer(player) {
-        console.log('add player');
-        console.log(player);
         this._players[player.token] = player;
     }
     emitAll(event, value) {

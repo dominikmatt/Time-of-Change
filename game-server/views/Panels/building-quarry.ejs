@@ -1,9 +1,16 @@
+<br class="panel-content">
+<h3>Steinbruch</h3>
+
 <% if (true === completelyBuilt) { %>
-    <div class="panel-content">
-        <h3>Steinbruch</h3>
+    Arbeiter:
+    <% if (character) { %>
+        Ja
+    <% } else { %>
+        Nein
+    <% } %>
+    <br />
+    Lager: <%= currentStonesStore %>
     </div>
-
-
 <% } else { %>
     Baubarbeiten laufen...
 <% } %>

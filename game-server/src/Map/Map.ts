@@ -3,6 +3,7 @@ import Core from "../Core";
 import {PositionInterface} from "../Components/PositionComponent";
 import PF from "pathfinding";
 import MapSettingsInterface from "../Interfaces/MapSettings";
+import has = Reflect.has;
 
 class Map {
     private static instance: Map;
@@ -16,6 +17,7 @@ class Map {
     private _streetMatrix: number[][] = [];
 
     public _treeMatrix: number[][] = [];
+    public _stoneMatrix: number[][] = [];
 
     private _runnableGrid: PF.Grid;
     private _mapSettings: MapSettingsInterface;
@@ -85,6 +87,10 @@ class Map {
             if ('hasTree' === key) {
                 this._treeMatrix[x][z] = value ? 1 : 0;
             }
+
+            if ('hasStone' === key) {
+                this._stoneMatrix[x][z] = value ? 1 : 0;
+            }
         });
 
         Core.emitAll('map.update', {
@@ -130,6 +136,59 @@ class Map {
         return treePosition;
     }
 
+    /**
+     * Returns the nearest stone from a position on the map.
+     *
+     * @param startPosition
+     */
+    findStone(startPosition: PositionInterface): PositionInterface {
+        let stonePosition: PositionInterface = null;
+        let lastDista: Number = null;
+
+        // Calculate distance.
+        const distance = (start: PositionInterface, end: PositionInterface) => {
+            return Math.sqrt(Math.pow(Math.abs(start.x-end.x),2) +
+                Math.pow(Math.abs(start.z-end.z),2) +
+                Math.pow(Math.abs(start.z-end.z),2));
+        };
+
+        // Find nearest stone from doorPosition.
+        this._stoneMatrix.forEach((row, x) => {
+            row.forEach((hasStone, z) => {
+                const dista = distance({
+                        x,
+                        z
+                    },
+                    startPosition
+                );
+
+                if (null === lastDista || (dista < lastDista && 1 === hasStone)) {
+                    lastDista = dista;
+                    stonePosition = {x: x, z: z};
+                }
+            });
+        });
+
+        // Find nearest tree from doorPosition.
+        this._stoneMatrix.forEach((row, x) => {
+            row.forEach((hasStone, z) => {
+                const dista = distance({
+                        x,
+                        z
+                    },
+                    startPosition
+                );
+
+                if (null === lastDista || (dista < lastDista && 1 === hasStone)) {
+                    lastDista = dista;
+                    stonePosition = {x: x, z: z};
+                }
+            });
+        });
+
+        return stonePosition;
+    }
+
     get zMax(): number {
         return this._zMax;
     }
@@ -154,8 +213,10 @@ class Map {
             }
         }
 
+
         this._runnableGrid = new PF.Grid(runnableMatrix);
         this._treeMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
+        this._stoneMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
     }
 }
 

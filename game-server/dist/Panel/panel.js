@@ -36,7 +36,6 @@ class Panel {
         this.update();
     }
     render() {
-        console.log(this._panelInfo, this._player.playerId);
         const templateString = fs.readFileSync(`${__dirname}/../../views/Panels/${this._panelInfo.type}.ejs`, 'utf-8');
         return ejs_1.default.render(templateString, this._panelInfo.data);
     }

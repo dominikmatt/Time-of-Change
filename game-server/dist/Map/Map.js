@@ -12,6 +12,7 @@ class Map {
         this._zMax = 100;
         this._streetMatrix = [];
         this._treeMatrix = [];
+        this._stoneMatrix = [];
         this._mapSettings = require('./maps/slishou/map-settings');
         this._xMax = this._mapSettings.size.x;
         this._zMax = this._mapSettings.size.z;
@@ -53,6 +54,9 @@ class Map {
             if ('hasTree' === key) {
                 this._treeMatrix[x][z] = value ? 1 : 0;
             }
+            if ('hasStone' === key) {
+                this._stoneMatrix[x][z] = value ? 1 : 0;
+            }
         });
         Core_1.default.emitAll('map.update', Object.assign({ x: x, z: z }, data));
     }
@@ -85,6 +89,48 @@ class Map {
         });
         return treePosition;
     }
+    /**
+     * Returns the nearest stone from a position on the map.
+     *
+     * @param startPosition
+     */
+    findStone(startPosition) {
+        let stonePosition = null;
+        let lastDista = null;
+        // Calculate distance.
+        const distance = (start, end) => {
+            return Math.sqrt(Math.pow(Math.abs(start.x - end.x), 2) +
+                Math.pow(Math.abs(start.z - end.z), 2) +
+                Math.pow(Math.abs(start.z - end.z), 2));
+        };
+        // Find nearest stone from doorPosition.
+        this._stoneMatrix.forEach((row, x) => {
+            row.forEach((hasStone, z) => {
+                const dista = distance({
+                    x,
+                    z
+                }, startPosition);
+                if (null === lastDista || (dista < lastDista && 1 === hasStone)) {
+                    lastDista = dista;
+                    stonePosition = { x: x, z: z };
+                }
+            });
+        });
+        // Find nearest tree from doorPosition.
+        this._stoneMatrix.forEach((row, x) => {
+            row.forEach((hasStone, z) => {
+                const dista = distance({
+                    x,
+                    z
+                }, startPosition);
+                if (null === lastDista || (dista < lastDista && 1 === hasStone)) {
+                    lastDista = dista;
+                    stonePosition = { x: x, z: z };
+                }
+            });
+        });
+        return stonePosition;
+    }
     get zMax() {
         return this._zMax;
     }
@@ -106,6 +152,7 @@ class Map {
         }
         this._runnableGrid = new pathfinding_1.default.Grid(runnableMatrix);
         this._treeMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
+        this._stoneMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
     }
 }
 exports.default = Map.Instance;

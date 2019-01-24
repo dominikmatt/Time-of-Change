@@ -1,13 +1,13 @@
 import Character from "../Character";
 import CharacterInterface from "../CharacterInterface";
 
-export default class Woodcutter extends Character implements CharacterInterface {
+export default class Stonemason extends Character implements CharacterInterface {
     public getType(): string {
-        return 'woodcutter';
+        return 'stonemason';
     }
 
     public getBuildingType(): string {
-        return 'woodcutters';
+        return 'quarry';
     }
 
     public getNeedBuilding(): boolean {

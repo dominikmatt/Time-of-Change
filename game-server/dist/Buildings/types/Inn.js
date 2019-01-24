@@ -41,6 +41,7 @@ class Inn extends EconomyBuilding_1.default {
             this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'sausages', this));
         }
         // Add loaves transport job.
+        console.log(this._resources.loaves, this._currentTransportJobs);
         if (this._resources.loaves + this._currentTransportJobs.loaves < this._maxFoodStore) {
             this._currentTransportJobs.loaves++;
             this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'loaves', this));
@@ -50,6 +51,10 @@ class Inn extends EconomyBuilding_1.default {
             this._currentTransportJobs.beer++;
             this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'beer', this));
         }
+    }
+    afterResourceAdded(type) {
+        super.afterResourceAdded(type);
+        this._currentTransportJobs[type]--;
     }
     /**
      * Decrease sausages by 1.

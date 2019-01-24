@@ -36,8 +36,8 @@ export default class Woodcutters extends EconomyBuilding implements BuildingInte
 
     protected getBuildingData() {
         return {
-            maxTreeTrunksStore: this._maxTreeTrunksStore,
-            currentTreeTrunksStore: this._currentTreeTrunksStore
+            maxStoneTrunksStore: this._maxTreeTrunksStore,
+            currentStonesStore: this._currentTreeTrunksStore
         };
     }
 

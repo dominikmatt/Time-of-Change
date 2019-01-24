@@ -29,8 +29,8 @@ class Woodcutters extends EconomyBuilding_1.default {
     }
     getBuildingData() {
         return {
-            maxTreeTrunksStore: this._maxTreeTrunksStore,
-            currentTreeTrunksStore: this._currentTreeTrunksStore
+            maxStoneTrunksStore: this._maxTreeTrunksStore,
+            currentStonesStore: this._currentTreeTrunksStore
         };
     }
     beforeUpdate() {

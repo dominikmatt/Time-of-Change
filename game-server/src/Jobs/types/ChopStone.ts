@@ -5,23 +5,23 @@ import {PositionInterface} from "../../Components/PositionComponent";
 import Character from "../../Characters/Character";
 import Map from "../../Map/Map";
 import {GAME_SPEED} from "../../gameSettings";
-import Woodcutters from "../../Buildings/types/Woodcutters";
+import Quarry from "../../Buildings/types/Quarry";
 
-export default class ChopWood extends Job implements JobInterface {
-    protected readonly _type: string = 'chopWood';
-    private readonly _targetTreePosition: PositionInterface;
+export default class ChopStone extends Job implements JobInterface {
+    protected readonly _type: string = 'chopStone';
+    private readonly _targetStonePosition: PositionInterface;
     private readonly _character?: Character = null;
     private _isCharacterWalking: boolean = false;
     private _isCharacterAtStart: boolean = false;
 
     constructor(
         player: Player,
-        targetTreePosition?: PositionInterface,
+        targetStonePosition?: PositionInterface,
         character?: Character
     ) {
         super(player);
 
-        this._targetTreePosition = targetTreePosition;
+        this._targetStonePosition = targetStonePosition;
         this._character = character;
     }
 
@@ -31,7 +31,7 @@ export default class ChopWood extends Job implements JobInterface {
             _id: this._id,
             type: this.getType(),
             player: this._player.token,
-            targetTreePosition: this._targetTreePosition,
+            targetStonePosition: this._targetStonePosition,
         });
     }
 
@@ -41,7 +41,7 @@ export default class ChopWood extends Job implements JobInterface {
                 if (!this._isCharacterWalking && !this._isCharacterAtStart) {
                     const path = Map.findRunnablePath(
                         this._character.position.position,
-                        this._targetTreePosition,
+                        this._targetStonePosition,
                         true
                     );
 
@@ -52,8 +52,8 @@ export default class ChopWood extends Job implements JobInterface {
                 }
                 break;
             case 1:
-                if (this._character.position.x === this._targetTreePosition.x &&
-                    this._character.position.z === this._targetTreePosition.z
+                if (this._character.position.x === this._targetStonePosition.x &&
+                    this._character.position.z === this._targetStonePosition.z
                 ) {
                     this._isCharacterWalking = false;
 
@@ -63,8 +63,8 @@ export default class ChopWood extends Job implements JobInterface {
                         }
 
                         Map.updateCoordinate(
-                            this._targetTreePosition.x,
-                            this._targetTreePosition.z,
+                            this._targetStonePosition.x,
+                            this._targetStonePosition.z,
                             {
                                 hasTree: false,
                                 runnable: true
@@ -91,7 +91,7 @@ export default class ChopWood extends Job implements JobInterface {
                     this._character.position.z === this._character.building.doorPosition.z
                 ) {
                     this._character.job = null;
-                    (<Woodcutters>this._character.building).increaseStore();
+                    (<Quarry>this._character.building).increaseStore();
 
                     this._currentStep++;
                 }

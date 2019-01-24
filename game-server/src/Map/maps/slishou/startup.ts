@@ -16,6 +16,7 @@ class Player1 implements MapStartupInterface{
         const storehouse: Storehouse = this._player.addBuilding(BuildingFactory('storehouse', {x: 8, z: 3}, this._player, true));
 
         this._player.addBuilding(BuildingFactory('schoolhouse', {x: 8, z: 8}, this._player, true));
+        this._player.addBuilding(BuildingFactory('inn', {x: 14, z: 8}, this._player, true));
 
         storehouse.addResources({
             treeTrunks: 30,

@@ -76,6 +76,7 @@ export default abstract class Building implements DestroyAbleInterface {
                     runnable: type === 2,
                     building: this._id,
                     hasTree: false,
+                    hasStone: false,
                 });
 
                 // Set door position;
@@ -99,6 +100,7 @@ export default abstract class Building implements DestroyAbleInterface {
             runnable: true,
             building: this._id,
             hasTree: false,
+            hasStone: false,
         });
     }
 
@@ -166,6 +168,8 @@ export default abstract class Building implements DestroyAbleInterface {
         throw new Error('Implement destroy on Buildings.');
     }
 
+    protected afterResourceAdded(type: string) {}
+
     public addBuildResource(type: string) {
         (<any>this._buildResources)[type]++;
 
@@ -174,6 +178,8 @@ export default abstract class Building implements DestroyAbleInterface {
 
     public addResource(type: string) {
         (<any>this._resources)[type]++;
+
+        this.afterResourceAdded(type);
     }
 
     public increaseHealth() {
