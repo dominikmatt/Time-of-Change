@@ -38,7 +38,6 @@ class Terrain {
             heightData[x][z] = y;
         }
         this._heightData = heightData;
-        console.log(this._heightData);
     }
     /**
      * Returns the height of given coordinate.

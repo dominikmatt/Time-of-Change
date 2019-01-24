@@ -20,5 +20,6 @@ export default class GameUi {
         }
 
         actionHandler.handleAction(action, element);
+        event.preventDefault();
     }
 }

@@ -1,0 +1,17 @@
+{"producer":{"name":"Blender","version":"2.79 (sub 0)","exporter_version":"5.6.3","file":"stone.babylon"},
+"autoClear":true,"clearColor":[0.0509,0.0509,0.0509],"ambientColor":[0,0,0],"gravity":[0,-9.81,0],
+"materials":[{"name":"stone.Material.001","id":"stone.Material.001","ambient":[0.9387,0.9047,0.552],"diffuse":[0.7509,0.7237,0.4416],"specular":[0,0,0],"emissive":[0,0,0],"specularPower":50,"alpha":1,"backFaceCulling":true,"checkReadyOnlyOnce":false,"maxSimultaneousLights":4}],
+"multiMaterials":[],
+"skeletons":[],
+"meshes":[{"name":"Cube","id":"Cube","materialId":"stone.Material.001","billboardMode":0,"position":[0.5,0.5,0.5],"rotation":[0,0,0],"scaling":[0.5,0.5,0.5],"isVisible":true,"freezeWorldMatrix":false,"isEnabled":true,"checkCollisions":false,"receiveShadows":false,"pickable":true,"tags":""
+,"positions":[-1,1,-1,-1,-1,1,-1,-1,-1,-1,1,1,1,-1,1,1,1,1,1,-1,-1,1,1,-1]
+,"normals":[-0.577,0.577,-0.577,-0.577,-0.577,0.577,-0.577,-0.577,-0.577,-0.577,0.577,0.577,0.577,-0.577,0.577,0.577,0.577,0.577,0.577,-0.577,-0.577,0.577,0.577,-0.577]
+,"indices":[0,1,2,3,4,1,5,6,4,7,2,6,4,2,1,3,7,5,0,3,1,3,5,4,5,7,6,7,0,2,4,6,2,3,0,7]
+,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":8,"indexStart":0,"indexCount":36}]
+,"instances":[]}
+],
+"morphTargetManagers":[],
+"cameras":[],
+"lights":[],
+"shadowGenerators":[]
+}

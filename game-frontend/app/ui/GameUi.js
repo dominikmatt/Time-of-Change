@@ -17,6 +17,7 @@ class GameUi {
             return;
         }
         ActionHandler_1.default.handleAction(action, element);
+        event.preventDefault();
     }
 }
 exports.default = GameUi;

@@ -14,6 +14,10 @@ interface TreesInterface {
     [propName: string]: BABYLON.InstancedMesh;
 }
 
+interface StonesInterface {
+    [propName: string]: BABYLON.InstancedMesh;
+}
+
 export default class GameScene {
     private _trees: TreesInterface = {};
     private _canvas: HTMLCanvasElement;
@@ -22,6 +26,7 @@ export default class GameScene {
     private _terrain: Terrain;
     private _shadowGenerator: BABYLON.ShadowGenerator;
     private _camera: Camera;
+    private _stones: StonesInterface = {};
 
     public constructor() {
 
@@ -98,9 +103,11 @@ export default class GameScene {
             return number.length >= width ? number : new Array(width - number.length + 1).join('0') + number;
         }
 
-        const instanceName: string = 'tree' + pad(data.x, 2) + pad(data.z, 2);
+        let instanceName: string = '';
+
 
         if ('true' === data.hasTree) {
+            instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
             const tree = assetsManager.getTreeMeshByName('tree', instanceName);
 
             tree.position.x = data.x + Math.random();
@@ -110,6 +117,15 @@ export default class GameScene {
             this._trees[instanceName] = tree;
 
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
+        } else if('true' === data.hasStone) {
+            instanceName = 'stone' + pad(data.x, 2) + pad(data.z, 2);
+            const stone = assetsManager.getStoneMeshByName('stone', instanceName);
+
+            stone.position.x = data.x + 0.5;
+            stone.position.y = this._terrain.getHeight(data.x, data.z) + 0.5;
+            stone.position.z = data.z + 0.5;
+
+            this._stones[instanceName] = stone;
         } else if(this._trees[instanceName]) {
             this._trees[instanceName].dispose();
 

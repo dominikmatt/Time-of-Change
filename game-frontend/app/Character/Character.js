@@ -54,7 +54,6 @@ class Character {
         this._mesh.getScene().stopAnimation(this._mesh);
         // Find skeleton if possible
         if (this._mesh.skeleton) {
-            console.log('animation');
             this._skeleton = this._mesh.skeleton;
             // Stop skeleton animations
             this._mesh.getScene().stopAnimation(this._skeleton);

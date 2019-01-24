@@ -52,7 +52,6 @@ export default class Terrain {
         }
 
         this._heightData = heightData;
-        console.log(this._heightData);
     }
 
     /**

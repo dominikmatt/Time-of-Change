@@ -14,6 +14,7 @@ const config_1 = require("./configuration/config");
 class GameScene {
     constructor() {
         this._trees = {};
+        this._stones = {};
     }
     createScene() {
         const canvas = document.getElementById('render-canvas');
@@ -70,14 +71,23 @@ class GameScene {
             number = number + '';
             return number.length >= width ? number : new Array(width - number.length + 1).join('0') + number;
         }
-        const instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
+        let instanceName = '';
         if ('true' === data.hasTree) {
+            instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
             const tree = AssetsManager_1.default.getTreeMeshByName('tree', instanceName);
             tree.position.x = data.x + Math.random();
             tree.position.y = this._terrain.getHeight(data.x, data.z);
             tree.position.z = data.z + Math.random();
             this._trees[instanceName] = tree;
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
+        }
+        else if ('true' === data.hasStone) {
+            instanceName = 'stone' + pad(data.x, 2) + pad(data.z, 2);
+            const stone = AssetsManager_1.default.getStoneMeshByName('stone', instanceName);
+            stone.position.x = data.x + 0.5;
+            stone.position.y = this._terrain.getHeight(data.x, data.z) + 0.5;
+            stone.position.z = data.z + 0.5;
+            this._stones[instanceName] = stone;
         }
         else if (this._trees[instanceName]) {
             this._trees[instanceName].dispose();

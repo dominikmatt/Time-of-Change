@@ -10,7 +10,6 @@ class Config {
     }
     constructor() {
         let env = 'prod';
-        console.log(process.env.ELECTRON_ENV);
         if (process.env.ELECTRON_ENV) {
             env = process.env.ELECTRON_ENV;
         }
