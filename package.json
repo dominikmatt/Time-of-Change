@@ -1,12 +1,13 @@
 {
-  "name": "Time of Changes",
+  "name": "Time-of-Changes",
   "description": "",
   "author": "Dominik Matt",
   "version": "0.1.0",
-  "devDependencies": {
-    "jshint": "^2.6.0"
-  },
+  "devDependencies": {},
   "scripts": {
-    "test": "./node_modules/jshint/bin/jshint hello.js"
+    "test": "jshint hello.js"
+  },
+  "dependencies": {
+    "jshint": "^2.10.2"
   }
 }
