@@ -1,1 +1,2 @@
 const test = 'test';
+test()
