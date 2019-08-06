@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Core_1 = __importDefault(require("./Core"));
 const gameSettings_1 = require("./gameSettings");
+const gameStates_1 = require("./enums/gameStates");
 /**
  * The Tick-Class has all data of the current Tick.
  * It will be created from the game-loop.
@@ -44,6 +45,9 @@ class GameLoop {
      * Town update-method will call the Characters, Jobs, Building,… updated-method.
      */
     loop() {
+        if (gameStates_1.GameStates.Started !== Core_1.default.gameState) {
+            this.previousTick = Date.now();
+        }
         this.now = Date.now();
         this.actualTicks++;
         // Check if the needed time between two tick is reached.

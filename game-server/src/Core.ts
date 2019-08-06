@@ -2,6 +2,8 @@
 import {Tick} from "./GameLoop";
 import Player from "./Player";
 import Redis from "./Redis";
+import {GameStates} from "./enums/gameStates";
+import {Environments} from "./enums/Environments";
 
 interface PlayerObject {
     [key: string]: Player;
@@ -16,6 +18,7 @@ class Core {
     private _currentTick: Tick;
     private _players: PlayerObject = {};
     private readonly _db: Redis;
+    private _gameState: GameStates = GameStates.WaitingForPlayers;
 
     constructor() {
         this._db = new Redis(0);
@@ -30,6 +33,13 @@ class Core {
         player2redis.flushdb()
             .then(() => console.log('database cleared player 2'))
             .catch((error) => { throw new Error(error); });
+
+        // Start game immediately in development mode
+        if (Environments.development === process.env.NODE_ENV) {
+            this.gameState = GameStates.Started;
+        } else {
+            setTimeout(() => this.gameState = GameStates.Started, 300000);
+        }
     }
 
     addPlayer(player: Player) {
@@ -62,6 +72,19 @@ class Core {
 
     public static get Instance() {
         return this.instance || (this.instance = new this());
+    }
+
+    set gameState(gameState: GameStates) {
+        this.emitAll('game.update', {
+            gameState,
+            playersCount: Object.keys(this.players).length,
+        });
+
+        this._gameState = gameState;
+    }
+
+    get gameState(): GameStates {
+        return this._gameState;
     }
 }
 

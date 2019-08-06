@@ -9,6 +9,7 @@ import BuildingUpdateCommand from "./Commands/BuildingUpdateCommand";
 import CharacterUpdateCommand from "./Commands/CharacterUpdateCommand";
 import PanelUpdateCommand from "./Commands/PanelUpdateCommand";
 import config from "./configuration/config";
+import GameUpdateCommand from "./Commands/GameUpdateCommand";
 
 interface TreesInterface {
     [propName: string]: BABYLON.InstancedMesh;
@@ -85,6 +86,7 @@ export default class GameScene {
         new BuildingUpdateCommand();
         new CharacterUpdateCommand();
         new PanelUpdateCommand();
+        new GameUpdateCommand();
 
         game.gameScene.engine.runRenderLoop(() => {
             this._scene.render();

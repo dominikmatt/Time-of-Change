@@ -53,7 +53,6 @@ export default class Player {
     }
 
     public initializeTown() {
-        console.log('init');
         const startup: MapStartupInterface = require('./Map/maps/slishou/startup')[this._index];
         startup.player = this;
         startup.placeHouses();

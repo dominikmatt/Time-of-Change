@@ -5,6 +5,7 @@
   "main": "./app/main.js",
   "scripts": {
     "build:js": "node_modules/typescript/bin/tsc",
+    "start:tsc": "node_modules/typescript/bin/tsc --watch",
     "build": "ELECTRON_ENV=prod electron-builder -mwl",
     "start": "ELECTRON_ENV=dev electron ./app/main.js",
     "dist": "ELECTRON_ENV=prod npm run build"
@@ -19,10 +20,10 @@
     "babylonjs-inspector": "^3.3.0",
     "node": "10.11.0",
     "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1",
-    "typescript": "^3.0.3"
+    "socket.io-client": "^2.1.1"
   },
   "devDependencies": {
+    "typescript": "^3.5.3",
     "electron": "^1.7.9",
     "electron-builder": "^19.56.2",
     "electron-packager": "^12.2.0"

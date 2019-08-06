@@ -1,6 +1,7 @@
 import core from "./Core";
-import {GAME_SPEED, TICK_LENGTH_MS} from "./gameSettings";
+import {TICK_LENGTH_MS} from "./gameSettings";
 import Player from "./Player";
+import {GameStates} from "./enums/gameStates";
 
 /**
  * The Tick-Class has all data of the current Tick.
@@ -65,6 +66,10 @@ export default class GameLoop {
      * Town update-method will call the Characters, Jobs, Building,… updated-method.
      */
     private loop() {
+        if (GameStates.Started !== core.gameState) {
+            this.previousTick = Date.now()
+        }
+
         this.now = Date.now();
         this.actualTicks++;
 

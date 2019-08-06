@@ -79,6 +79,11 @@ io.on('connection', (socket: any) => {
             newPlayer.listenWs();
             newPlayer.initializeTown();
 
+            core.emitAll('game.update', {
+                gameState: core.gameState,
+                playersCount: Object.keys(core.players).length,
+            });
+
             socket.on('disconnect', function () {
                 console.log('disconnected');
             });

@@ -30,7 +30,6 @@ class Player {
         Core_1.default.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core_1.default.players).length === 0);
     }
     initializeTown() {
-        console.log('init');
         const startup = require('./Map/maps/slishou/startup')[this._index];
         startup.player = this;
         startup.placeHouses();

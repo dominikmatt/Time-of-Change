@@ -1,8 +1,10 @@
 import actionHandler from "./ActionHandler";
 import panel from "./panel/panel";
+import GameStateChanged from "./actions/GameStateChanged";
 
 export default class GameUi {
     constructor() {
+        new GameStateChanged();
         this.bindDOMEvents();
         panel.start();
     }

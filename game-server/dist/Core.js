@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Redis_1 = __importDefault(require("./Redis"));
+const gameStates_1 = require("./enums/gameStates");
+const Environments_1 = require("./enums/Environments");
 ;
 /**
  * The Core Class stores all data like the current tick, settings and instances of the Game.
@@ -12,6 +14,7 @@ const Redis_1 = __importDefault(require("./Redis"));
 class Core {
     constructor() {
         this._players = {};
+        this._gameState = gameStates_1.GameStates.WaitingForPlayers;
         this._db = new Redis_1.default(0);
         this._db.flushdb()
             .then(() => console.log('database cleared'))
@@ -24,6 +27,13 @@ class Core {
         player2redis.flushdb()
             .then(() => console.log('database cleared player 2'))
             .catch((error) => { throw new Error(error); });
+        // Start game immediately in development mode
+        if (Environments_1.Environments.development === process.env.NODE_ENV) {
+            this.gameState = gameStates_1.GameStates.Started;
+        }
+        else {
+            setTimeout(() => this.gameState = gameStates_1.GameStates.Started, 300000);
+        }
     }
     addPlayer(player) {
         this._players[player.token] = player;
@@ -48,6 +58,16 @@ class Core {
     }
     static get Instance() {
         return this.instance || (this.instance = new this());
+    }
+    set gameState(gameState) {
+        this.emitAll('game.update', {
+            gameState,
+            playersCount: Object.keys(this.players).length,
+        });
+        this._gameState = gameState;
+    }
+    get gameState() {
+        return this._gameState;
     }
 }
 exports.default = Core.Instance;

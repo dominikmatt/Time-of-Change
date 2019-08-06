@@ -31,7 +31,7 @@ class ActionHandler {
                 });
                 modalEl.style.display = 'none';
                 backdropEl.style.display = 'none';
-                break;
+            break;
         }
     }
 }

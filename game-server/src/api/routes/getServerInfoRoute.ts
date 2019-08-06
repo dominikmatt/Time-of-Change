@@ -12,7 +12,7 @@ const getServerInfo = (req: express.Request, res: express.Response): void => {
                         current: players.length,
                     },
                     status: {
-                        gameStatus: 'WAITING_FOR_PLAYERS',
+                        gameStatus: Core.gameState,
                     },
                     name: process.env.GAME_SERVER_NAME,
                 });

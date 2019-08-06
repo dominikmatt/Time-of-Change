@@ -1,1 +1,0 @@
-{"version":3,"file":"Hero.js","sourceRoot":"","sources":["../../../../../../game-server/src/Characters/types/Hero.ts"],"names":[],"mappings":";;AAAA,4CAAqC;AAMrC,MAAqB,IAAK,SAAQ,mBAAS;IAChC,OAAO;QACV,OAAO,MAAM,CAAC;IAClB,CAAC;IAES,gBAAgB;QACtB,OAAO,EACN,CAAC;IACN,CAAC;IAES,OAAO;QACb,wBAAwB;QACxB,OAAO;IACX,CAAC;CACJ;AAdD,uBAcC"}
