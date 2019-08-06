@@ -45,3 +45,13 @@ This command is thrown when a panel has new information.
 | Parameter     | Required      | Type              | Description           |
 | ------------- |:-------------:|:-----------------:|:----------------------|
 
+### game.update
+This command is thrown when a game-state has been updated.
+
+##### Parameters
+- Full character information.
+
+| Parameter     | Required      | Type              | Description           |
+| ------------- |:-------------:|:-----------------:|:----------------------|
+| gameStatus    | false         | String            | GameStates value      |
+
