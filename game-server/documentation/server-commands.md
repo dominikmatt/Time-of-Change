@@ -51,7 +51,7 @@ This command is thrown when a game-state has been updated.
 ##### Parameters
 - Full character information.
 
-| Parameter     | Required      | Type              | Description           |
-| ------------- |:-------------:|:-----------------:|:----------------------|
-| gameStatus    | false         | String            | GameStates value      |
-
+| Parameter     | Required      | Type              | Description             |
+| ------------- |:-------------:|:-----------------:|:------------------------|
+| gameStatus    | false         | String            | GameStates value        |
+| playersCount  | false         | Int               | Connected players count |
