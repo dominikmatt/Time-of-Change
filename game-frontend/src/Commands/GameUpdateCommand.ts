@@ -12,6 +12,7 @@ export default class GameUpdateCommand extends Command {
     }
 
     execute(req: RequestInterface) {
+        console.log(req)
         if (req.gameState) {
             gameStateChangedEvent.trigger({
                 gameState: req.gameState,

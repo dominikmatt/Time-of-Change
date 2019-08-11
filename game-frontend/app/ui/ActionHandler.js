@@ -16,6 +16,9 @@ class ActionHandler {
             case 'buildBuildingSelect':
                 const buildBuildingSelect = new BuildBuildingSelect_1.default(element.dataset.type);
                 break;
+            case 'buildFieldSelect':
+                const buildFieldSelect = new BuildBuildingSelect_1.default(element.dataset.type);
+                break;
             case 'createCharacter':
                 const createCharacter = new CreateCharacter_1.default(element);
                 break;

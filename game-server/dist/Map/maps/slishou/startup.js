@@ -12,7 +12,7 @@ class Player1 {
         this._player.addCharacter(CharacterFactory_1.default('serf', 'start', this._player));
         const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', { x: 8, z: 3 }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8, z: 8 }, this._player, true));
-        this._player.addBuilding(BuildingFactory_1.default('inn', { x: 14, z: 8 }, this._player, true));
+        this._player.addBuilding(BuildingFactory_1.default('farm', { x: 14, z: 8 }, this._player, true));
         storehouse.addResources({
             treeTrunks: 30,
             stones: 60,

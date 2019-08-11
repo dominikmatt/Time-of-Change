@@ -10,6 +10,7 @@ class GameUpdateCommand extends Command_1.default {
         return 'game.update';
     }
     execute(req) {
+        console.log(req);
         if (req.gameState) {
             GameStateChangedEvent_1.default.trigger({
                 gameState: req.gameState,

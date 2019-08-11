@@ -7,6 +7,7 @@ import Hero from "./types/Hero";
 import Woodkutter from "./types/Woodkutter";
 import Carpenter from "./types/Carpenter";
 import Stonemason from "./types/Stonemason";
+import Farmer from "./types/Farmer";
 
 interface CharacterMapping {
     [key:string]: any;
@@ -19,6 +20,7 @@ const characterMapping: CharacterMapping = {
     woodkutter: Woodkutter,
     carpenter: Carpenter,
     stonemason: Stonemason,
+    farmer: Farmer,
 };
 
 /**

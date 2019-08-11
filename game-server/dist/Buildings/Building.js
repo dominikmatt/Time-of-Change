@@ -49,6 +49,7 @@ class Building {
                 Map_1.default.updateCoordinate(x, z, {
                     runnable: type === 2,
                     building: this._id,
+                    hasField: false,
                     hasTree: false,
                     hasStone: false,
                 });
@@ -69,6 +70,7 @@ class Building {
         Map_1.default.updateCoordinate(this.outsidePosition.x, this.outsidePosition.z, {
             runnable: true,
             building: this._id,
+            hasField: false,
             hasTree: false,
             hasStone: false,
         });

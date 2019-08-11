@@ -18,6 +18,7 @@ class Map {
 
     public _treeMatrix: number[][] = [];
     public _stoneMatrix: number[][] = [];
+    public _fieldMatrix: number[][] = [];
 
     private _runnableGrid: PF.Grid;
     private _mapSettings: MapSettingsInterface;
@@ -91,12 +92,16 @@ class Map {
             if ('hasStone' === key) {
                 this._stoneMatrix[x][z] = value ? 1 : 0;
             }
+
+            if ('field' === key) {
+                this._fieldMatrix[x][z] = value;
+            }
         });
 
         Core.emitAll('map.update', {
             x: x,
             z: z,
-            ...data
+            ...data,
         });
     }
 
@@ -217,6 +222,7 @@ class Map {
         this._runnableGrid = new PF.Grid(runnableMatrix);
         this._treeMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
         this._stoneMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
+        this._fieldMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
     }
 }
 

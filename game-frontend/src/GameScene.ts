@@ -119,6 +119,15 @@ export default class GameScene {
             this._trees[instanceName] = tree;
 
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
+        } else if('false' !== data.field) {
+            instanceName = 'field' + pad(data.x, 2) + pad(data.z, 2);
+            const acre = assetsManager.getFieldMeshByName('acre', instanceName);
+
+            acre.position.x = data.x + 0.5;
+            acre.position.y = this._terrain.getHeight(data.x, data.z);
+            acre.position.z = data.z + 0.5;
+
+            this._stones[instanceName] = acre;
         } else if('true' === data.hasStone) {
             instanceName = 'stone' + pad(data.x, 2) + pad(data.z, 2);
             const stone = assetsManager.getStoneMeshByName('stone', instanceName);

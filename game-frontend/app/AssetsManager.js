@@ -27,6 +27,7 @@ class AssetsManager {
             this.loadAssets('terrain', 'maps/slishou', 'slishou1.babylon');
             this.loadAssets('tree', 'terrain', 'tree001.babylon');
             this.loadAssets('stone', 'terrain', 'stone.babylon');
+            this.loadAssets('acre', 'fields', 'acre.babylon');
             this.loadAssets('storehouse', 'buildings', 'storehouse.babylon');
             this.loadAssets('schoolhouse', 'buildings', 'schoolhouse.babylon');
             this.loadAssets('woodcutters', 'buildings', 'woodcutters.babylon');
@@ -92,6 +93,14 @@ class AssetsManager {
         return null;
     }
     getStoneMeshByName(name, instanceName) {
+        if (this._meshesStore[name]) {
+            const stone = this._meshesStore[name][0];
+            stone.position = BABYLON.Vector3.Zero();
+            return this._meshesStore[name][0].createInstance(instanceName);
+        }
+        return null;
+    }
+    getFieldMeshByName(name, instanceName) {
         if (this._meshesStore[name]) {
             const stone = this._meshesStore[name][0];
             stone.position = BABYLON.Vector3.Zero();

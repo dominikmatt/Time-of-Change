@@ -12,7 +12,7 @@ class ConnectionService {
     }
     connect(token) {
         return new Promise((resolve) => {
-            console.info(`ToC: test  Connected to game-server. ${config_1.default.get('connection').ws}`);
+            console.info(`ToC:  Connected to game-server. ${config_1.default.get('connection').ws}`);
             this._socket = io(config_1.default.get('connection').ws, {
                 secure: config_1.default.get('connection').ssl,
                 query: {
