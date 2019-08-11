@@ -47,10 +47,10 @@ class Map {
         lastPositionRunnable: boolean = false
     ): number[][] {
         const runnableGrid = this._runnableGrid.clone();
+
+        // allowDiagonal not in d.ts file.
         // @ts-ignore
-        const finder = new PF.AStarFinder({
-            allowDiagonal: true
-        });
+        const finder = new PF.AStarFinder({ allowDiagonal: true });
 
         if (true === lastPositionRunnable) {
             runnableGrid.setWalkableAt(target.x, target.z, true);

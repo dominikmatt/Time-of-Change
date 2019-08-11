@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ActionHandler_1 = require("./ActionHandler");
 const panel_1 = require("./panel/panel");
+const GameStateChanged_1 = require("./actions/GameStateChanged");
 class GameUi {
     constructor() {
+        new GameStateChanged_1.default();
         this.bindDOMEvents();
         panel_1.default.start();
     }

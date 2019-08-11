@@ -11,6 +11,7 @@ const BuildingUpdateCommand_1 = require("./Commands/BuildingUpdateCommand");
 const CharacterUpdateCommand_1 = require("./Commands/CharacterUpdateCommand");
 const PanelUpdateCommand_1 = require("./Commands/PanelUpdateCommand");
 const config_1 = require("./configuration/config");
+const GameUpdateCommand_1 = require("./Commands/GameUpdateCommand");
 class GameScene {
     constructor() {
         this._trees = {};
@@ -56,6 +57,7 @@ class GameScene {
         new BuildingUpdateCommand_1.default();
         new CharacterUpdateCommand_1.default();
         new PanelUpdateCommand_1.default();
+        new GameUpdateCommand_1.default();
         Game_1.default.gameScene.engine.runRenderLoop(() => {
             this._scene.render();
             this._camera.update();

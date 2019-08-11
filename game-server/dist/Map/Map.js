@@ -28,10 +28,9 @@ class Map {
      */
     findRunnablePath(start, target, lastPositionRunnable = false) {
         const runnableGrid = this._runnableGrid.clone();
+        // allowDiagonal not in d.ts file.
         // @ts-ignore
-        const finder = new pathfinding_1.default.AStarFinder({
-            allowDiagonal: true
-        });
+        const finder = new pathfinding_1.default.AStarFinder({ allowDiagonal: true });
         if (true === lastPositionRunnable) {
             runnableGrid.setWalkableAt(target.x, target.z, true);
         }

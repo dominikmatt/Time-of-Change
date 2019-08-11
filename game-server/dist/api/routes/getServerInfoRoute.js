@@ -14,7 +14,7 @@ const getServerInfo = (req, res) => {
                 current: players.length,
             },
             status: {
-                gameStatus: 'WAITING_FOR_PLAYERS',
+                gameStatus: Core_1.default.gameState,
             },
             name: process.env.GAME_SERVER_NAME,
         });
