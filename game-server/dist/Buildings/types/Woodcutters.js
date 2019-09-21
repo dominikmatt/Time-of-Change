@@ -17,7 +17,7 @@ class Woodcutters extends EconomyBuilding_1.default {
         this._maxTreeTrunksStore = 5;
         this._matrix = [
             [1, 1, 1],
-            [1, 2, 1]
+            [2, 1, 1]
         ];
         this._currentTreeTrunksStore = 0;
         this._cost = new CostComponent_1.default({

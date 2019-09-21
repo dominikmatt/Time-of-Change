@@ -21,7 +21,7 @@ class Quarry extends EconomyBuilding_1.default {
         ];
         this._currentStonesStore = 0;
         this._cost = new CostComponent_1.default({
-            timber: 3,
+            timber: 2,
             stones: 2
         });
         this.build(alreadyBuilt);

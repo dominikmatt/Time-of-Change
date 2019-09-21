@@ -21,7 +21,7 @@ class Sawmill extends EconomyBuilding_1.default {
         };
         this._matrix = [
             [1, 1, 1],
-            [1, 2, 1],
+            [1, 1, 2],
         ];
         this._treeTrunksTransportJobsCount = 0;
         this._cost = new CostComponent_1.default({

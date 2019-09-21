@@ -10,9 +10,9 @@ class Inn extends EconomyBuilding_1.default {
     constructor(player, position, alreadyBuilt = false) {
         super(player, position);
         this._matrix = [
-            [1, 1, 1],
-            [1, 1, 1],
-            [1, 2, 1],
+            [1, 1, 1, 1],
+            [1, 1, 1, 1],
+            [1, 2, 1, 1],
         ];
         this._maxFoodStore = 5;
         this._currentTransportJobs = {
@@ -41,7 +41,6 @@ class Inn extends EconomyBuilding_1.default {
             this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'sausages', this));
         }
         // Add loaves transport job.
-        console.log(this._resources.loaves, this._currentTransportJobs);
         if (this._resources.loaves + this._currentTransportJobs.loaves < this._maxFoodStore) {
             this._currentTransportJobs.loaves++;
             this._player.jobStore.addJob(new TransportJob_1.default(this._player, this.doorPosition, 'loaves', this));

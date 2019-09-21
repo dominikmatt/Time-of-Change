@@ -7,7 +7,6 @@ import Player from "../../Player";
 export default class Farm extends EconomyBuilding implements BuildingInterface {
     readonly _matrix: number[][] = [
         [1,1,1,1],
-        [1,1,1,1],
         [1,2,1,1],
     ];
 
@@ -15,8 +14,8 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
         super(player, position);
 
         this._cost = new CostComponent({
-            timber: 6,
-            stones: 5
+            timber: 4,
+            stones: 3
         });
 
         this.build(alreadyBuilt);

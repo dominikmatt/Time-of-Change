@@ -16,7 +16,7 @@ export default class Woodcutters extends EconomyBuilding implements BuildingInte
 
     readonly _matrix: number[][] = [
         [1,1,1],
-        [1,2,1]
+        [2,1,1]
     ];
 
     private _currentTreeTrunksStore: number = 0;
