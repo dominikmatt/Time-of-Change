@@ -20,6 +20,7 @@ export const ServerList = () => {
         ping: server.ping,
         players: `${server.players} / ${server.maxPlayers}`,
         status: server.isOnline,
+        gameStatus: server.gameStatus,
       })
     });
 
@@ -46,11 +47,11 @@ export const ServerList = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (isOnline) => (
+      render: (isOnline, record) => (
         <span>
           {true === isOnline ? (
             <Tag color={'green'}>
-              online
+              {record.gameStatus}
             </Tag>
           ) : (
             <Tag color={'volcano'}>
@@ -95,7 +96,11 @@ export const ServerList = () => {
     <React.Fragment>
       {null === gameServer && <Table dataSource={list} columns={columns}/>}
       {null !== gameServer && (
-        <Typography.Text strong={true}>Open your game.</Typography.Text>
+        <Typography.Text strong={false}>
+          1. Download game. <a href={'http://wiki.time-of-changes.com/index.php?title=Hauptseite'} target={'_blank'}>Download page</a> <br/>
+          2. Open game.<br/>
+          3. Enter your access token: <Typography.Text strong={true}>{gameToken}</Typography.Text>
+        </Typography.Text>
       )}
     </React.Fragment>
   )

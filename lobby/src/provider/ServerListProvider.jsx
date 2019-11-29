@@ -27,6 +27,7 @@ const ServerListProvider = ({ children }) => {
               players: res.data.players.current,
               maxPlayers: res.data.players.max,
               isOnline: true,
+              gameStatus: res.data.status.gameStatus
             });
 
         } catch (err) {
@@ -37,6 +38,7 @@ const ServerListProvider = ({ children }) => {
             players: 0,
             maxPlayers: 0,
             isOnline: false,
+            gameStatus: 'offline'
           });
           console.log(err);
         }
