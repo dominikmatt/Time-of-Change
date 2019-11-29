@@ -79,6 +79,7 @@ io.on('connection', (socket: any) => {
             newPlayer.listenWs();
             newPlayer.initializeTown();
 
+            console.log(core.gameState)
             core.emitAll('game.update', {
                 gameState: core.gameState,
                 playersCount: Object.keys(core.players).length,
@@ -90,4 +91,4 @@ io.on('connection', (socket: any) => {
         });
 });
 
-server.listen(9100);
+server.listen(9991);
