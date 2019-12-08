@@ -5,7 +5,6 @@ import * as expressCore from "express-serve-static-core";
 const getServerInfo = (req: express.Request, res: express.Response): void => {
     Core.db.keys(`players:*`)
         .then((players: string[]) => {
-          console.log(process.env)
             res.status(200)
                 .json({
                     players: {

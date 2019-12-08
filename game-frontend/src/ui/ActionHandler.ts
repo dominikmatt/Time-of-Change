@@ -15,7 +15,6 @@ class ActionHandler {
     }
 
     handleAction(action: string, element: HTMLElement) {
-        console.log('called action: ', action);
         switch (action) {
             case 'buildBuildingSelect':
                 const buildBuildingSelect = new BuildBuildingSelect(element.dataset.type);

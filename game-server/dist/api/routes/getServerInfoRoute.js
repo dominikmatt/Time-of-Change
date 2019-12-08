@@ -7,7 +7,6 @@ const Core_1 = __importDefault(require("../../Core"));
 const getServerInfo = (req, res) => {
     Core_1.default.db.keys(`players:*`)
         .then((players) => {
-        console.log(process.env);
         res.status(200)
             .json({
             players: {

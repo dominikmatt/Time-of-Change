@@ -13,7 +13,6 @@ class ActionHandler {
         return instance;
     }
     handleAction(action, element) {
-        console.log('called action: ', action);
         switch (action) {
             case 'buildBuildingSelect':
                 const buildBuildingSelect = new BuildBuildingSelect_1.default(element.dataset.type);
