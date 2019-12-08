@@ -72,25 +72,31 @@ export default class BuildBuildingSelect {
 
         if (pickResult && pickResult.pickedPoint) {
             const obj = <any>Object;
+            const material: StandardMaterial = <StandardMaterial>this._mesh.material;
+            let hasCollision = false;
             this.pickResult = pickResult;
 
-            this._mesh.position.x = pickResult.pickedPoint.x - 0.5;
+            this._mesh.position.x = pickResult.pickedPoint.x;
             this._mesh.position.y = 0;
-            this._mesh.position.z = pickResult.pickedPoint.z - 0.5;
+            this._mesh.position.z = pickResult.pickedPoint.z;
 
             obj.entries(builtBuildings).forEach((buildings: any) => {
                 const mesh: AbstractMesh = buildings[1]._mesh;
-                const material: StandardMaterial = <StandardMaterial>this._mesh.material;
 
-                if (this._mesh.intersectsMesh(mesh , false)) {
-                    material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-                    material.diffuseColor = new BABYLON.Color3(1, 0, 0);
-                } else {
-                    this._buildable = true;
-                    material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-                    material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+                if (true === this._mesh.intersectsMesh(mesh, false)) {
+                    hasCollision = true;
                 }
             });
+
+            // @ts-ignore
+            if (true === hasCollision) {
+                material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+                material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+            } else {
+                this._buildable = true;
+                material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+                material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+            }
         }
     }
 }

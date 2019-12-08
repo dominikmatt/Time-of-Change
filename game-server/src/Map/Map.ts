@@ -40,7 +40,7 @@ class Map {
     }
 
     /**
-     * Returns an array with all coordinates from start-position to the target.
+     * Returns an array with all coordinatesaa from start-position to the target.
      */
     public findRunnablePath(
         start: PositionInterface,
@@ -93,7 +93,7 @@ class Map {
                 this._stoneMatrix[x][z] = value ? 1 : 0;
             }
 
-            if ('field' === key) {
+            if ('hasField' === key) {
                 this._fieldMatrix[x][z] = value;
             }
         });

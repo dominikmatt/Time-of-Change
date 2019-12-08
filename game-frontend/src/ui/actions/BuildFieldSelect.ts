@@ -7,15 +7,14 @@ import {builtBuildings} from "../../Commands/BuildingUpdateCommand";
 import AbstractMesh = BABYLON.AbstractMesh;
 import StandardMaterial = BABYLON.StandardMaterial;
 
-export default class BuildBuildingSelect {
+export default class BuildFieldSelect {
     private pickResult: Nullable<PickingInfo>;
     private _mesh: BABYLON.AbstractMesh;
     private _buildable: boolean;
     private _type: string;
 
-    constructor(type: string) {
+    constructor() {
         this.pickResult = null;
-        this._type = type;
         this.load();
 
         this.bindDOMEvents();
@@ -29,8 +28,8 @@ export default class BuildBuildingSelect {
     private load() {
         BABYLON.SceneLoader.ImportMeshAsync(
             null,
-            'assets/models/buildings/',
-            'schoolhouse.babylon',
+            'assets/models/fields/',
+            'acre.babylon',
             game.gameScene.scene)
             .then((result) => {
                 this._mesh = result.meshes[0];
@@ -47,8 +46,7 @@ export default class BuildBuildingSelect {
             return;
         }
 
-        connectionService.socket.emit('building.create', {
-            type: this._type,
+        connectionService.socket.emit('field.create', {
             position: {
                 x: this.pickResult.pickedPoint.x,
                 y: 0,
@@ -67,30 +65,36 @@ export default class BuildBuildingSelect {
      */
     onMouseMove() {
         // We try to pick an object
-        var pickResult = game.gameScene.scene.pick(game.gameScene.scene.pointerX, game.gameScene.scene.pointerY);
+        const pickResult = game.gameScene.scene.pick(game.gameScene.scene.pointerX, game.gameScene.scene.pointerY);
         this._buildable = false;
 
         if (pickResult && pickResult.pickedPoint) {
             const obj = <any>Object;
+            const material: StandardMaterial = <StandardMaterial>this._mesh.material;
+            let hasCollision = false;
             this.pickResult = pickResult;
 
-            this._mesh.position.x = pickResult.pickedPoint.x - 0.5;
+            this._mesh.position.x = pickResult.pickedPoint.x;
             this._mesh.position.y = 0;
-            this._mesh.position.z = pickResult.pickedPoint.z - 0.5;
+            this._mesh.position.z = pickResult.pickedPoint.z;
 
             obj.entries(builtBuildings).forEach((buildings: any) => {
                 const mesh: AbstractMesh = buildings[1]._mesh;
-                const material: StandardMaterial = <StandardMaterial>this._mesh.material;
 
-                if (this._mesh.intersectsMesh(mesh , false)) {
-                    material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-                    material.diffuseColor = new BABYLON.Color3(1, 0, 0);
-                } else {
-                    this._buildable = true;
-                    material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-                    material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+                if (true === this._mesh.intersectsMesh(mesh , false)) {
+                    hasCollision = true;
                 }
-            });
+             });
+
+            // @ts-ignore
+            if (true === hasCollision) {
+                material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+                material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+            } else {
+                this._buildable = true;
+                material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+                material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ const CostComponent_1 = __importDefault(require("../../Components/CostComponent"
 class Farm extends EconomyBuilding_1.default {
     constructor(player, position, alreadyBuilt = false) {
         super(player, position);
+        this._maxFields = 5;
+        this._fields = [];
         this._matrix = [
             [1, 1, 1, 1],
             [1, 1, 1, 1],
@@ -18,6 +20,19 @@ class Farm extends EconomyBuilding_1.default {
             stones: 5
         });
         this.build(alreadyBuilt);
+        this.findField();
+    }
+    findField() {
+        if (true === this.completelyBuilt && this._maxFields > this._fields.length) {
+            const nearestFields = this._player.getNearestFreeFields(this.position.position);
+            if (0 < nearestFields.length) {
+                const field = nearestFields.shift();
+                field.building = this;
+                this._fields.push(field);
+            }
+        }
+    }
+    beforeUpdate() {
     }
     getBuildingData() {
         return {};

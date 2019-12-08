@@ -42,7 +42,7 @@ export default class MapGenerator {
                     runnable: !!(!rawTreeMatrix[x][z] && rawRunnableMatrix[x][z]),
                     street: false,
                     resourceKey: 'grass',
-                    field: rawFieldMatrix[x][z],
+                    hasField: rawFieldMatrix[x][z],
                     hasTree: rawTreeMatrix[x][z],
                     hasStone: rawStoneMatrix[x][z],
                 });

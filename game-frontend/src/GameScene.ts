@@ -119,7 +119,7 @@ export default class GameScene {
             this._trees[instanceName] = tree;
 
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
-        } else if('false' !== data.field) {
+        } else if('false' !== data.hasField) {
             instanceName = 'field' + pad(data.x, 2) + pad(data.z, 2);
             const acre = assetsManager.getFieldMeshByName('acre', instanceName);
 

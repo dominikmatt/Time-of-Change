@@ -25,7 +25,7 @@ class Map {
         return this.instance || (this.instance = new this());
     }
     /**
-     * Returns an array with all coordinates from start-position to the target.
+     * Returns an array with all coordinatesaa from start-position to the target.
      */
     findRunnablePath(start, target, lastPositionRunnable = false) {
         const runnableGrid = this._runnableGrid.clone();
@@ -57,7 +57,7 @@ class Map {
             if ('hasStone' === key) {
                 this._stoneMatrix[x][z] = value ? 1 : 0;
             }
-            if ('field' === key) {
+            if ('hasField' === key) {
                 this._fieldMatrix[x][z] = value;
             }
         });

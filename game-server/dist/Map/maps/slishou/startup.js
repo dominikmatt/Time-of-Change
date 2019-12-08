@@ -5,14 +5,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const CharacterFactory_1 = __importDefault(require("../../../Characters/CharacterFactory"));
 const BuildingFactory_1 = __importDefault(require("../../../Buildings/BuildingFactory"));
+const Field_1 = __importDefault(require("../../../Field/Field"));
 class Player1 {
     constructor() {
     }
     placeHouses() {
         this._player.addCharacter(CharacterFactory_1.default('serf', 'start', this._player));
-        const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', { x: 8, z: 3 }, this._player, true));
+        const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', {
+            x: 8,
+            z: 3
+        }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8, z: 8 }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('farm', { x: 14, z: 8 }, this._player, true));
+        this._player.addField(new Field_1.default({
+            position: { x: 0, z: 2 },
+        }, this._player));
+        this._player.addField(new Field_1.default({
+            position: { x: 0, z: 3 },
+        }, this._player));
         storehouse.addResources({
             treeTrunks: 30,
             stones: 60,
@@ -22,6 +32,7 @@ class Player1 {
             loaves: 30,
             sausages: 20,
         });
+        this._player.getNearestFreeFields({ x: 0, z: 0 });
     }
     set player(value) {
         this._player = value;
@@ -33,7 +44,10 @@ class Player2 {
     }
     placeHouses() {
         this._player.addCharacter(CharacterFactory_1.default('serf', 'start', this._player));
-        const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', { x: 90, z: 3 }, this._player, true));
+        const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', {
+            x: 90,
+            z: 3
+        }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('storehouse', { x: 110, z: 3 }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 90, z: 8 }, this._player, true));
         storehouse.addResources({

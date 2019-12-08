@@ -83,7 +83,7 @@ class GameScene {
             this._trees[instanceName] = tree;
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
         }
-        else if ('false' !== data.field) {
+        else if ('false' !== data.hasField) {
             instanceName = 'field' + pad(data.x, 2) + pad(data.z, 2);
             const acre = AssetsManager_1.default.getFieldMeshByName('acre', instanceName);
             acre.position.x = data.x + 0.5;

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const BuildBuildingSelect_1 = require("./actions/BuildBuildingSelect");
 const CreateCharacter_1 = require("./actions/CreateCharacter");
 const AddUser_1 = require("./../Events/AddUser");
+const BuildFieldSelect_1 = require("./actions/BuildFieldSelect");
 let instance = null;
 class ActionHandler {
     static getInstance() {
@@ -12,12 +13,13 @@ class ActionHandler {
         return instance;
     }
     handleAction(action, element) {
+        console.log('called action: ', action);
         switch (action) {
             case 'buildBuildingSelect':
                 const buildBuildingSelect = new BuildBuildingSelect_1.default(element.dataset.type);
                 break;
             case 'buildFieldSelect':
-                const buildFieldSelect = new BuildBuildingSelect_1.default(element.dataset.type);
+                const buildFieldSelect = new BuildFieldSelect_1.default();
                 break;
             case 'createCharacter':
                 const createCharacter = new CreateCharacter_1.default(element);

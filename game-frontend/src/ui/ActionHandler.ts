@@ -1,6 +1,7 @@
 import BuildBuildingSelect from "./actions/BuildBuildingSelect";
 import CreateCharacter from "./actions/CreateCharacter";
 import {default as addUserEvent} from "./../Events/AddUser";
+import BuildFieldSelect from "./actions/BuildFieldSelect";
 
 let instance: ActionHandler = null;
 
@@ -14,12 +15,13 @@ class ActionHandler {
     }
 
     handleAction(action: string, element: HTMLElement) {
+        console.log('called action: ', action);
         switch (action) {
             case 'buildBuildingSelect':
                 const buildBuildingSelect = new BuildBuildingSelect(element.dataset.type);
                 break;
             case 'buildFieldSelect':
-                const buildFieldSelect = new BuildBuildingSelect(element.dataset.type);
+                const buildFieldSelect = new BuildFieldSelect();
                 break;
             case 'createCharacter':
                 const createCharacter = new CreateCharacter(element);

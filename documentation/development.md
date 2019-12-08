@@ -5,7 +5,7 @@
 Goto `dev-infra`
 Run `docker-compose up`
 Goto `game-server`
-Run `npm run start:dev`
+Run `NODE_ENV=development npm run start:dev`
 
 #### Start Game Frontend 
 Goto `game-frontend`

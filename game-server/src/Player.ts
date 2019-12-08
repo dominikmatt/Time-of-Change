@@ -11,6 +11,10 @@ import BuildingManager from "./Buildings/BuildingManager";
 import PanelBuildingSelected from "./Commands/PanelBuildingSelected";
 import MapStartupInterface from "./Interfaces/MapStartup";
 import Panel from "./Panel/panel";
+import BuildFieldCommand from "./Commands/BuildFieldCommand";
+import IAddField from "./Interfaces/AddField";
+import Field from "./Field/Field";
+import {PositionInterface} from "./Components/PositionComponent";
 
 export default class Player {
     private readonly _name: string;
@@ -18,6 +22,7 @@ export default class Player {
     private readonly _token: string;
 
     private _buildings: Array<Building> = [];
+    private _fields: Array<Field> = [];
     private _characters: Array<Character> = [];
     private readonly _jobStore: JobStore;
     private readonly _buildingManager: BuildingManager;
@@ -63,6 +68,7 @@ export default class Player {
      */
     public listenWs() {
         new BuildBuildingCommand(this);
+        new BuildFieldCommand(this);
         new GetMapDataCommand(this);
         new CreateCharacterCommand(this);
         new PanelBuildingSelected(this);
@@ -91,6 +97,17 @@ export default class Player {
         return building;
     }
 
+    /**
+     * Add a new building to the buildings list.
+     *
+     * @param {Field} field
+     */
+    public addField(field: Field): Field {
+        this._fields.push(field);
+
+        return field;
+    }
+
     public getBuildingById(buildingId: string): Building | null {
         const buildings = this._buildings.filter((building: Building) => {
             return buildingId === building.id;
@@ -115,6 +132,37 @@ export default class Player {
         }
 
         return null;
+    }
+
+    public getNearestFreeFields(position: PositionInterface): Field[] {
+        return this._fields.map((field: Field): {distance: number, field: Field} => {
+            let a = position.x - field.position.x;
+            let b = position.z - field.position.z;
+
+            if (0 > a) {
+                a = -(a);
+            }
+
+            if (0 > b) {
+                b = -(b);
+            }
+
+            const distance = Math.sqrt((a * 2) + (b * 2));
+
+            return {
+                distance,
+                field,
+            }
+        })
+            .sort((a, b): number => {
+               return a.distance - b.distance;
+            })
+            .filter((data): boolean => {
+               return null === data.field.building;
+            })
+            .map((data): Field => {
+                return data.field;
+            });
     }
 
     /**
