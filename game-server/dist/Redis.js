@@ -13,6 +13,7 @@ class Redis {
     }
     connect(index) {
         this._client = redis_1.default.createClient({
+            port: 9990,
             host: process.env.REDIS_HOST
         });
         this._client.select(index);

@@ -1,0 +1,6 @@
+version: '3.7'
+services:
+    redis:
+        image: redis:alpine
+        ports:
+            - "9990:6379"

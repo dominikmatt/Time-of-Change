@@ -1,4 +1,10 @@
 # BabylonJS-Electron
+#### Development
+```
+nvm use
+npm run start
+npm run start:tsc
+```
 
 Building
 

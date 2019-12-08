@@ -4,6 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Core_1 = __importDefault(require("../../Core"));
+/**
+ curl -POST 'http://localhost:9991/api/add-player' -d '{"token": "test2", "gameToken": "game-token2","username": "added-user"}'
+
+
+ * @param req
+ * @param res
+ */
 const addUserToGame = (req, res) => {
     const body = req.body;
     const token = body.token;

@@ -3,6 +3,13 @@ import * as expressCore from "express-serve-static-core";
 import Core from "../../Core";
 import IAddUserRequest from "../../Interfaces/AddUserRequest";
 
+/**
+ curl -POST 'http://localhost:9991/api/add-player' -d '{"token": "test2", "gameToken": "game-token2","username": "added-user"}'
+
+
+ * @param req
+ * @param res
+ */
 const addUserToGame = (req: express.Request, res: express.Response): void => {
     const body: IAddUserRequest = (<IAddUserRequest>req.body);
     const token = body.token;

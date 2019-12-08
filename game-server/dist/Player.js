@@ -11,9 +11,11 @@ const GetMapDataCommand_1 = __importDefault(require("./Commands/GetMapDataComman
 const CreateCharacterCommand_1 = __importDefault(require("./Commands/CreateCharacterCommand"));
 const BuildingManager_1 = __importDefault(require("./Buildings/BuildingManager"));
 const PanelBuildingSelected_1 = __importDefault(require("./Commands/PanelBuildingSelected"));
+const BuildFieldCommand_1 = __importDefault(require("./Commands/BuildFieldCommand"));
 class Player {
     constructor(name, token, playerId) {
         this._buildings = [];
+        this._fields = [];
         this._characters = [];
         this._name = name;
         this._token = token;
@@ -39,6 +41,7 @@ class Player {
      */
     listenWs() {
         new BuildBuildingCommand_1.default(this);
+        new BuildFieldCommand_1.default(this);
         new GetMapDataCommand_1.default(this);
         new CreateCharacterCommand_1.default(this);
         new PanelBuildingSelected_1.default(this);
@@ -61,6 +64,15 @@ class Player {
         this._buildings.push(building);
         return building;
     }
+    /**
+     * Add a new building to the buildings list.
+     *
+     * @param {Field} field
+     */
+    addField(field) {
+        this._fields.push(field);
+        return field;
+    }
     getBuildingById(buildingId) {
         const buildings = this._buildings.filter((building) => {
             return buildingId === building.id;
@@ -80,6 +92,32 @@ class Player {
             return buildings[0];
         }
         return null;
+    }
+    getNearestFreeFields(position) {
+        return this._fields.map((field) => {
+            let a = position.x - field.position.x;
+            let b = position.z - field.position.z;
+            if (0 > a) {
+                a = -(a);
+            }
+            if (0 > b) {
+                b = -(b);
+            }
+            const distance = Math.sqrt((a * 2) + (b * 2));
+            return {
+                distance,
+                field,
+            };
+        })
+            .sort((a, b) => {
+            return a.distance - b.distance;
+        })
+            .filter((data) => {
+            return null === data.field.building;
+        })
+            .map((data) => {
+            return data.field;
+        });
     }
     /**
      * Add a new building to the buildings list.

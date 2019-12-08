@@ -75,6 +75,7 @@ export default abstract class Building implements DestroyAbleInterface {
                 Map.updateCoordinate(x, z, {
                     runnable: type === 2,
                     building: this._id,
+                    hasField: false,
                     hasTree: false,
                     hasStone: false,
                 });
@@ -99,6 +100,7 @@ export default abstract class Building implements DestroyAbleInterface {
         Map.updateCoordinate(this.outsidePosition.x, this.outsidePosition.z, {
             runnable: true,
             building: this._id,
+            hasField: false,
             hasTree: false,
             hasStone: false,
         });

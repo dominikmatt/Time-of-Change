@@ -13,6 +13,7 @@ class Map {
         this._streetMatrix = [];
         this._treeMatrix = [];
         this._stoneMatrix = [];
+        this._fieldMatrix = [];
         this._mapSettings = require('./maps/slishou/map-settings');
         this._xMax = this._mapSettings.size.x;
         this._zMax = this._mapSettings.size.z;
@@ -24,7 +25,7 @@ class Map {
         return this.instance || (this.instance = new this());
     }
     /**
-     * Returns an array with all coordinates from start-position to the target.
+     * Returns an array with all coordinatesaa from start-position to the target.
      */
     findRunnablePath(start, target, lastPositionRunnable = false) {
         const runnableGrid = this._runnableGrid.clone();
@@ -55,6 +56,9 @@ class Map {
             }
             if ('hasStone' === key) {
                 this._stoneMatrix[x][z] = value ? 1 : 0;
+            }
+            if ('hasField' === key) {
+                this._fieldMatrix[x][z] = value;
             }
         });
         Core_1.default.emitAll('map.update', Object.assign({ x: x, z: z }, data));
@@ -152,6 +156,7 @@ class Map {
         this._runnableGrid = new pathfinding_1.default.Grid(runnableMatrix);
         this._treeMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
         this._stoneMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
+        this._fieldMatrix = JSON.parse(JSON.stringify(this._streetMatrix));
     }
 }
 exports.default = Map.Instance;
