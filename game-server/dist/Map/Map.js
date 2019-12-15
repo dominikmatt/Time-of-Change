@@ -61,7 +61,8 @@ class Map {
                 this._fieldMatrix[x][z] = value;
             }
         });
-        Core_1.default.emitAll('map.update', Object.assign({ x: x, z: z }, data));
+        const eventData = Object.assign({ x: x, z: z }, data);
+        Core_1.default.emitAll('map.update', eventData);
     }
     /**
      * Returns the nearest tree from a position on the map.

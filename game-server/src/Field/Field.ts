@@ -6,7 +6,7 @@ import Building from "../Buildings/Building";
 import Map from "../Map/Map";
 
 export default class Field {
-    protected _id: string =  uuidv1();
+    private _id: string =  uuidv1();
 
     protected readonly _player: Player;
     private _position: PositionComponent;
@@ -26,6 +26,10 @@ export default class Field {
             hasTree: false,
             hasStone: false,
         });
+    }
+
+    get id(): string {
+        return this._id;
     }
 
     get building(): Building {

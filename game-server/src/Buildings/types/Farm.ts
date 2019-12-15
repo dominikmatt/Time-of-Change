@@ -23,8 +23,6 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
         });
 
         this.build(alreadyBuilt);
-
-        this.findField();
     }
 
     protected findField() {
@@ -40,6 +38,7 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
     }
 
     protected beforeUpdate() {
+        this.findField();
     }
 
     protected getBuildingData() {

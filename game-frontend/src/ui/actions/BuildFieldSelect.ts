@@ -1,3 +1,4 @@
+import * as BABYLON from 'babylonjs'
 import game from "../../Game";
 import connectionService from "../../services/connection";
 import {event} from "../../services/DOMEvent";

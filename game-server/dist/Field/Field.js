@@ -22,6 +22,9 @@ class Field {
             hasStone: false,
         });
     }
+    get id() {
+        return this._id;
+    }
     get building() {
         return this._building;
     }

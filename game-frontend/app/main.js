@@ -15,7 +15,10 @@ function createWindow() {
         icon: path.join(__dirname, '../assets/icons/64x64.png'),
         title: 'Time of Changes',
         frame: true,
-        resizable: true
+        resizable: true,
+        webPreferences: {
+            nodeIntegration: true
+        }
     });
     if (!config_1.default.get('app').debug) {
         mainWindow.maximize();
@@ -29,6 +32,7 @@ function createWindow() {
     }));
     // Open the DevTools.
     if (config_1.default.get('app').debug) {
+        mainWindow.maximize();
         mainWindow.webContents.openDevTools();
     }
     // Emitted when the window is closed.
@@ -39,13 +43,8 @@ function createWindow() {
         mainWindow = null;
     });
     electron_1.protocol.registerStringProtocol('tocgame', (request, callback) => {
-        let url = request.url.substr(7);
-        console.log('url: %s', url);
-        callback('It works!');
-    }, (err) => {
-        if (!err) {
-            console.log('Registered protocol succesfully');
-        }
+        const uri = request.url;
+        console.log(uri);
     });
     electron_1.app.setAsDefaultProtocolClient('tocgame://');
 }

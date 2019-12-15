@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const BABYLON = require("babylonjs");
 const Game_1 = require("../Game");
 const AssetsManager_1 = require("../AssetsManager");
 ;

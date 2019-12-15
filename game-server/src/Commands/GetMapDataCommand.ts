@@ -20,6 +20,10 @@ export default class GetMapDataCommand extends Command {
                     .then((mapData: MapDataInterface) => {
                         mapData.x = parseInt(mapData.x);
                         mapData.z = parseInt(mapData.z);
+                        mapData.runnable = 'true' === mapData.runnable;
+                        mapData.hasTree = 'true' === mapData.hasTree;
+                        mapData.hasStone = 'true' === mapData.hasStone;
+                        mapData.hasField = 'true' === mapData.hasField;
 
                         this.player.wsSocket.emit('map.update', mapData);
                     });
