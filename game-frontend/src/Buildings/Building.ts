@@ -1,7 +1,6 @@
+import * as BABYLON from 'babylonjs'
 import {default as game} from "../Game";
 import PositionInterface from "../interfaces/PositionInterface";
-import buildingMapping from "./buildingMapping";
-import AbstractMesh = BABYLON.AbstractMesh;
 import assetsManager from "../AssetsManager";
 
 interface ColorsInterface {

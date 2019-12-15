@@ -5,7 +5,6 @@ const Terrain_1 = require("./Terrain");
 const AssetsManager_1 = require("./AssetsManager");
 const Game_1 = require("./Game");
 const Camera_1 = require("./Camera");
-const babylonjs_inspector_1 = require("babylonjs-inspector");
 const MapUpdateCommand_1 = require("./Commands/MapUpdateCommand");
 const BuildingUpdateCommand_1 = require("./Commands/BuildingUpdateCommand");
 const CharacterUpdateCommand_1 = require("./Commands/CharacterUpdateCommand");
@@ -46,7 +45,7 @@ class GameScene {
         this._shadowGenerator.useKernelBlur = true;
         this._shadowGenerator.blurKernel = 64;
         if (config_1.default.get('app').debug) {
-            new babylonjs_inspector_1.Inspector(this._scene, false, 0, null);
+            scene.debugLayer.show();
         }
     }
     /**

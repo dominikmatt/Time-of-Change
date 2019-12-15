@@ -3,7 +3,6 @@ import Terrain from "./Terrain";
 import assetsManager from "./AssetsManager";
 import game from "./Game";
 import Camera from "./Camera";
-import { Inspector } from "babylonjs-inspector";
 import MapUpdateCommand from "./Commands/MapUpdateCommand";
 import BuildingUpdateCommand from "./Commands/BuildingUpdateCommand";
 import CharacterUpdateCommand from "./Commands/CharacterUpdateCommand";
@@ -78,7 +77,7 @@ export default class GameScene {
         this._shadowGenerator.blurKernel = 64;
 
         if (config.get('app').debug) {
-            new Inspector(this._scene, false, 0, null);
+            scene.debugLayer.show();
         }
     }
 

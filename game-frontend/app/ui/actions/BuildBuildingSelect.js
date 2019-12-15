@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const BABYLON = require("babylonjs");
 const Game_1 = require("../../Game");
 const connection_1 = require("../../services/connection");
 const DOMEvent_1 = require("../../services/DOMEvent");

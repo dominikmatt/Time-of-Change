@@ -1,3 +1,4 @@
+import * as BABYLON from 'babylonjs'
 import {default as game} from "../Game";
 import PositionInterface, {WalkPositionInterface} from "../interfaces/PositionInterface";
 import assetsManager from "../AssetsManager";
