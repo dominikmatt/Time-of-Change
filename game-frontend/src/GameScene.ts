@@ -10,12 +10,17 @@ import CharacterUpdateCommand from "./Commands/CharacterUpdateCommand";
 import PanelUpdateCommand from "./Commands/PanelUpdateCommand";
 import config from "./configuration/config";
 import GameUpdateCommand from "./Commands/GameUpdateCommand";
+import PositionInterface, {WalkPositionInterface} from "./interfaces/PositionInterface";
 
 interface TreesInterface {
     [propName: string]: BABYLON.InstancedMesh;
 }
 
 interface StonesInterface {
+    [propName: string]: BABYLON.InstancedMesh;
+}
+
+interface FieldInterface {
     [propName: string]: BABYLON.InstancedMesh;
 }
 
@@ -28,6 +33,7 @@ export default class GameScene {
     private _shadowGenerator: BABYLON.ShadowGenerator;
     private _camera: Camera;
     private _stones: StonesInterface = {};
+    private _fields: FieldInterface = {};
 
     public constructor() {
 
@@ -107,8 +113,7 @@ export default class GameScene {
 
         let instanceName: string = '';
 
-
-        if ('true' === data.hasTree) {
+        if (true === data.hasTree) {
             instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
             const tree = assetsManager.getTreeMeshByName('tree', instanceName);
 
@@ -119,16 +124,27 @@ export default class GameScene {
             this._trees[instanceName] = tree;
 
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
-        } else if('false' !== data.hasField) {
+        } else if(true === data.hasField) {
             instanceName = 'field' + pad(data.x, 2) + pad(data.z, 2);
             const acre = assetsManager.getFieldMeshByName('acre', instanceName);
 
             acre.position.x = data.x + 0.5;
             acre.position.y = this._terrain.getHeight(data.x, data.z);
             acre.position.z = data.z + 0.5;
+            acre.metadata = {
+                isField: true,
+                position: {
+                    x: data.x,
+                    z: data.z,
+                },
+            };
 
-            this._stones[instanceName] = acre;
-        } else if('true' === data.hasStone) {
+            this._fields[instanceName] = acre;
+
+            if (false === data.hasTree) {
+                this.removeTree('tree' + pad(data.x, 2) + pad(data.z, 2));
+            }
+        } else if(true === data.hasStone) {
             instanceName = 'stone' + pad(data.x, 2) + pad(data.z, 2);
             const stone = assetsManager.getStoneMeshByName('stone', instanceName);
 
@@ -137,10 +153,20 @@ export default class GameScene {
             stone.position.z = data.z + 0.5;
 
             this._stones[instanceName] = stone;
-        } else if(this._trees[instanceName]) {
+        } else {
+            this.removeTree('tree' + pad(data.x, 2) + pad(data.z, 2))
+        }
+    }
+
+    /**
+     * FIXME: Remove tree on runtime.
+     * @param instanceName
+     */
+    private removeTree(instanceName: string) {
+        if(this._trees[instanceName]) {
             this._trees[instanceName].dispose();
 
-            this._trees[instanceName] = null
+            this._trees[instanceName] = null;
         }
     }
 

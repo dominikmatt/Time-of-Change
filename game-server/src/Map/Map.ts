@@ -4,6 +4,7 @@ import {PositionInterface} from "../Components/PositionComponent";
 import PF from "pathfinding";
 import MapSettingsInterface from "../Interfaces/MapSettings";
 import has = Reflect.has;
+import {MapDataInterface} from "./MapDataInterface";
 
 class Map {
     private static instance: Map;
@@ -98,11 +99,13 @@ class Map {
             }
         });
 
-        Core.emitAll('map.update', {
+        const eventData: MapDataInterface = {
             x: x,
             z: z,
             ...data,
-        });
+        };
+
+        Core.emitAll('map.update', eventData);
     }
 
     /**

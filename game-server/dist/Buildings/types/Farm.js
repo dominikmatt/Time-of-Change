@@ -20,7 +20,6 @@ class Farm extends EconomyBuilding_1.default {
             stones: 5
         });
         this.build(alreadyBuilt);
-        this.findField();
     }
     findField() {
         if (true === this.completelyBuilt && this._maxFields > this._fields.length) {
@@ -33,6 +32,7 @@ class Farm extends EconomyBuilding_1.default {
         }
     }
     beforeUpdate() {
+        this.findField();
     }
     getBuildingData() {
         return {};

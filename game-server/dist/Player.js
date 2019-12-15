@@ -12,6 +12,7 @@ const CreateCharacterCommand_1 = __importDefault(require("./Commands/CreateChara
 const BuildingManager_1 = __importDefault(require("./Buildings/BuildingManager"));
 const PanelBuildingSelected_1 = __importDefault(require("./Commands/PanelBuildingSelected"));
 const BuildFieldCommand_1 = __importDefault(require("./Commands/BuildFieldCommand"));
+const PanelFieldSelected_1 = __importDefault(require("./Commands/PanelFieldSelected"));
 class Player {
     constructor(name, token, playerId) {
         this._buildings = [];
@@ -45,6 +46,7 @@ class Player {
         new GetMapDataCommand_1.default(this);
         new CreateCharacterCommand_1.default(this);
         new PanelBuildingSelected_1.default(this);
+        new PanelFieldSelected_1.default(this);
     }
     update() {
         this._buildings.forEach((building) => {
@@ -118,6 +120,15 @@ class Player {
             .map((data) => {
             return data.field;
         });
+    }
+    getFieldByPosition(position) {
+        const field = this._fields.find(field => {
+            return field.position.position.x === position.x && field.position.z === position.z;
+        });
+        if (!field) {
+            return null;
+        }
+        return field;
     }
     /**
      * Add a new building to the buildings list.

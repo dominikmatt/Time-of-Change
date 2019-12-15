@@ -26,10 +26,15 @@ class Panel {
             return;
         }
         const pickResult = Game_1.default.gameScene.scene.pick(Game_1.default.gameScene.scene.pointerX, Game_1.default.gameScene.scene.pointerY);
-        if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
+        if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata) {
             return;
         }
-        if (true === pickResult.pickedMesh.metadata.isBuilding) {
+        if (true === pickResult.pickedMesh.metadata.isField) {
+            connection_1.default.socket.emit('panel.field.selected', {
+                position: pickResult.pickedMesh.metadata.position,
+            });
+        }
+        if (true === pickResult.pickedMesh.metadata.isBuilding && pickResult.pickedMesh.metadata.key) {
             this.selectedBuildingId = pickResult.pickedMesh.metadata.buildingId;
             connection_1.default.socket.emit('panel.building.selected', {
                 buildingId: this.selectedBuildingId,

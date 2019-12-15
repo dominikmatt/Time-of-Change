@@ -6,6 +6,7 @@ let instance: Panel = null;
 
 class Panel {
     private _selectedBuildingId: string;
+    private _selectedFieldId: string;
     private _selectedBuildingIsReady: boolean;
 
     public static getInstance(): Panel {
@@ -35,11 +36,17 @@ class Panel {
 
         const pickResult: BABYLON.PickingInfo | null = game.gameScene.scene.pick(game.gameScene.scene.pointerX, game.gameScene.scene.pointerY);
 
-        if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata || !pickResult.pickedMesh.metadata.key) {
+        if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata) {
             return;
         }
 
-        if (true === pickResult.pickedMesh.metadata.isBuilding) {
+        if (true === pickResult.pickedMesh.metadata.isField) {
+            connectionService.socket.emit('panel.field.selected', {
+                position: pickResult.pickedMesh.metadata.position,
+            });
+        }
+
+        if (true === pickResult.pickedMesh.metadata.isBuilding && pickResult.pickedMesh.metadata.key) {
             this.selectedBuildingId = pickResult.pickedMesh.metadata.buildingId;
 
             connectionService.socket.emit('panel.building.selected', {

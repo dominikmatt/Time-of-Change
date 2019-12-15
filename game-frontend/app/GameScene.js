@@ -16,6 +16,7 @@ class GameScene {
     constructor() {
         this._trees = {};
         this._stones = {};
+        this._fields = {};
     }
     createScene() {
         const canvas = document.getElementById('render-canvas');
@@ -74,7 +75,7 @@ class GameScene {
             return number.length >= width ? number : new Array(width - number.length + 1).join('0') + number;
         }
         let instanceName = '';
-        if ('true' === data.hasTree) {
+        if (true === data.hasTree) {
             instanceName = 'tree' + pad(data.x, 2) + pad(data.z, 2);
             const tree = AssetsManager_1.default.getTreeMeshByName('tree', instanceName);
             tree.position.x = data.x + Math.random();
@@ -83,15 +84,25 @@ class GameScene {
             this._trees[instanceName] = tree;
             //this._shadowGenerator.getShadowMap().renderList.push(tree);
         }
-        else if ('false' !== data.hasField) {
+        else if (true === data.hasField) {
             instanceName = 'field' + pad(data.x, 2) + pad(data.z, 2);
             const acre = AssetsManager_1.default.getFieldMeshByName('acre', instanceName);
             acre.position.x = data.x + 0.5;
             acre.position.y = this._terrain.getHeight(data.x, data.z);
             acre.position.z = data.z + 0.5;
-            this._stones[instanceName] = acre;
+            acre.metadata = {
+                isField: true,
+                position: {
+                    x: data.x,
+                    z: data.z,
+                },
+            };
+            this._fields[instanceName] = acre;
+            if (false === data.hasTree) {
+                this.removeTree('tree' + pad(data.x, 2) + pad(data.z, 2));
+            }
         }
-        else if ('true' === data.hasStone) {
+        else if (true === data.hasStone) {
             instanceName = 'stone' + pad(data.x, 2) + pad(data.z, 2);
             const stone = AssetsManager_1.default.getStoneMeshByName('stone', instanceName);
             stone.position.x = data.x + 0.5;
@@ -99,7 +110,16 @@ class GameScene {
             stone.position.z = data.z + 0.5;
             this._stones[instanceName] = stone;
         }
-        else if (this._trees[instanceName]) {
+        else {
+            this.removeTree('tree' + pad(data.x, 2) + pad(data.z, 2));
+        }
+    }
+    /**
+     * FIXME: Remove tree on runtime.
+     * @param instanceName
+     */
+    removeTree(instanceName) {
+        if (this._trees[instanceName]) {
             this._trees[instanceName].dispose();
             this._trees[instanceName] = null;
         }

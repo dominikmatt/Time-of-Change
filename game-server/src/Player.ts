@@ -15,6 +15,7 @@ import BuildFieldCommand from "./Commands/BuildFieldCommand";
 import IAddField from "./Interfaces/AddField";
 import Field from "./Field/Field";
 import {PositionInterface} from "./Components/PositionComponent";
+import PanelFieldSelected from "./Commands/PanelFieldSelected";
 
 export default class Player {
     private readonly _name: string;
@@ -72,6 +73,7 @@ export default class Player {
         new GetMapDataCommand(this);
         new CreateCharacterCommand(this);
         new PanelBuildingSelected(this);
+        new PanelFieldSelected(this);
     }
 
     public update() {
@@ -163,6 +165,18 @@ export default class Player {
             .map((data): Field => {
                 return data.field;
             });
+    }
+
+    public getFieldByPosition(position: PositionInterface): Field | null {
+        const field: Field = this._fields.find(field => {
+            return field.position.position.x === position.x && field.position.z === position.z
+        });
+
+        if (!field) {
+            return null;
+        }
+
+        return field;
     }
 
     /**
