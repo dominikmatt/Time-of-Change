@@ -34,7 +34,7 @@ class AssetsManager {
             this.loadAssets('bakery', 'buildings', 'storehouse.babylon');
             this.loadAssets('brewery', 'buildings', 'storehouse.babylon');
             this.loadAssets('butchers', 'buildings', 'storehouse.babylon');
-            this.loadAssets('farm', 'buildings', 'storehouse.babylon');
+            this.loadAssets('farm', 'buildings', 'farm.babylon');
             this.loadAssets('inn', 'buildings', 'storehouse.babylon');
             this.loadAssets('mill', 'buildings', 'storehouse.babylon');
             this.loadAssets('mine', 'buildings', 'storehouse.babylon');

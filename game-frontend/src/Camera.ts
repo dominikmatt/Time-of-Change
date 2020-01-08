@@ -7,14 +7,31 @@ export default class Camera {
         backward: false,
         right: false,
     };
-    private _camera: BABYLON.FreeCamera;
+    private _camera: BABYLON.ArcRotateCamera;
     private _changeRotation: boolean = false;
     private _canvas: HTMLCanvasElement;
 
     public constructor(scene: BABYLON.Scene, canvas: HTMLCanvasElement) {
         this._canvas = canvas;
         // TODO: Use ArcRotateCamera.
-        this._camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+        this._camera = new BABYLON.ArcRotateCamera(
+            "camera1",
+            -Math.PI / 2,
+            Math.PI / 2,
+            8,
+            new BABYLON.Vector3(0, 5, -10),
+            scene
+        );
+
+        this._camera.attachControl(this._canvas, false, false, 2);
+        this._camera.inputs.removeByType('ArcRotateCameraKeyboardMoveInput');
+        this._camera.inputs.addMouseWheel();
+        this._camera.inputs.addPointers();
+        this._camera.lowerRadiusLimit = 10;
+        this._camera.upperRadiusLimit = 20;
+        this._camera.upperBetaLimit = 1.42;
+
+
         // This targets the camera to scene origin
         this._camera.setTarget(BABYLON.Vector3.Zero());
 
@@ -25,16 +42,19 @@ export default class Camera {
     }
 
     private bindDOMEvents() {
+        this._canvas.addEventListener('pointerdown', this.onPointerDownHandler.bind(this));
+        // this._canvas.addEventListener('pointerup', this.onPointerUpHandler.bind(this));
+        // this._canvas.addEventListener('pointermove', this.onMousemoveHandler.bind(this));
         document.addEventListener('keydown', this.onKeyPressHandler.bind(this));
         document.addEventListener('keyup', this.onKeyUpHandler.bind(this));
         document.addEventListener('mousewheel', this.onMousewheelHandler.bind(this));
-        this._canvas.addEventListener('mousemove', this.onMousemoveHandler.bind(this));
     }
 
     /**
      * Rotates the camera when mouse is moving and the Crontol-Key is pressed.
      */
     private onMousemoveHandler(event: MouseEvent) {
+        console.log(this._changeRotation)
         if (false === this._changeRotation) {
             return;
         }
@@ -50,24 +70,41 @@ export default class Camera {
     }
 
     /**
-     * Enable rotation control when Control-Key has been pressed.
+     * Enable rotation control when mousewheel has been pressed.
      */
-    private onKeyPressHandler(event: KeyboardEvent) {
-        if ('Control' === event.key) {
+    private onPointerDownHandler(event: MouseEvent) {
+        console.log(event.which)
+        if (2 === event.which) {
             this._changeRotation = true;
         }
 
+        return true;
+
+        console.log(this)
+    }
+
+    /**
+     * Disable rotation control when mousewheel has been released.
+     */
+    private onPointerUpHandler(event: MouseEvent) {
+        if (2 === event.which) {
+            this._changeRotation = false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Move direction start.
+     */
+    private onKeyPressHandler(event: KeyboardEvent) {
         this.setMoveState(event.key, true);
     }
 
     /**
-     * Disable rotation control when Control-Key has been pressed.
+     * Move Direction end.
      */
     private onKeyUpHandler(event: KeyboardEvent) {
-        if ('Control' === event.key) {
-            this._changeRotation = false;
-        }
-
         this.setMoveState(event.key, false);
     }
 
@@ -79,12 +116,12 @@ export default class Camera {
      * Zoom in or out when mousewheel has been wheeled.
      */
     private zoomCamera(wheelDelta: number) {
-        this._camera.position.y += wheelDelta/100;
+        this._camera.position.x += wheelDelta/100;
 
         if (2.5 > this._camera.position.y) {
-            this._camera.position.y = 2.5;
+            this._camera.position.x = 2.5;
         } else if (20 < this._camera.position.y) {
-            this._camera.position.y = 20;
+            this._camera.position.x = 20;
         }
     }
 
@@ -109,9 +146,14 @@ export default class Camera {
      * Update camera.
      */
     update() {
-        let movement: BABYLON.Vector3;
+        let position: BABYLON.Vector3;
+        let target: BABYLON.Vector3;
+        let delta: BABYLON.Vector3;
         let x: number = 0;
         let z: number = 0;
+
+
+        console.log(this._camera.alpha)
 
         if (!this.moveState.backward && !this.moveState.forward && !this.moveState.left && !this.moveState.right) {
             return;
@@ -129,11 +171,24 @@ export default class Camera {
             z = -0.4;
         }
 
-        movement = BABYLON.Vector3.TransformCoordinates(
-            new BABYLON.Vector3(x, 0, z),
-            BABYLON.Matrix.RotationY(this._camera.rotation.y)
+        delta = BABYLON.Vector3.TransformCoordinates(
+            new BABYLON.Vector3(x, this._camera.position.y, z),
+            BABYLON.Matrix.RotationY(this._camera.alpha)
         );
 
-        this._camera.position.addInPlace(movement);
+        target = new BABYLON.Vector3(
+            this._camera.target.x - delta.x,
+            this._camera.target.y,
+            this._camera.target.z + delta.z
+        );
+
+        position = new BABYLON.Vector3(
+            this._camera.position.x - delta.x,
+            this._camera.position.y,
+            this._camera.position.z + delta.z
+        );
+
+        this._camera.setTarget(target);
+        this._camera.setPosition(position);
     }
 }
