@@ -9,7 +9,6 @@ class Camera {
             backward: false,
             right: false,
         };
-        this._changeRotation = false;
         this._canvas = canvas;
         // TODO: Use ArcRotateCamera.
         this._camera = new BABYLON.ArcRotateCamera("camera1", -Math.PI / 2, Math.PI / 2, 8, new BABYLON.Vector3(0, 5, -10), scene);
@@ -23,50 +22,14 @@ class Camera {
         // This targets the camera to scene origin
         this._camera.setTarget(BABYLON.Vector3.Zero());
         //Set the ellipsoid around the camera (e.g. your player's size)
+        // @ts-ignore
         this._camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
         this.bindDOMEvents();
     }
     bindDOMEvents() {
-        this._canvas.addEventListener('pointerdown', this.onPointerDownHandler.bind(this));
-        // this._canvas.addEventListener('pointerup', this.onPointerUpHandler.bind(this));
-        // this._canvas.addEventListener('pointermove', this.onMousemoveHandler.bind(this));
         document.addEventListener('keydown', this.onKeyPressHandler.bind(this));
         document.addEventListener('keyup', this.onKeyUpHandler.bind(this));
         document.addEventListener('mousewheel', this.onMousewheelHandler.bind(this));
-    }
-    /**
-     * Rotates the camera when mouse is moving and the Crontol-Key is pressed.
-     */
-    onMousemoveHandler(event) {
-        if (false === this._changeRotation) {
-            return;
-        }
-        this._camera.rotation.y += event.movementX / 60;
-        this._camera.rotation.x += event.movementY / 60;
-        if (1.5 < this._camera.rotation.x) {
-            this._camera.rotation.x = 1.5;
-        }
-        else if (0.25 > this._camera.rotation.x) {
-            this._camera.rotation.x = 0.25;
-        }
-    }
-    /**
-     * Enable rotation control when mousewheel has been pressed.
-     */
-    onPointerDownHandler(event) {
-        console.log(event);
-        if (2 === event.which) {
-            this._changeRotation = true;
-        }
-    }
-    /**
-     * Disable rotation control when mousewheel has been released.
-     */
-    onPointerUpHandler(event) {
-        if (2 === event.which) {
-            this._changeRotation = false;
-        }
-        return true;
     }
     /**
      * Move direction start.

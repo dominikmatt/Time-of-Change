@@ -8,7 +8,6 @@ export default class Camera {
         right: false,
     };
     private _camera: BABYLON.ArcRotateCamera;
-    private _changeRotation: boolean = false;
     private _canvas: HTMLCanvasElement;
 
     public constructor(scene: BABYLON.Scene, canvas: HTMLCanvasElement) {
@@ -36,57 +35,16 @@ export default class Camera {
         this._camera.setTarget(BABYLON.Vector3.Zero());
 
         //Set the ellipsoid around the camera (e.g. your player's size)
+        // @ts-ignore
         this._camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
 
         this.bindDOMEvents();
     }
 
     private bindDOMEvents() {
-        this._canvas.addEventListener('pointerdown', this.onPointerDownHandler.bind(this));
-        // this._canvas.addEventListener('pointerup', this.onPointerUpHandler.bind(this));
-        // this._canvas.addEventListener('pointermove', this.onMousemoveHandler.bind(this));
         document.addEventListener('keydown', this.onKeyPressHandler.bind(this));
         document.addEventListener('keyup', this.onKeyUpHandler.bind(this));
         document.addEventListener('mousewheel', this.onMousewheelHandler.bind(this));
-    }
-
-    /**
-     * Rotates the camera when mouse is moving and the Crontol-Key is pressed.
-     */
-    private onMousemoveHandler(event: MouseEvent) {
-        if (false === this._changeRotation) {
-            return;
-        }
-
-        this._camera.rotation.y += event.movementX / 60;
-        this._camera.rotation.x += event.movementY / 60;
-
-        if (1.5 < this._camera.rotation.x) {
-            this._camera.rotation.x = 1.5;
-        } else if (0.25 > this._camera.rotation.x) {
-            this._camera.rotation.x = 0.25;
-        }
-    }
-
-    /**
-     * Enable rotation control when mousewheel has been pressed.
-     */
-    private onPointerDownHandler(event: MouseEvent) {
-        console.log(event)
-        if (2 === event.which) {
-            this._changeRotation = true;
-        }
-    }
-
-    /**
-     * Disable rotation control when mousewheel has been released.
-     */
-    private onPointerUpHandler(event: MouseEvent) {
-        if (2 === event.which) {
-            this._changeRotation = false;
-        }
-
-        return true;
     }
 
     /**
