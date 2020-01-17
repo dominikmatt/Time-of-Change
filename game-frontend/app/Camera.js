@@ -123,21 +123,20 @@ class Camera {
         let delta;
         let x = 0;
         let z = 0;
-        console.log(this._camera.alpha);
         if (!this.moveState.backward && !this.moveState.forward && !this.moveState.left && !this.moveState.right) {
             return;
         }
         if (this.moveState.right) {
-            x = 0.4;
-        }
-        else if (this.moveState.left) {
-            x = -0.4;
-        }
-        if (this.moveState.forward) {
             z = 0.4;
         }
-        else if (this.moveState.backward) {
+        else if (this.moveState.left) {
             z = -0.4;
+        }
+        if (this.moveState.forward) {
+            x = 0.4;
+        }
+        else if (this.moveState.backward) {
+            x = -0.4;
         }
         delta = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(x, this._camera.position.y, z), BABYLON.Matrix.RotationY(this._camera.alpha));
         target = new BABYLON.Vector3(this._camera.target.x - delta.x, this._camera.target.y, this._camera.target.z + delta.z);

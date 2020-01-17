@@ -152,23 +152,20 @@ export default class Camera {
         let x: number = 0;
         let z: number = 0;
 
-
-        console.log(this._camera.alpha)
-
         if (!this.moveState.backward && !this.moveState.forward && !this.moveState.left && !this.moveState.right) {
             return;
         }
 
         if (this.moveState.right) {
-            x = 0.4
+            z = 0.4;
         } else if (this.moveState.left) {
-            x = -0.4
+            z = -0.4;
         }
 
         if (this.moveState.forward) {
-            z = 0.4;
+            x = 0.4;
         } else if (this.moveState.backward) {
-            z = -0.4;
+            x = -0.4;
         }
 
         delta = BABYLON.Vector3.TransformCoordinates(
