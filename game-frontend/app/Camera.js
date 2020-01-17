@@ -13,7 +13,7 @@ class Camera {
         this._canvas = canvas;
         // TODO: Use ArcRotateCamera.
         this._camera = new BABYLON.ArcRotateCamera("camera1", -Math.PI / 2, Math.PI / 2, 8, new BABYLON.Vector3(0, 5, -10), scene);
-        this._camera.attachControl(this._canvas, false, false, 2);
+        this._camera.attachControl(this._canvas, false, false, 3);
         this._camera.inputs.removeByType('ArcRotateCameraKeyboardMoveInput');
         this._camera.inputs.addMouseWheel();
         this._camera.inputs.addPointers();
@@ -38,7 +38,6 @@ class Camera {
      * Rotates the camera when mouse is moving and the Crontol-Key is pressed.
      */
     onMousemoveHandler(event) {
-        console.log(this._changeRotation);
         if (false === this._changeRotation) {
             return;
         }
@@ -55,12 +54,10 @@ class Camera {
      * Enable rotation control when mousewheel has been pressed.
      */
     onPointerDownHandler(event) {
-        console.log(event.which);
+        console.log(event);
         if (2 === event.which) {
             this._changeRotation = true;
         }
-        return true;
-        console.log(this);
     }
     /**
      * Disable rotation control when mousewheel has been released.
