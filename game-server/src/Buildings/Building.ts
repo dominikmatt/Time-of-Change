@@ -147,7 +147,7 @@ export default abstract class Building implements DestroyAbleInterface {
         throw new Error('Building: Add getBuildingData and return your building specific data as a object.')
     }
 
-    update() {
+    update(delta: number) {
         this.beforeUpdate();
 
         if (this._health.maxHealth === this._health.currentHealth) {

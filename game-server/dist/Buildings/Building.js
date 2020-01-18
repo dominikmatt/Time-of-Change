@@ -108,7 +108,7 @@ class Building {
     getBuildingData() {
         throw new Error('Building: Add getBuildingData and return your building specific data as a object.');
     }
-    update() {
+    update(delta) {
         this.beforeUpdate();
         if (this._health.maxHealth === this._health.currentHealth) {
             this._completelyBuilt = true;

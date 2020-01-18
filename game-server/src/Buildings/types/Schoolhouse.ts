@@ -15,8 +15,9 @@ export default class Schoolhouse extends EconomyBuilding implements BuildingInte
     private _queue: string[] = [];
 
     readonly _matrix: number[][] = [
-        [1,1,1],
-        [1,2,1]
+        [1,1,1,1],
+        [1,1,1,1],
+        [2,1,1,1],
     ];
 
     private _currentGoldStore: number = 0;

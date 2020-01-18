@@ -58,7 +58,7 @@ class GameLoop {
             tick.delta = delta;
             Core_1.default.currentTick = tick;
             this.previousTick = this.now;
-            this.update();
+            this.update(delta);
             this.actualTicks = 0;
         }
         if (Date.now() - this.previousTick < gameSettings_1.TICK_LENGTH_MS - 16) {
@@ -71,9 +71,9 @@ class GameLoop {
     /**
      * Called by the loop every 50ms. If the server has some performance issues the time between calls will be increased.
      */
-    update() {
+    update(delta) {
         Object.values(Core_1.default.players).forEach((player) => {
-            player.update();
+            player.update(delta);
         });
     }
 }

@@ -48,9 +48,9 @@ class Player {
         new PanelBuildingSelected_1.default(this);
         new PanelFieldSelected_1.default(this);
     }
-    update() {
+    update(delta) {
         this._buildings.forEach((building) => {
-            building.update();
+            building.update(delta);
         });
         this._characters.forEach((character, index) => {
             character.update();

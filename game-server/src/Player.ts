@@ -76,9 +76,9 @@ export default class Player {
         new PanelFieldSelected(this);
     }
 
-    public update() {
+    public update(delta: number) {
         this._buildings.forEach((building: Building) => {
-            building.update();
+            building.update(delta);
         });
 
         this._characters.forEach((character: Character, index: number) => {

@@ -9,9 +9,10 @@ import Woodcutters from "../../Buildings/types/Woodcutters";
 import Field from "../../Field/Field";
 import Farmer from "../../Characters/types/Farmer";
 import Farm from "../../Buildings/types/Farm";
+import Sawmill from "../../Buildings/types/Sawmill";
 
-export default class Sow extends Job implements JobInterface {
-    protected readonly _type: string = 'sow';
+export default class Harvest extends Job implements JobInterface {
+    protected readonly _type: string = 'harvest';
     private readonly _targetFieldPosition: PositionInterface;
     private readonly _character?: Character = null;
     private readonly _field?: Field = null;
@@ -69,7 +70,7 @@ export default class Sow extends Job implements JobInterface {
                             return;
                         }
 
-                        this._field.sow();
+                        this._field.harvest();
 
                         this._currentStep++;
                     }, 5000 / GAME_SPEED);
@@ -92,7 +93,7 @@ export default class Sow extends Job implements JobInterface {
                     this._character.position.z === this._character.building.doorPosition.z
                 ) {
                     this._character.job = null;
-                    (<Farm>this._character.building).sowDone();
+                    (<Farm>this._character.building).increaseStore();
 
                     this._currentStep++;
                 }

@@ -6,23 +6,28 @@ import Character from "../../Characters/Character";
 import Map from "../../Map/Map";
 import {GAME_SPEED} from "../../gameSettings";
 import Woodcutters from "../../Buildings/types/Woodcutters";
+import Field from "../../Field/Field";
+import Farmer from "../../Characters/types/Farmer";
+import Farm from "../../Buildings/types/Farm";
 
-export default class ChopWood extends Job implements JobInterface {
-    protected readonly _type: string = 'chopWood';
-    private readonly _targetTreePosition: PositionInterface;
+export default class Sow extends Job implements JobInterface {
+    protected readonly _type: string = 'sow';
+    private readonly _targetFieldPosition: PositionInterface;
     private readonly _character?: Character = null;
+    private readonly _field?: Field = null;
     private _isCharacterWalking: boolean = false;
     private _isCharacterAtStart: boolean = false;
 
     constructor(
         player: Player,
-        targetTreePosition?: PositionInterface,
-        character?: Character
+        character: Character,
+        field: Field
     ) {
         super(player);
 
-        this._targetTreePosition = targetTreePosition;
+        this._targetFieldPosition = field.position.position;
         this._character = character;
+        this._field = field;
     }
 
 
@@ -31,17 +36,18 @@ export default class ChopWood extends Job implements JobInterface {
             _id: this._id,
             type: this.getType(),
             player: this._player.token,
-            targetTreePosition: this._targetTreePosition,
+            field: this._field.toObject(),
         });
     }
 
     public update(): void {
         switch (this._currentStep) {
+            // GOTO Field
             case 0:
                 if (!this._isCharacterWalking && !this._isCharacterAtStart) {
                     const path = Map.findRunnablePath(
                         this._character.position.position,
-                        this._targetTreePosition,
+                        this._targetFieldPosition,
                         true
                     );
 
@@ -51,9 +57,10 @@ export default class ChopWood extends Job implements JobInterface {
                     this._currentStep++;
                 }
                 break;
+            // Sow field
             case 1:
-                if (this._character.position.x === this._targetTreePosition.x &&
-                    this._character.position.z === this._targetTreePosition.z
+                if (this._character.position.x === this._targetFieldPosition.x &&
+                    this._character.position.z === this._targetFieldPosition.z
                 ) {
                     this._isCharacterWalking = false;
 
@@ -62,19 +69,13 @@ export default class ChopWood extends Job implements JobInterface {
                             return;
                         }
 
-                        Map.updateCoordinate(
-                            this._targetTreePosition.x,
-                            this._targetTreePosition.z,
-                            {
-                                hasTree: false,
-                                runnable: true
-                            }
-                        );
+                        this._field.sow();
 
                         this._currentStep++;
                     }, 5000 / GAME_SPEED);
                 }
                 break;
+            // Back to farm
             case 2:
                 const path = Map.findRunnablePath(
                     this._character.position.position,
@@ -91,7 +92,7 @@ export default class ChopWood extends Job implements JobInterface {
                     this._character.position.z === this._character.building.doorPosition.z
                 ) {
                     this._character.job = null;
-                    (<Woodcutters>this._character.building).increaseStore();
+                    (<Farm>this._character.building).sowDone();
 
                     this._currentStep++;
                 }
