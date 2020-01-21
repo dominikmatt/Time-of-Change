@@ -85,7 +85,7 @@ export default class GameLoop {
 
             this.previousTick = this.now;
 
-            this.update();
+            this.update(delta);
 
             this.actualTicks = 0;
         }
@@ -100,9 +100,9 @@ export default class GameLoop {
     /**
      * Called by the loop every 50ms. If the server has some performance issues the time between calls will be increased.
      */
-    private update() {
+    private update(delta: number) {
         (<any>Object).values(core.players).forEach((player: Player) => {
-            player.update();
+            player.update(delta);
         });
     }
 };

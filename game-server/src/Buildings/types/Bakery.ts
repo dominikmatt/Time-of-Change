@@ -8,7 +8,7 @@ export default class Bakery extends EconomyBuilding implements BuildingInterface
     readonly _matrix: number[][] = [
         [1,1,1],
         [1,1,1],
-        [1,2,1],
+        [1,1,1],
     ];
 
     constructor(player: Player, position: PositionInterface, alreadyBuilt: boolean = false) {

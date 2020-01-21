@@ -33,6 +33,10 @@ class Character {
     load() {
         this._mesh = AssetsManager_1.default.getCharacterMeshByName('character', this._id);
         this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
+        this._mesh.metadata = {
+            isCharacter: true,
+            characterId: this._id,
+        };
         this.setPosition();
         this.findSkeleton();
         this.addAnimation('idle', 0, 320);

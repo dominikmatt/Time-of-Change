@@ -14,22 +14,23 @@ class Player1 implements MapStartupInterface {
 
     public placeHouses() {
         this._player.addCharacter(CharacterFactory('serf', 'start', this._player));
+        this._player.addCharacter(CharacterFactory('farmer', 'start', this._player));
         const storehouse: Storehouse = this._player.addBuilding(BuildingFactory('storehouse', {
             x: 8,
             z: 3
         }, this._player, true));
 
         this._player.addBuilding(BuildingFactory('schoolhouse', {x: 8, z: 8}, this._player, true));
-        this._player.addBuilding(BuildingFactory('farm', {x: 14, z: 8}, this._player, true));
+        this._player.addBuilding(BuildingFactory('farm', {x: 2, z: 1}, this._player, true));
         this._player.addField(new Field(
             {
-                position: {x: 0, z: 2},
+                position: {x: 18, z: 9},
             },
             this._player,
         ));
         this._player.addField(new Field(
             {
-                position: {x: 0, z: 3},
+                position: {x:18, z: 10},
             },
             this._player,
         ));

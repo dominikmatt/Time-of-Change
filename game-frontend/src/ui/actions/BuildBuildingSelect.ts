@@ -7,6 +7,7 @@ import Nullable = BABYLON.Nullable;
 import {builtBuildings} from "../../Commands/BuildingUpdateCommand";
 import AbstractMesh = BABYLON.AbstractMesh;
 import StandardMaterial = BABYLON.StandardMaterial;
+import assetsManager from "../../AssetsManager";
 
 export default class BuildBuildingSelect {
     private pickResult: Nullable<PickingInfo>;
@@ -27,17 +28,11 @@ export default class BuildBuildingSelect {
         event.addEventListener('click.build-building', this.onMapClick.bind(this));
     }
 
-    private load() {
-        BABYLON.SceneLoader.ImportMeshAsync(
-            null,
-            'assets/models/buildings/',
-            'schoolhouse.babylon',
-            game.gameScene.scene)
-            .then((result) => {
-                this._mesh = result.meshes[0];
-                this._mesh.checkCollisions = true;
-                this._mesh.material.alpha = 0.4;
-            });
+    public load() {
+        this._mesh = assetsManager.getBuildingMeshByName(this._type, Math.random().toString());
+
+        this._mesh.isVisible = true;
+        this._mesh.checkCollisions = true;
     }
 
     /**

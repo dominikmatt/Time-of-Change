@@ -24,7 +24,7 @@ class Building {
      */
     load() {
         this._mesh = AssetsManager_1.default.getBuildingMeshByName(this._key, this._id);
-        //this._banner = this._mesh.getChildMeshes()[0];
+        this._banner = this._mesh.getChildMeshes()[0];
         this._mesh.checkCollisions = true;
         this._mesh.metadata = {
             key: this._key,
@@ -38,7 +38,7 @@ class Building {
         Game_1.default.gameScene.shadowGenerator.getShadowMap().renderList.push(this._mesh);
         // Show meshes.
         this._mesh.isVisible = true;
-        //this._banner.isVisible = true;
+        this._banner.isVisible = true;
     }
     setPosition() {
         this._mesh.position = BABYLON.Vector3.Zero();

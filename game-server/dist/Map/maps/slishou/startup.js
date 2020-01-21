@@ -11,17 +11,18 @@ class Player1 {
     }
     placeHouses() {
         this._player.addCharacter(CharacterFactory_1.default('serf', 'start', this._player));
+        this._player.addCharacter(CharacterFactory_1.default('farmer', 'start', this._player));
         const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', {
             x: 8,
             z: 3
         }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8, z: 8 }, this._player, true));
-        this._player.addBuilding(BuildingFactory_1.default('farm', { x: 14, z: 8 }, this._player, true));
+        this._player.addBuilding(BuildingFactory_1.default('farm', { x: 2, z: 1 }, this._player, true));
         this._player.addField(new Field_1.default({
-            position: { x: 0, z: 2 },
+            position: { x: 18, z: 9 },
         }, this._player));
         this._player.addField(new Field_1.default({
-            position: { x: 0, z: 3 },
+            position: { x: 18, z: 10 },
         }, this._player));
         storehouse.addResources({
             treeTrunks: 30,

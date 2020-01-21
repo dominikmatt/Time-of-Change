@@ -141,6 +141,9 @@ class Character {
         this._currentPath = path;
         this._walkDelta = 0;
     }
+    get id() {
+        return this._id;
+    }
     get position() {
         return this._position;
     }

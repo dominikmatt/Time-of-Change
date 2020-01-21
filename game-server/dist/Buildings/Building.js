@@ -100,7 +100,8 @@ class Building {
      * Returns building type as a string.
      */
     getType() {
-        return this.constructor.name.toLowerCase();
+        const name = this.constructor.name;
+        return name.charAt(0).toLowerCase() + name.substring(1);
     }
     /**
      * Returns all building specific data as a object.
@@ -108,7 +109,7 @@ class Building {
     getBuildingData() {
         throw new Error('Building: Add getBuildingData and return your building specific data as a object.');
     }
-    update() {
+    update(delta) {
         this.beforeUpdate();
         if (this._health.maxHealth === this._health.currentHealth) {
             this._completelyBuilt = true;

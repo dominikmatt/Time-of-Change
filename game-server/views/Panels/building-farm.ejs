@@ -1,9 +1,17 @@
 <% if (true === completelyBuilt) { %>
     <div class="panel-content">
         <h3>Farm</h3>
+
+        Arbeiter:
+        <% if (character) { %>
+            Ja
+        <% } else { %>
+            Nein
+        <% } %>
+        <br />
+        Stroh: <%= currentCornStore %><br />
+        Anzahl Felder: <%= fields.length %>
     </div>
-
-
 <% } else { %>
     Baubarbeiten laufen...
 <% } %>

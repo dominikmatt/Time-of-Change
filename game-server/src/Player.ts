@@ -16,6 +16,7 @@ import IAddField from "./Interfaces/AddField";
 import Field from "./Field/Field";
 import {PositionInterface} from "./Components/PositionComponent";
 import PanelFieldSelected from "./Commands/PanelFieldSelected";
+import PanelCharacterSelected from "./Commands/PanelCharacterSelected";
 
 export default class Player {
     private readonly _name: string;
@@ -74,11 +75,12 @@ export default class Player {
         new CreateCharacterCommand(this);
         new PanelBuildingSelected(this);
         new PanelFieldSelected(this);
+        new PanelCharacterSelected(this);
     }
 
-    public update() {
+    public update(delta: number) {
         this._buildings.forEach((building: Building) => {
-            building.update();
+            building.update(delta);
         });
 
         this._characters.forEach((character: Character, index: number) => {
@@ -117,6 +119,18 @@ export default class Player {
 
         if (0 < buildings.length) {
             return buildings[0];
+        }
+
+        return null;
+    }
+
+    public getCharacterById(characterId: string): Character | null {
+        const characters = this._characters.filter((character: Character) => {
+            return characterId === character.id;
+        });
+
+        if (0 < characters.length) {
+            return characters[0];
         }
 
         return null;

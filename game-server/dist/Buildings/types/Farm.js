@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const EconomyBuilding_1 = __importDefault(require("../EconomyBuilding"));
 const CostComponent_1 = __importDefault(require("../../Components/CostComponent"));
+const Sow_1 = __importDefault(require("../../Jobs/types/Sow"));
+const TransportToStorehouseJob_1 = __importDefault(require("../../Jobs/types/TransportToStorehouseJob"));
+const Harvest_1 = __importDefault(require("../../Jobs/types/Harvest"));
 class Farm extends EconomyBuilding_1.default {
     constructor(player, position, alreadyBuilt = false) {
         super(player, position);
@@ -15,6 +18,8 @@ class Farm extends EconomyBuilding_1.default {
             [1, 1, 1, 1],
             [1, 2, 1, 1],
         ];
+        this._maxCornStore = 5;
+        this._currentCornStore = 0;
         this._cost = new CostComponent_1.default({
             timber: 6,
             stones: 5
@@ -33,9 +38,53 @@ class Farm extends EconomyBuilding_1.default {
     }
     beforeUpdate() {
         this.findField();
+        this.addNextJob();
+    }
+    addNextJob() {
+        if ((null !== this._nextJob || null === this._character)) {
+            return;
+        }
+        for (let field of this._fields) {
+            if (true === field.isRaw()) {
+                this._nextJob = new Sow_1.default(this._player, this._character, field);
+                break;
+            }
+        }
+        if (null !== this._nextJob) {
+            return;
+        }
+        for (let field of this._fields) {
+            if (true === field.isReadyToHarvest()) {
+                this._nextJob = new Harvest_1.default(this._player, this._character, field);
+                break;
+            }
+        }
+    }
+    sowDone() {
+        this._nextJob = null;
     }
     getBuildingData() {
         return {};
+    }
+    update(delta) {
+        super.update(delta);
+        this._fields.forEach((field) => {
+            field.update(delta);
+        });
+    }
+    increaseStore() {
+        this._currentCornStore++;
+        this._nextJob = null;
+        this._player.jobStore.addJob(new TransportToStorehouseJob_1.default(this._player, 'corn', this));
+    }
+    decreaseStore() {
+        return this._currentCornStore--;
+    }
+    get currentCornStore() {
+        return this._currentCornStore;
+    }
+    get fields() {
+        return this._fields;
     }
 }
 exports.default = Farm;
