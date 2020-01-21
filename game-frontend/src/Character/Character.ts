@@ -36,6 +36,13 @@ export default class Character {
     private load() {
         this._mesh = assetsManager.getCharacterMeshByName('character', this._id);
         this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
+
+        this._mesh.metadata = {
+            isCharacter: true,
+            characterId: this._id,
+        };
+
+
         this.setPosition();
         this.findSkeleton();
 

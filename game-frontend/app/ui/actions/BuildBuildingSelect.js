@@ -5,6 +5,7 @@ const Game_1 = require("../../Game");
 const connection_1 = require("../../services/connection");
 const DOMEvent_1 = require("../../services/DOMEvent");
 const BuildingUpdateCommand_1 = require("../../Commands/BuildingUpdateCommand");
+const AssetsManager_1 = require("../../AssetsManager");
 class BuildBuildingSelect {
     constructor(type) {
         this.pickResult = null;
@@ -17,12 +18,9 @@ class BuildBuildingSelect {
         DOMEvent_1.event.addEventListener('click.build-building', this.onMapClick.bind(this));
     }
     load() {
-        BABYLON.SceneLoader.ImportMeshAsync(null, 'assets/models/buildings/', 'schoolhouse.babylon', Game_1.default.gameScene.scene)
-            .then((result) => {
-            this._mesh = result.meshes[0];
-            this._mesh.checkCollisions = true;
-            this._mesh.material.alpha = 0.4;
-        });
+        this._mesh = AssetsManager_1.default.getBuildingMeshByName(this._type, Math.random().toString());
+        this._mesh.isVisible = true;
+        this._mesh.checkCollisions = true;
     }
     /**
      * This method will send the build event after a click on the map has been triggered.

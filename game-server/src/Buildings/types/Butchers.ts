@@ -6,7 +6,7 @@ import Player from "../../Player";
 
 export default class Butchers extends EconomyBuilding implements BuildingInterface {
     readonly _matrix: number[][] = [
-        [0,1,1,1],
+        [1,1,1,1],
         [1,1,1,1],
         [1,1,1,2],
     ];

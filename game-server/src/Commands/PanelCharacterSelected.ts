@@ -2,24 +2,25 @@ import Command from "./Command";
 import {RequestInterface} from "./CommandInterface";
 import Building from "../Buildings/Building";
 import panel from "../Panel/panel";
+import Character from "../Characters/Character";
 
 /**
  * This command is executed when a player builds a new building.
  */
-export default class PanelBuildingSelected extends Command {
+export default class PanelCharacterSelected extends Command {
     getCommand() {
-        return 'panel.building.selected';
+        return 'panel.character.selected';
     }
 
     execute(req: RequestInterface) {
-        const buildingId: string = req.buildingId;
-        const building: Building|null = this.player.getBuildingById(buildingId);
+        const characterId: string = req.characterId;
+        const character: Character|null = this.player.getCharacterById(characterId);
 
-        if (null !== building) {
+        if (null !== character) {
             this.player.panel.setPanelInfo({
-                id: building.id,
-                type: `building-${building.getType()}`,
-                data: building,
+                id: character.id,
+                type: `character`,
+                data: character,
             });
         } else {
             this.player.panel.setPanelInfo({

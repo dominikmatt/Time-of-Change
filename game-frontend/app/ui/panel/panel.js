@@ -26,6 +26,7 @@ class Panel {
             return;
         }
         const pickResult = Game_1.default.gameScene.scene.pick(Game_1.default.gameScene.scene.pointerX, Game_1.default.gameScene.scene.pointerY);
+        console.log(pickResult.pickedMesh.id);
         if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata) {
             return;
         }
@@ -38,6 +39,12 @@ class Panel {
             this.selectedBuildingId = pickResult.pickedMesh.metadata.buildingId;
             connection_1.default.socket.emit('panel.building.selected', {
                 buildingId: this.selectedBuildingId,
+            });
+        }
+        if (true === pickResult.pickedMesh.metadata.isCharacter && pickResult.pickedMesh.metadata.key) {
+            this.selectedCharacterId = pickResult.pickedMesh.metadata.characterId;
+            connection_1.default.socket.emit('panel.character.selected', {
+                characterId: this.selectedCharacterId,
             });
         }
     }
@@ -60,6 +67,12 @@ class Panel {
     }
     set selectedBuildingIsReady(value) {
         this._selectedBuildingIsReady = value;
+    }
+    get selectedCharacterId() {
+        return this._selectedCharacterId;
+    }
+    set selectedCharacterId(value) {
+        this._selectedCharacterId = value;
     }
 }
 const panel = Panel.getInstance();

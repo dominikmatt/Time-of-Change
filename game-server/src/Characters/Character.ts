@@ -12,7 +12,7 @@ import DestroyAbleInterface from "../Components/DestroyAbleInterface";
 import GoEatJob from "../Jobs/types/GoEatJob";
 
 export default class Character implements DestroyAbleInterface {
-    protected _id: string =  uuidv1();
+    private _id: string =  uuidv1();
 
     protected readonly _player: Player;
     private _position: PositionComponent;
@@ -178,6 +178,10 @@ export default class Character implements DestroyAbleInterface {
     walkByPath(path: number[][]) {
         this._currentPath = path;
         this._walkDelta = 0;
+    }
+
+    get id(): string {
+        return this._id;
     }
 
     get position(): PositionComponent {

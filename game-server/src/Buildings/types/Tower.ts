@@ -4,12 +4,10 @@ import CostComponent from "../../Components/CostComponent";
 import {PositionInterface} from "../../Components/PositionComponent";
 import Player from "../../Player";
 
-export default class Barracks extends EconomyBuilding implements BuildingInterface {
+export default class Tower extends EconomyBuilding implements BuildingInterface {
     readonly _matrix: number[][] = [
-        [1,1,1,1],
-        [1,1,1,1],
-        [1,1,1,1],
-        [1,2,1,1],
+        [1,1],
+        [1,2],
     ];
 
     constructor(player: Player, position: PositionInterface, alreadyBuilt: boolean = false) {

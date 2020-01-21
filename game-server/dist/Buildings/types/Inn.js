@@ -10,9 +10,9 @@ class Inn extends EconomyBuilding_1.default {
     constructor(player, position, alreadyBuilt = false) {
         super(player, position);
         this._matrix = [
-            [1, 1, 1],
-            [1, 1, 1],
-            [1, 2, 1],
+            [1, 1, 1, 1],
+            [1, 1, 1, 1],
+            [1, 2, 1, 1],
         ];
         this._maxFoodStore = 5;
         this._currentTransportJobs = {

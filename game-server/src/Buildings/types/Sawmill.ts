@@ -24,8 +24,9 @@ export default class Sawmill extends EconomyBuilding implements ProductionBuildi
     };
 
     readonly _matrix: number[][] = [
-        [1,1,1],
-        [1,2,1],
+        [1,1,1,1],
+        [1,1,1,1],
+        [1,2,1,1],
     ];
     private _treeTrunksTransportJobsCount: number = 0;
 

@@ -4,8 +4,6 @@ import CostComponent from "../../Components/CostComponent";
 import {PositionInterface} from "../../Components/PositionComponent";
 import Player from "../../Player";
 import Field from "../../Field/Field";
-import ChopWood from "../../Jobs/types/ChopWood";
-import Map from "../../Map/Map";
 import Sow from "../../Jobs/types/Sow";
 import TransportToStorehouseJob from "../../Jobs/types/TransportToStorehouseJob";
 import Harvest from "../../Jobs/types/Harvest";
@@ -16,7 +14,7 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
     readonly _matrix: number[][] = [
         [1,1,1,1],
         [1,1,1,1],
-        [2,2,1,1],
+        [1,2,1,1],
     ];
 
     private readonly _maxCornStore: number = 5;

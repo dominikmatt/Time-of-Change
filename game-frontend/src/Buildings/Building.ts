@@ -35,7 +35,7 @@ export default class Building {
      */
     private load() {
         this._mesh = assetsManager.getBuildingMeshByName(this._key, this._id);
-        //this._banner = this._mesh.getChildMeshes()[0];
+        this._banner = this._mesh.getChildMeshes()[0];
         this._mesh.checkCollisions = true;
         this._mesh.metadata = {
             key: this._key,
@@ -53,7 +53,7 @@ export default class Building {
 
         // Show meshes.
         this._mesh.isVisible = true;
-        //this._banner.isVisible = true;
+        this._banner.isVisible = true;
     }
 
     private setPosition() {

@@ -100,7 +100,8 @@ class Building {
      * Returns building type as a string.
      */
     getType() {
-        return this.constructor.name.toLowerCase();
+        const name = this.constructor.name;
+        return name.charAt(0).toLowerCase() + name.substring(1);
     }
     /**
      * Returns all building specific data as a object.

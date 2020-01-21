@@ -1,0 +1,15 @@
+<% if (true === completelyBuilt) { %>
+    <div class="panel-content">
+        <h3>Geberei</h3>
+
+        Arbeiter:
+        <% if (character) { %>
+            Ja
+        <% } else { %>
+            Nein
+        <% } %>
+        <br />
+    </div>
+<% } else { %>
+    Baubarbeiten laufen...
+<% } %>

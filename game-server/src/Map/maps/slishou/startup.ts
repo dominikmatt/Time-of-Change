@@ -21,7 +21,7 @@ class Player1 implements MapStartupInterface {
         }, this._player, true));
 
         this._player.addBuilding(BuildingFactory('schoolhouse', {x: 8, z: 8}, this._player, true));
-        this._player.addBuilding(BuildingFactory('farm', {x: 14, z: 8}, this._player, true));
+        this._player.addBuilding(BuildingFactory('farm', {x: 2, z: 1}, this._player, true));
         this._player.addField(new Field(
             {
                 position: {x: 18, z: 9},

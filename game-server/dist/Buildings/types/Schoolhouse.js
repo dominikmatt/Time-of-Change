@@ -16,9 +16,9 @@ class Schoolhouse extends EconomyBuilding_1.default {
         this._maxGoldStore = 5;
         this._queue = [];
         this._matrix = [
-            [1, 1, 1, 1],
-            [1, 1, 1, 1],
-            [2, 1, 1, 1],
+            [1, 1, 1],
+            [1, 1, 1],
+            [1, 2, 1],
         ];
         this._currentGoldStore = 0;
         this._runningQueue = null;

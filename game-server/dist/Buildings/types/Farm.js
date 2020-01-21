@@ -16,7 +16,7 @@ class Farm extends EconomyBuilding_1.default {
         this._matrix = [
             [1, 1, 1, 1],
             [1, 1, 1, 1],
-            [2, 2, 1, 1],
+            [1, 2, 1, 1],
         ];
         this._maxCornStore = 5;
         this._currentCornStore = 0;

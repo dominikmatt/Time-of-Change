@@ -17,7 +17,7 @@ class Player1 {
             z: 3
         }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8, z: 8 }, this._player, true));
-        this._player.addBuilding(BuildingFactory_1.default('farm', { x: 14, z: 8 }, this._player, true));
+        this._player.addBuilding(BuildingFactory_1.default('farm', { x: 2, z: 1 }, this._player, true));
         this._player.addField(new Field_1.default({
             position: { x: 18, z: 9 },
         }, this._player));

@@ -13,6 +13,7 @@ const BuildingManager_1 = __importDefault(require("./Buildings/BuildingManager")
 const PanelBuildingSelected_1 = __importDefault(require("./Commands/PanelBuildingSelected"));
 const BuildFieldCommand_1 = __importDefault(require("./Commands/BuildFieldCommand"));
 const PanelFieldSelected_1 = __importDefault(require("./Commands/PanelFieldSelected"));
+const PanelCharacterSelected_1 = __importDefault(require("./Commands/PanelCharacterSelected"));
 class Player {
     constructor(name, token, playerId) {
         this._buildings = [];
@@ -47,6 +48,7 @@ class Player {
         new CreateCharacterCommand_1.default(this);
         new PanelBuildingSelected_1.default(this);
         new PanelFieldSelected_1.default(this);
+        new PanelCharacterSelected_1.default(this);
     }
     update(delta) {
         this._buildings.forEach((building) => {
@@ -81,6 +83,15 @@ class Player {
         });
         if (0 < buildings.length) {
             return buildings[0];
+        }
+        return null;
+    }
+    getCharacterById(characterId) {
+        const characters = this._characters.filter((character) => {
+            return characterId === character.id;
+        });
+        if (0 < characters.length) {
+            return characters[0];
         }
         return null;
     }
