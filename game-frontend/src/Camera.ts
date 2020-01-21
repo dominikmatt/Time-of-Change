@@ -7,18 +7,35 @@ export default class Camera {
         backward: false,
         right: false,
     };
-    private _camera: BABYLON.FreeCamera;
-    private _changeRotation: boolean = false;
+    private _camera: BABYLON.ArcRotateCamera;
     private _canvas: HTMLCanvasElement;
 
     public constructor(scene: BABYLON.Scene, canvas: HTMLCanvasElement) {
         this._canvas = canvas;
         // TODO: Use ArcRotateCamera.
-        this._camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+        this._camera = new BABYLON.ArcRotateCamera(
+            "camera1",
+            -Math.PI / 2,
+            Math.PI / 2,
+            8,
+            new BABYLON.Vector3(0, 5, -10),
+            scene
+        );
+
+        this._camera.attachControl(this._canvas, false, false, 3);
+        this._camera.inputs.removeByType('ArcRotateCameraKeyboardMoveInput');
+        this._camera.inputs.addMouseWheel();
+        this._camera.inputs.addPointers();
+        this._camera.lowerRadiusLimit = 10;
+        this._camera.upperRadiusLimit = 20;
+        this._camera.upperBetaLimit = 1.42;
+
+
         // This targets the camera to scene origin
         this._camera.setTarget(BABYLON.Vector3.Zero());
 
         //Set the ellipsoid around the camera (e.g. your player's size)
+        // @ts-ignore
         this._camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
 
         this.bindDOMEvents();
@@ -28,46 +45,19 @@ export default class Camera {
         document.addEventListener('keydown', this.onKeyPressHandler.bind(this));
         document.addEventListener('keyup', this.onKeyUpHandler.bind(this));
         document.addEventListener('mousewheel', this.onMousewheelHandler.bind(this));
-        this._canvas.addEventListener('mousemove', this.onMousemoveHandler.bind(this));
     }
 
     /**
-     * Rotates the camera when mouse is moving and the Crontol-Key is pressed.
-     */
-    private onMousemoveHandler(event: MouseEvent) {
-        if (false === this._changeRotation) {
-            return;
-        }
-
-        this._camera.rotation.y += event.movementX / 60;
-        this._camera.rotation.x += event.movementY / 60;
-
-        if (1.5 < this._camera.rotation.x) {
-            this._camera.rotation.x = 1.5;
-        } else if (0.25 > this._camera.rotation.x) {
-            this._camera.rotation.x = 0.25;
-        }
-    }
-
-    /**
-     * Enable rotation control when Control-Key has been pressed.
+     * Move direction start.
      */
     private onKeyPressHandler(event: KeyboardEvent) {
-        if ('Control' === event.key) {
-            this._changeRotation = true;
-        }
-
         this.setMoveState(event.key, true);
     }
 
     /**
-     * Disable rotation control when Control-Key has been pressed.
+     * Move Direction end.
      */
     private onKeyUpHandler(event: KeyboardEvent) {
-        if ('Control' === event.key) {
-            this._changeRotation = false;
-        }
-
         this.setMoveState(event.key, false);
     }
 
@@ -79,12 +69,12 @@ export default class Camera {
      * Zoom in or out when mousewheel has been wheeled.
      */
     private zoomCamera(wheelDelta: number) {
-        this._camera.position.y += wheelDelta/100;
+        this._camera.position.x += wheelDelta/100;
 
         if (2.5 > this._camera.position.y) {
-            this._camera.position.y = 2.5;
+            this._camera.position.x = 2.5;
         } else if (20 < this._camera.position.y) {
-            this._camera.position.y = 20;
+            this._camera.position.x = 20;
         }
     }
 
@@ -109,7 +99,9 @@ export default class Camera {
      * Update camera.
      */
     update() {
-        let movement: BABYLON.Vector3;
+        let position: BABYLON.Vector3;
+        let target: BABYLON.Vector3;
+        let delta: BABYLON.Vector3;
         let x: number = 0;
         let z: number = 0;
 
@@ -118,22 +110,35 @@ export default class Camera {
         }
 
         if (this.moveState.right) {
-            x = 0.4
-        } else if (this.moveState.left) {
-            x = -0.4
-        }
-
-        if (this.moveState.forward) {
             z = 0.4;
-        } else if (this.moveState.backward) {
+        } else if (this.moveState.left) {
             z = -0.4;
         }
 
-        movement = BABYLON.Vector3.TransformCoordinates(
-            new BABYLON.Vector3(x, 0, z),
-            BABYLON.Matrix.RotationY(this._camera.rotation.y)
+        if (this.moveState.forward) {
+            x = 0.4;
+        } else if (this.moveState.backward) {
+            x = -0.4;
+        }
+
+        delta = BABYLON.Vector3.TransformCoordinates(
+            new BABYLON.Vector3(x, this._camera.position.y, z),
+            BABYLON.Matrix.RotationY(this._camera.alpha)
         );
 
-        this._camera.position.addInPlace(movement);
+        target = new BABYLON.Vector3(
+            this._camera.target.x - delta.x,
+            this._camera.target.y,
+            this._camera.target.z + delta.z
+        );
+
+        position = new BABYLON.Vector3(
+            this._camera.position.x - delta.x,
+            this._camera.position.y,
+            this._camera.position.z + delta.z
+        );
+
+        this._camera.setTarget(target);
+        this._camera.setPosition(position);
     }
 }
