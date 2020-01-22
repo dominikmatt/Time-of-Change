@@ -18,7 +18,6 @@ export default class BuildingUpdateCommand extends Command {
     }
 
     execute(req: RequestInterface) {
-        console.log(req.type)
         if (!builtBuildings[req._id]) {
             builtBuildings[req._id] = new buildingMapping[req.type](req.position, req._id, req.playerId);
         }

@@ -11,7 +11,7 @@ const Harvest_1 = __importDefault(require("../../Jobs/types/Harvest"));
 class Farm extends EconomyBuilding_1.default {
     constructor(player, position, alreadyBuilt = false) {
         super(player, position);
-        this._maxFields = 5;
+        this._maxFields = 20;
         this._fields = [];
         this._matrix = [
             [1, 1, 1, 1],
@@ -21,8 +21,8 @@ class Farm extends EconomyBuilding_1.default {
         this._maxCornStore = 5;
         this._currentCornStore = 0;
         this._cost = new CostComponent_1.default({
-            timber: 6,
-            stones: 5
+            timber: 4,
+            stones: 3
         });
         this.build(alreadyBuilt);
     }
@@ -38,12 +38,12 @@ class Farm extends EconomyBuilding_1.default {
     }
     beforeUpdate() {
         this.findField();
-        this.addNextJob();
+        if (null === this._nextJob &&
+            null !== this._character) {
+            this.addNextJob();
+        }
     }
     addNextJob() {
-        if ((null !== this._nextJob || null === this._character)) {
-            return;
-        }
         for (let field of this._fields) {
             if (true === field.isRaw()) {
                 this._nextJob = new Sow_1.default(this._player, this._character, field);

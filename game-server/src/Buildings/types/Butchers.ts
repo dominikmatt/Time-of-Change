@@ -15,8 +15,8 @@ export default class Butchers extends EconomyBuilding implements BuildingInterfa
         super(player, position);
 
         this._cost = new CostComponent({
-            timber: 6,
-            stones: 5
+            timber: 4,
+            stones: 3
         });
 
         this.build(alreadyBuilt);

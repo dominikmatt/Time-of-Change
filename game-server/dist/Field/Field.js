@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
 const PositionComponent_1 = require("../Components/PositionComponent");
 const Map_1 = __importDefault(require("../Map/Map"));
+const gameSettings_1 = require("../gameSettings");
 var FieldStates;
 (function (FieldStates) {
     FieldStates[FieldStates["RAW"] = 1] = "RAW";
@@ -23,7 +24,7 @@ class Field {
     }
     updateMap() {
         Map_1.default.updateCoordinate(this._position.x, this._position.z, {
-            runnable: false,
+            runnable: true,
             building: null,
             hasField: true,
             hasTree: false,
@@ -53,7 +54,7 @@ class Field {
     }
     update(delta) {
         if (FieldStates.GROWING === this._status) {
-            this._progress += delta;
+            this._progress += (100 / 450) * delta * gameSettings_1.GAME_SPEED; // 7,5 minutes by game speed 1.
         }
         if (100 <= this._progress) {
             this._status = FieldStates.MATURE;

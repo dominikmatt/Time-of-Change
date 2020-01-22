@@ -13,8 +13,8 @@ class ArmouryWorkshop extends EconomyBuilding_1.default {
             [1, 2, 1],
         ];
         this._cost = new CostComponent_1.default({
-            timber: 6,
-            stones: 5
+            timber: 4,
+            stones: 3
         });
         this.build(alreadyBuilt);
     }
