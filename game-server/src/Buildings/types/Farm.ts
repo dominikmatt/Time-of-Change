@@ -45,16 +45,14 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
 
     protected beforeUpdate() {
         this.findField();
-
-        if (
-            null === this._nextJob &&
-            null !== this._character
-        ) {
-            this.addNextJob();
-        }
+        this.addNextJob();
     }
 
     private addNextJob() {
+        if ((null !== this._nextJob || null === this._character)) {
+            return;
+        }
+
         for(let field of this._fields) {
             if (true === field.isRaw()) {
                 this._nextJob = new Sow(this._player, this._character, field);
