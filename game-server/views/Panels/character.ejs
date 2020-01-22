@@ -1,0 +1,7 @@
+<h3>Arbeiter</h3>
+
+Health: <%= health.currentHealth %><br />
+Job: <% if (job) { %>
+    <%= job.id %> (<%= job.getType() %>) (<%= job.currentStep %>)
+<% } %>
+<br />

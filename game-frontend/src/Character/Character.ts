@@ -4,6 +4,7 @@ import PositionInterface, {WalkPositionInterface} from "../interfaces/PositionIn
 import assetsManager from "../AssetsManager";
 import Vector3 = BABYLON.Vector3;
 import IAnimationKey = BABYLON.IAnimationKey;
+import {GAME_SPEED} from "../constants";
 
 export default class Character {
     private _position: PositionInterface;
@@ -37,6 +38,8 @@ export default class Character {
         this._mesh = assetsManager.getCharacterMeshByName('character', this._id);
         this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
 
+        this._mesh.checkCollisions = true;
+        this._mesh.isPickable = true;
         this._mesh.metadata = {
             isCharacter: true,
             characterId: this._id,
@@ -80,7 +83,7 @@ export default class Character {
             this._skeleton.enableBlending(0.08);
         }
 
-        this._skeleton.beginAnimation('idle', true, 1);
+        this._skeleton.beginAnimation('idle', true, GAME_SPEED);
     }
 
     /**
@@ -88,7 +91,7 @@ export default class Character {
      */
     public playAnimation(name:string, loop:boolean, speed:number = 1) {
         if (this._skeleton){
-            this._skeleton.beginAnimation(name, loop, speed);
+            this._skeleton.beginAnimation(name, loop, speed * GAME_SPEED);
         }
     }
 
@@ -179,7 +182,7 @@ export default class Character {
 
         // Begin animation.
         setTimeout(async () => {
-            this._walkAnimation = game.gameScene.scene.beginAnimation(this._mesh, 0, frame, false);
+            this._walkAnimation = game.gameScene.scene.beginAnimation(this._mesh, 0, frame, false, GAME_SPEED - 1);
             this.playAnimation('walk', true);
 
             this._walkAnimation.onAnimationEnd = () => {

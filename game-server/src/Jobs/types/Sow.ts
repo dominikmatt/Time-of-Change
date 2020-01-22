@@ -21,7 +21,7 @@ enum SowJobStates {
 export default class Sow extends Job implements JobInterface {
     protected readonly _type: string = 'sow';
     private readonly _targetFieldPosition: PositionInterface;
-    private readonly _character?: Character = null;
+    private _character?: Character | null = null;
     private readonly _field?: Field = null;
     private _isCharacterWalking: boolean = false;
     private _isCharacterAtStart: boolean = false;
@@ -37,6 +37,13 @@ export default class Sow extends Job implements JobInterface {
         this._targetFieldPosition = field.position.position;
         this._character = character;
         this._field = field;
+        this._jobStatus = SowJobStates.notStarted;
+    }
+
+    protected beforeDestroy() {
+        this._jobStatus = SowJobStates.notStarted;
+        this._character = null;
+        this._isCharacterWalking = false;
     }
 
 
@@ -44,7 +51,7 @@ export default class Sow extends Job implements JobInterface {
         return JSON.stringify({
             _id: this._id,
             type: this.getType(),
-            player: this._player.token,
+            //player: this._player.token,
             field: this._field.toObject(),
         });
     }
@@ -52,8 +59,8 @@ export default class Sow extends Job implements JobInterface {
     public update(): void {
         switch (this._currentStep) {
             case 0:
-                if (SowJobStates.notStarted === this._jobStatus) {
-                    console.log('setTimeout');
+                console.log(this._id, SowJobStates.notStarted === this._jobStatus, true === this._character.isInHouse)
+                if (SowJobStates.notStarted === this._jobStatus && true === this._character.isInHouse) {
                     setTimeout(() => {
                         this._currentStep++;
                     }, 6000 / GAME_SPEED);
@@ -65,16 +72,12 @@ export default class Sow extends Job implements JobInterface {
             case 1:
                 this._jobStatus = SowJobStates.walkingToField;
 
-                if (this._character.building.doorPosition.x === this._character.position.x &&
-                    this._character.building.doorPosition.z === this._character.position.z &&
-                    !this._isCharacterWalking && !this._isCharacterAtStart) {
-                    console.log('go to field')
+                if (!this._isCharacterWalking && !this._isCharacterAtStart) {
                     const toFieldPath = Map.findRunnablePath(
                         this._character.position.position,
                         this._targetFieldPosition,
                         true
                     );
-                    console.log(toFieldPath)
 
                     this._character.walkByPath(toFieldPath);
                     this._isCharacterWalking = true;
@@ -91,14 +94,12 @@ export default class Sow extends Job implements JobInterface {
                     this._jobStatus = SowJobStates.sow;
                     this._isCharacterWalking = false;
 
-                    console.log('sow timeout start')
                     setTimeout(() => {
                         if (2 !== this._currentStep) {
                             return;
                         }
 
                         this._field.sow();
-                        console.log('sow')
 
                         this._currentStep++;
                     }, 12000 / GAME_SPEED);
@@ -130,5 +131,9 @@ export default class Sow extends Job implements JobInterface {
                 }
                 break;
         }
+    }
+
+    set character (character: Character) {
+        this._character = character
     }
 }

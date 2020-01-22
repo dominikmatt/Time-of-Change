@@ -86,7 +86,7 @@ class Field {
             _id: this._id,
             status: this._status,
             progress: this._progress,
-            player: this._player.token,
+            //player: this._player.token,
             position: this._position.position,
         };
     }

@@ -41,10 +41,15 @@ class Character {
      * Character is death now destroy it.
      */
     destroy() {
+        this._isAlive = false;
         if (true === this._job.reAddOnDestroy) {
+            this._job.destroy();
             this._player.jobStore.addJob(this._job);
         }
-        this._isAlive = false;
+        if (null !== this._building) {
+            console.log('remove from building');
+            this._building.character = null;
+        }
     }
     /**
      * Returns all character specific data as a object.
@@ -80,9 +85,11 @@ class Character {
     update() {
         // Character is alive.
         if (true === this.isAlive) {
+            // Has no job search a workplace.
             if (true === this.getNeedBuilding() && null === this._building) {
                 return this.searchBuilding();
             }
+            // check if character at the workplace.
             this.checkInHouse();
             if (null === this._job) {
                 if (false === this.mustGoEat()) {
@@ -102,7 +109,7 @@ class Character {
                             x: next[0],
                             z: next[1]
                         };
-                        this._health.decreaseHealt(0.5);
+                        this._health.decreaseHealt(5);
                     }
                     this._walkDelta = 0;
                 }
@@ -146,6 +153,9 @@ class Character {
     }
     get position() {
         return this._position;
+    }
+    get job() {
+        return this._job;
     }
     set job(value) {
         this._job = value;

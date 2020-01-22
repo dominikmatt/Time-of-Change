@@ -25,6 +25,8 @@ export default class GoEatJob extends Job implements JobInterface {
         this._character = character;
     }
 
+    protected beforeDestroy() {}
+
     public toJSON(): string {
         return JSON.stringify({
             _id: this._id,

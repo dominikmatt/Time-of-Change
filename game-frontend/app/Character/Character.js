@@ -13,6 +13,7 @@ const BABYLON = require("babylonjs");
 const Game_1 = require("../Game");
 const AssetsManager_1 = require("../AssetsManager");
 var Vector3 = BABYLON.Vector3;
+const constants_1 = require("../constants");
 class Character {
     constructor(id, position) {
         this._walkingPath = [];
@@ -33,6 +34,8 @@ class Character {
     load() {
         this._mesh = AssetsManager_1.default.getCharacterMeshByName('character', this._id);
         this._mesh.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
+        this._mesh.checkCollisions = true;
+        this._mesh.isPickable = true;
         this._mesh.metadata = {
             isCharacter: true,
             characterId: this._id,
@@ -66,14 +69,14 @@ class Character {
             // Activate animation blending
             this._skeleton.enableBlending(0.08);
         }
-        this._skeleton.beginAnimation('idle', true, 1);
+        this._skeleton.beginAnimation('idle', true, constants_1.GAME_SPEED);
     }
     /**
      * Play the given animation if skeleton found
      */
     playAnimation(name, loop, speed = 1) {
         if (this._skeleton) {
-            this._skeleton.beginAnimation(name, loop, speed);
+            this._skeleton.beginAnimation(name, loop, speed * constants_1.GAME_SPEED);
         }
     }
     /**
@@ -129,7 +132,7 @@ class Character {
         this._mesh.animations.push(animationBox);
         // Begin animation.
         setTimeout(() => __awaiter(this, void 0, void 0, function* () {
-            this._walkAnimation = Game_1.default.gameScene.scene.beginAnimation(this._mesh, 0, frame, false);
+            this._walkAnimation = Game_1.default.gameScene.scene.beginAnimation(this._mesh, 0, frame, false, constants_1.GAME_SPEED - 1);
             this.playAnimation('walk', true);
             this._walkAnimation.onAnimationEnd = () => {
                 // Remove debug path after animation has been completed.

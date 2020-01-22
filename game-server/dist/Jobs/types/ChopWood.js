@@ -24,6 +24,7 @@ class ChopWood extends Job_1.default {
             targetTreePosition: this._targetTreePosition,
         });
     }
+    beforeDestroy() { }
     update() {
         switch (this._currentStep) {
             case 0:

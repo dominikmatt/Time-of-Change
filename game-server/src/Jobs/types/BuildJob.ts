@@ -23,6 +23,7 @@ export default class BuildJob extends Job implements JobInterface {
         this._character = character;
     }
 
+    protected beforeDestroy() {}
 
     public toJSON(): string {
         return JSON.stringify({

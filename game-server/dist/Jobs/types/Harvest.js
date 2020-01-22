@@ -18,6 +18,7 @@ class Harvest extends Job_1.default {
         this._character = character;
         this._field = field;
     }
+    beforeDestroy() { }
     toJSON() {
         return JSON.stringify({
             _id: this._id,

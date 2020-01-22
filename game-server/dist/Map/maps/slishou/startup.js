@@ -12,6 +12,7 @@ class Player1 {
     placeHouses() {
         this._player.addCharacter(CharacterFactory_1.default('serf', 'start', this._player));
         this._player.addCharacter(CharacterFactory_1.default('farmer', 'start', this._player));
+        this._player.addCharacter(CharacterFactory_1.default('farmer', 'start', this._player));
         const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', {
             x: 8,
             z: 3

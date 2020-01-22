@@ -37,6 +37,8 @@ export default class TransportJob extends Job implements JobInterface {
         this._storehouse = storehouse;
     }
 
+    protected beforeDestroy() {}
+
     public toJSON(): string {
         return JSON.stringify({
             _id: this._id,

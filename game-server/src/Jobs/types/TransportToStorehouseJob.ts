@@ -30,6 +30,8 @@ export default class TransportToStorehouseJob extends Job implements JobInterfac
         this._resourceType = resourceType;
     }
 
+    protected beforeDestroy() {}
+
     public toJSON(): string {
         let storehouseId: string | null = null;
 

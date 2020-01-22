@@ -13,11 +13,19 @@ class Job {
         this._currentStep = 0;
         this._player = player;
     }
+    destroy() {
+        this.beforeDestroy();
+        this._currentStep = 0;
+        this._inProgress = false;
+    }
     getType() {
         return this._type;
     }
     addToDb() {
         throw new Error('Job: Implement addToDb method.');
+    }
+    beforeDestroy() {
+        //throw new Error('Job: Implement beforeDestroy method.');
     }
     toJSON() {
         throw new Error('Job: Implement toJSON method.');
@@ -39,6 +47,9 @@ class Job {
     }
     get reAddOnDestroy() {
         return this._reAddOnDestroy;
+    }
+    get currentStep() {
+        return this._currentStep;
     }
 }
 exports.default = Job;

@@ -15,6 +15,7 @@ class Player1 implements MapStartupInterface {
     public placeHouses() {
         this._player.addCharacter(CharacterFactory('serf', 'start', this._player));
         this._player.addCharacter(CharacterFactory('farmer', 'start', this._player));
+        this._player.addCharacter(CharacterFactory('farmer', 'start', this._player));
         const storehouse: Storehouse = this._player.addBuilding(BuildingFactory('storehouse', {
             x: 8,
             z: 3
