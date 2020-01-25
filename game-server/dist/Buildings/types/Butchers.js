@@ -9,13 +9,13 @@ class Butchers extends EconomyBuilding_1.default {
     constructor(player, position, alreadyBuilt = false) {
         super(player, position);
         this._matrix = [
-            [0, 1, 1, 1],
+            [1, 1, 1, 1],
             [1, 1, 1, 1],
             [1, 1, 1, 2],
         ];
         this._cost = new CostComponent_1.default({
-            timber: 6,
-            stones: 5
+            timber: 4,
+            stones: 3
         });
         this.build(alreadyBuilt);
     }

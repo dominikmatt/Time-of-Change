@@ -54,8 +54,8 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
         }
 
         for(let field of this._fields) {
-            if (true === field.isRaw()) {
-                this._nextJob = new Sow(this._player, this._character, field);
+            if (true === field.isReadyToHarvest()) {
+                this._nextJob = new Harvest(this._player, this._character, field);
                 break;
             }
         }
@@ -65,8 +65,8 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
         }
 
         for(let field of this._fields) {
-            if (true === field.isReadyToHarvest()) {
-                this._nextJob = new Harvest(this._player, this._character, field);
+            if (true === field.isRaw()) {
+                this._nextJob = new Sow(this._player, this._character, field);
                 break;
             }
         }

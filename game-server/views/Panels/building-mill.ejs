@@ -3,6 +3,16 @@
         <h3>Muehle</h3>
     </div>
 
+    Arbeiter:
+    <% if (character) { %>
+        Ja
+    <% } else { %>
+        Nein
+    <% } %>
+    <br />
+
+    Korn: <%= resources.corn.value %> / <%= resources.corn.max %><br/>
+    Mehl: <%= resources.flour.value %> / <%= resources.flour.max %><br/>
 
 <% } else { %>
     Baubarbeiten laufen...

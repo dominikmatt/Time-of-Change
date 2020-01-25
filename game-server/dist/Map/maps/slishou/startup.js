@@ -12,13 +12,14 @@ class Player1 {
     placeHouses() {
         this._player.addCharacter(CharacterFactory_1.default('serf', 'start', this._player));
         this._player.addCharacter(CharacterFactory_1.default('farmer', 'start', this._player));
-        this._player.addCharacter(CharacterFactory_1.default('farmer', 'start', this._player));
+        this._player.addCharacter(CharacterFactory_1.default('miller', 'start', this._player));
         const storehouse = this._player.addBuilding(BuildingFactory_1.default('storehouse', {
             x: 8,
             z: 3
         }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('schoolhouse', { x: 8, z: 8 }, this._player, true));
         this._player.addBuilding(BuildingFactory_1.default('farm', { x: 14, z: 9 }, this._player, true));
+        this._player.addBuilding(BuildingFactory_1.default('mill', { x: 14, z: 15 }, this._player, true));
         for (let x = 18; x < 23; x++) {
             for (let z = 9; z < 14; z++) {
                 this._player.addField(new Field_1.default({
@@ -27,13 +28,14 @@ class Player1 {
             }
         }
         storehouse.addResources({
-            treeTrunks: 30,
+            corn: 20,
+            treeTrunks: 32,
             stones: 60,
             timber: 50,
             gold: 60,
-            beer: 40,
             loaves: 30,
             sausages: 20,
+            flour: 20,
         });
         this._player.getNearestFreeFields({ x: 0, z: 0 });
     }
@@ -41,7 +43,6 @@ class Player1 {
         this._player = value;
     }
 }
-;
 class Player2 {
     constructor() {
     }
@@ -61,6 +62,8 @@ class Player2 {
             beer: 40,
             loaves: 30,
             sausages: 20,
+            flour: 20,
+            corn: 20,
         });
     }
     set player(value) {

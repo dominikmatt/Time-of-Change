@@ -1,7 +1,7 @@
 import EconomyBuilding from "../EconomyBuilding";
 import BuildingInterface from "../BuildingInterface";
 import CostComponent from "../../Components/CostComponent";
-import {ResourceInterface as AllResourceInterface} from "../../Interfaces/Resources";
+import {AllResourceInterface, ResourceInterface} from "../../Interfaces/Resources";
 import {PositionInterface} from "../../Components/PositionComponent";
 import Player from "../../Player";
 
@@ -10,37 +10,6 @@ interface ResourceItemInterface {
     storable: boolean;
 }
 
-interface ResourceInterface extends AllResourceInterface {
-    treeTrunks: ResourceItemInterface;
-    stones: ResourceItemInterface;
-    timber: ResourceItemInterface;
-    ironOre: ResourceItemInterface;
-    goldOre: ResourceItemInterface;
-    coal: ResourceItemInterface;
-    iron: ResourceItemInterface;
-    gold: ResourceItemInterface;
-    beer: ResourceItemInterface;
-    corn: ResourceItemInterface;
-    loaves: ResourceItemInterface;
-    flour: ResourceItemInterface;
-    leather: ResourceItemInterface;
-    sausages: ResourceItemInterface;
-    pigs: ResourceItemInterface;
-    skins: ResourceItemInterface;
-    woodenShield: ResourceItemInterface;
-    longShield: ResourceItemInterface;
-    leatherArmor: ResourceItemInterface;
-    ironAmament: ResourceItemInterface;
-    handAxe: ResourceItemInterface;
-    sword: ResourceItemInterface;
-    lance: ResourceItemInterface;
-    pike: ResourceItemInterface;
-    longbow: ResourceItemInterface;
-    crossbow: ResourceItemInterface;
-    horses: ResourceItemInterface;
-    fish: ResourceItemInterface;
-    [key: string]: ResourceItemInterface;
-}
 
 /**
  * The storehouse will store all Resources from the player.
@@ -52,7 +21,7 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
         [1,2,1],
     ];
 
-    protected _resources: ResourceInterface = {
+    protected _resources: AllResourceInterface<ResourceItemInterface> = {
         treeTrunks: {
             store: 0,
             storable: true
@@ -85,7 +54,7 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
             store: 0,
             storable: true
         },
-        beer: {
+        vine: {
             store: 0,
             storable: true
         },
@@ -161,10 +130,6 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
             store: 0,
             storable: true
         },
-        fish: {
-            store: 0,
-            storable: true
-        }
     };
 
     constructor(player: Player, position: PositionInterface, alreadyBuilt: boolean = false) {
@@ -178,7 +143,7 @@ export default class Storehouse extends EconomyBuilding implements BuildingInter
         this.build(alreadyBuilt);
     }
 
-    public addResources(resources: object) {
+    public addResources(resources: ResourceInterface<number>) {
         for (let resKey in resources) {
             this._resources[resKey].store += (<any>resources)[resKey];
         }

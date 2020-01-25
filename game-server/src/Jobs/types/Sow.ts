@@ -59,8 +59,7 @@ export default class Sow extends Job implements JobInterface {
     public update(): void {
         switch (this._currentStep) {
             case 0:
-                console.log(this._id, SowJobStates.notStarted === this._jobStatus, true === this._character.isInHouse)
-                if (SowJobStates.notStarted === this._jobStatus && true === this._character.isInHouse) {
+                 if (SowJobStates.notStarted === this._jobStatus && true === this._character.isInHouse) {
                     setTimeout(() => {
                         this._currentStep++;
                     }, 6000 / GAME_SPEED);

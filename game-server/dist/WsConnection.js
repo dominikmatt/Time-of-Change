@@ -65,7 +65,6 @@ io.on('connection', (socket) => {
         newPlayer.wsSocket = socket;
         newPlayer.listenWs();
         newPlayer.initializeTown();
-        console.log(Core_1.default.gameState);
         Core_1.default.emitAll('game.update', {
             gameState: Core_1.default.gameState,
             playersCount: Object.keys(Core_1.default.players).length,

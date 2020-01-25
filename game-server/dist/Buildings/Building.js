@@ -134,11 +134,19 @@ class Building {
         this.addBuildJob();
     }
     addResource(type) {
-        this._resources[type]++;
+        if ('object' === typeof this._resources[type]) {
+            this._resources[type].value++;
+        }
+        else {
+            this._resources[type]++;
+        }
         this.afterResourceAdded(type);
     }
     increaseHealth() {
         this._health.currentHealth += 50;
+    }
+    get resources() {
+        return this._resources;
     }
     get position() {
         return this._position;

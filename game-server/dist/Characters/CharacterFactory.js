@@ -10,6 +10,7 @@ const Woodkutter_1 = __importDefault(require("./types/Woodkutter"));
 const Carpenter_1 = __importDefault(require("./types/Carpenter"));
 const Stonemason_1 = __importDefault(require("./types/Stonemason"));
 const Farmer_1 = __importDefault(require("./types/Farmer"));
+const Miller_1 = __importDefault(require("./types/Miller"));
 ;
 const characterMapping = {
     serf: Serf_1.default,
@@ -19,6 +20,7 @@ const characterMapping = {
     carpenter: Carpenter_1.default,
     stonemason: Stonemason_1.default,
     farmer: Farmer_1.default,
+    miller: Miller_1.default,
 };
 /**
  * Create a new character with given data.

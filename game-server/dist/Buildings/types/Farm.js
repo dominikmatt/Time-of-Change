@@ -45,8 +45,8 @@ class Farm extends EconomyBuilding_1.default {
             return;
         }
         for (let field of this._fields) {
-            if (true === field.isRaw()) {
-                this._nextJob = new Sow_1.default(this._player, this._character, field);
+            if (true === field.isReadyToHarvest()) {
+                this._nextJob = new Harvest_1.default(this._player, this._character, field);
                 break;
             }
         }
@@ -54,8 +54,8 @@ class Farm extends EconomyBuilding_1.default {
             return;
         }
         for (let field of this._fields) {
-            if (true === field.isReadyToHarvest()) {
-                this._nextJob = new Harvest_1.default(this._player, this._character, field);
+            if (true === field.isRaw()) {
+                this._nextJob = new Sow_1.default(this._player, this._character, field);
                 break;
             }
         }

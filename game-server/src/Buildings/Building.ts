@@ -181,13 +181,21 @@ export default abstract class Building implements DestroyAbleInterface {
     }
 
     public addResource(type: string) {
-        (<any>this._resources)[type]++;
+        if ('object' === typeof (<any>this._resources)[type]) {
+            (<any>this._resources)[type].value++;
+        } else {
+            (<any>this._resources)[type]++;
+        }
 
         this.afterResourceAdded(type);
     }
 
     public increaseHealth() {
         this._health.currentHealth += 50;
+    }
+
+    get resources() {
+        return this._resources;
     }
 
     get position(): PositionComponent {

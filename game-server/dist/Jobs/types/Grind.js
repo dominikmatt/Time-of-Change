@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Job_1 = __importDefault(require("../Job"));
 const gameSettings_1 = require("../../gameSettings");
-class Woodworking extends Job_1.default {
+class Grind extends Job_1.default {
     constructor(player, character) {
         super(player);
-        this._type = 'woodworking';
+        this._type = 'grind';
         this._character = null;
         this._isWorking = false;
         this._character = character;
@@ -30,7 +30,7 @@ class Woodworking extends Job_1.default {
                 break;
             case 1:
                 if (false === this._isWorking) {
-                    this._character.building.decreaseTreeTrunkStore();
+                    this._character.building.decreaseCornStore();
                     this._isWorking = true;
                     this._reAddOnDestroy = false;
                 }
@@ -41,11 +41,11 @@ class Woodworking extends Job_1.default {
             case 2:
                 this._character.job = null;
                 this._isWorking = false;
-                this._character.building.increaseStore();
+                this._character.building.increaseFlourStore();
                 this._currentStep++;
                 break;
         }
     }
 }
-exports.default = Woodworking;
-//# sourceMappingURL=Woodworking.js.map
+exports.default = Grind;
+//# sourceMappingURL=Grind.js.map

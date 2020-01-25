@@ -135,7 +135,7 @@ export default class Character implements DestroyAbleInterface {
                             z: next[1]
                         };
 
-                        this._health.decreaseHealt(5);
+                        this._health.decreaseHealt(0.5);
                     }
 
                     this._walkDelta = 0;
