@@ -22,6 +22,7 @@ class TransportJob extends Job_1.default {
         this._character = character;
         this._storehouse = storehouse;
     }
+    beforeDestroy() { }
     toJSON() {
         return JSON.stringify({
             _id: this._id,

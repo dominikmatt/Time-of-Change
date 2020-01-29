@@ -22,12 +22,22 @@ export default class Job {
         this._player = player;
     }
 
+    destroy() {
+        this.beforeDestroy();
+        this._currentStep = 0;
+        this._inProgress = false;
+    }
+
     public getType(): string {
         return this._type;
     }
 
     public addToDb(): void {
         throw new Error('Job: Implement addToDb method.');
+    }
+
+    protected beforeDestroy(): void {
+        //throw new Error('Job: Implement beforeDestroy method.');
     }
 
     public toJSON(): void {
@@ -56,5 +66,9 @@ export default class Job {
 
     get reAddOnDestroy(): boolean {
         return this._reAddOnDestroy;
+    }
+
+    get currentStep(): number {
+        return this._currentStep;
     }
 }

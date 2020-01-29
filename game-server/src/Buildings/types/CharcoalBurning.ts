@@ -15,8 +15,8 @@ export default class CharcoalBurning extends EconomyBuilding implements Building
         super(player, position);
 
         this._cost = new CostComponent({
-            timber: 6,
-            stones: 5
+            timber: 3,
+            stones: 4,
         });
 
         this.build(alreadyBuilt);

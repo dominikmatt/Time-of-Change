@@ -51,11 +51,17 @@ export default class Character implements DestroyAbleInterface {
      * Character is death now destroy it.
      */
     public destroy() {
+        this._isAlive = false;
+
         if (true === this._job.reAddOnDestroy) {
+            this._job.destroy()
             this._player.jobStore.addJob(this._job);
         }
 
-        this._isAlive = false;
+        if (null !== this._building) {
+            console.log('remove from building');
+            this._building.character = null;
+        }
     }
 
     /**
@@ -99,10 +105,12 @@ export default class Character implements DestroyAbleInterface {
     update() {
         // Character is alive.
         if (true === this.isAlive) {
+            // Has no job search a workplace.
             if (true === this.getNeedBuilding() && null === this._building) {
                 return this.searchBuilding();
             }
 
+            // check if character at the workplace.
             this.checkInHouse();
 
             if (null === this._job) {
@@ -186,6 +194,10 @@ export default class Character implements DestroyAbleInterface {
 
     get position(): PositionComponent {
         return this._position;
+    }
+
+    get job() {
+        return this._job;
     }
 
     set job(value: Job) {

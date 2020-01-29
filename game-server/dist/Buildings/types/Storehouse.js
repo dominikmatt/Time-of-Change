@@ -49,7 +49,7 @@ class Storehouse extends EconomyBuilding_1.default {
                 store: 0,
                 storable: true
             },
-            beer: {
+            vine: {
                 store: 0,
                 storable: true
             },
@@ -125,10 +125,6 @@ class Storehouse extends EconomyBuilding_1.default {
                 store: 0,
                 storable: true
             },
-            fish: {
-                store: 0,
-                storable: true
-            }
         };
         this._cost = new CostComponent_1.default({
             timber: 6,

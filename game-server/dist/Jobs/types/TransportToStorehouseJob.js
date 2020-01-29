@@ -18,6 +18,7 @@ class TransportToStorehouseJob extends Job_1.default {
         this._building = building;
         this._resourceType = resourceType;
     }
+    beforeDestroy() { }
     toJSON() {
         let storehouseId = null;
         if (null !== this._storehouse) {

@@ -43,6 +43,7 @@ export default class Serf extends Character implements CharacterInterface {
 
                 if (!building) {
                     this._player.jobStore.addJob(new TransportJob(this._player, startPosition, job.resourceType, targetBuilding));
+                    return;
                 }
 
                 this._job = new TransportJob(

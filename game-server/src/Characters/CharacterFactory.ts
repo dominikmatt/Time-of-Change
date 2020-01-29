@@ -1,4 +1,3 @@
-import {PositionComponent, PositionInterface} from "../Components/PositionComponent";
 import Player from "../Player";
 import Serf from "./types/Serf";
 import Laborer from "./types/Laborer";
@@ -8,6 +7,7 @@ import Woodkutter from "./types/Woodkutter";
 import Carpenter from "./types/Carpenter";
 import Stonemason from "./types/Stonemason";
 import Farmer from "./types/Farmer";
+import Miller from "./types/Miller";
 
 interface CharacterMapping {
     [key:string]: any;
@@ -21,6 +21,7 @@ const characterMapping: CharacterMapping = {
     carpenter: Carpenter,
     stonemason: Stonemason,
     farmer: Farmer,
+    miller: Miller,
 };
 
 /**

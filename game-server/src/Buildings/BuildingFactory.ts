@@ -64,7 +64,6 @@ const buildingMapping: BuildingMapping = {
  * @param alreadyBuilt
  */
 export default (key: string, position: PositionInterface, player: Player, alreadyBuilt: boolean = false) => {
-    console.log(key)
     const building: Building = new buildingMapping[key](player, position, alreadyBuilt);
 
     return building;

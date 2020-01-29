@@ -9,7 +9,7 @@ import TransportToStorehouseJob from "../../Jobs/types/TransportToStorehouseJob"
 import Harvest from "../../Jobs/types/Harvest";
 
 export default class Farm extends EconomyBuilding implements BuildingInterface {
-    readonly _maxFields: number = 5;
+    readonly _maxFields: number = 20;
     private _fields: Field[] = [];
     readonly _matrix: number[][] = [
         [1,1,1,1],
@@ -24,8 +24,8 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
         super(player, position);
 
         this._cost = new CostComponent({
-            timber: 6,
-            stones: 5
+            timber: 4,
+            stones: 3
         });
 
         this.build(alreadyBuilt);
@@ -54,8 +54,8 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
         }
 
         for(let field of this._fields) {
-            if (true === field.isRaw()) {
-                this._nextJob = new Sow(this._player, this._character, field);
+            if (true === field.isReadyToHarvest()) {
+                this._nextJob = new Harvest(this._player, this._character, field);
                 break;
             }
         }
@@ -65,8 +65,8 @@ export default class Farm extends EconomyBuilding implements BuildingInterface {
         }
 
         for(let field of this._fields) {
-            if (true === field.isReadyToHarvest()) {
-                this._nextJob = new Harvest(this._player, this._character, field);
+            if (true === field.isRaw()) {
+                this._nextJob = new Sow(this._player, this._character, field);
                 break;
             }
         }

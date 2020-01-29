@@ -19,6 +19,7 @@ class GoEatJob extends Job_1.default {
         this._isEating = false;
         this._character = character;
     }
+    beforeDestroy() { }
     toJSON() {
         return JSON.stringify({
             _id: this._id,

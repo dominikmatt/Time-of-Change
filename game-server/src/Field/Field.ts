@@ -4,6 +4,7 @@ import Player from "../Player";
 import {PositionComponent} from "../Components/PositionComponent";
 import Building from "../Buildings/Building";
 import Map from "../Map/Map";
+import {GAME_SPEED} from "../gameSettings";
 
 enum FieldStates {
     RAW = 1,
@@ -28,7 +29,7 @@ export default class Field {
 
     protected updateMap() {
         Map.updateCoordinate(this._position.x, this._position.z, {
-            runnable: false,
+            runnable: true,
             building: null,
             hasField: true,
             hasTree: false,
@@ -67,7 +68,7 @@ export default class Field {
 
     public update(delta: number) {
         if (FieldStates.GROWING === this._status) {
-            this._progress += delta;
+            this._progress += (100 / 450) * delta * GAME_SPEED; // 7,5 minutes by game speed 1.
         }
 
         if (100 <= this._progress) {
@@ -108,7 +109,7 @@ export default class Field {
             _id: this._id,
             status: this._status,
             progress: this._progress,
-            player: this._player.token,
+            //player: this._player.token,
             position: this._position.position,
         };
     }

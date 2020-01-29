@@ -14,8 +14,8 @@ export default class WeaponsWorkshop extends EconomyBuilding implements Building
         super(player, position);
 
         this._cost = new CostComponent({
-            timber: 6,
-            stones: 5
+            timber: 4,
+            stones: 3
         });
 
         this.build(alreadyBuilt);

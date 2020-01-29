@@ -25,7 +25,7 @@ export default class Woodcutters extends EconomyBuilding implements BuildingInte
         super(player, position);
 
         this._cost = new CostComponent({
-            timber: 3,
+            timber: 2,
             stones: 2
         });
 

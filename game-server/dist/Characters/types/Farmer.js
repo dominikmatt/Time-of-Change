@@ -22,6 +22,7 @@ class Farmer extends Character_1.default {
             return;
         }
         this._walkTarget = this._building.doorPosition;
+        this._building.nextJob.character = this;
         this._job = this._building.nextJob;
     }
 }

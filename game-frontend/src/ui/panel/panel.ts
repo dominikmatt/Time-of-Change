@@ -38,7 +38,6 @@ class Panel {
 
         const pickResult: BABYLON.PickingInfo | null = game.gameScene.scene.pick(game.gameScene.scene.pointerX, game.gameScene.scene.pointerY);
 
-        console.log(pickResult.pickedMesh.id)
         if (null === pickResult.pickedMesh || !pickResult.pickedMesh.metadata) {
             return;
         }
@@ -57,7 +56,7 @@ class Panel {
             });
         }
 
-        if (true === pickResult.pickedMesh.metadata.isCharacter && pickResult.pickedMesh.metadata.key) {
+        if (true === pickResult.pickedMesh.metadata.isCharacter) {
             this.selectedCharacterId = pickResult.pickedMesh.metadata.characterId;
 
             connectionService.socket.emit('panel.character.selected', {

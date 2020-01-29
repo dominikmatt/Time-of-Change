@@ -35,6 +35,8 @@ export default class ChopWood extends Job implements JobInterface {
         });
     }
 
+    protected beforeDestroy() {}
+
     public update(): void {
         switch (this._currentStep) {
             case 0:

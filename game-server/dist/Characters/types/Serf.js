@@ -31,6 +31,7 @@ class Serf extends Character_1.default {
             let startPosition = job.startPosition;
             if (!building) {
                 this._player.jobStore.addJob(new TransportJob_1.default(this._player, startPosition, job.resourceType, targetBuilding));
+                return;
             }
             this._job = new TransportJob_1.default(this._player, building.doorPosition, job.resourceType, targetBuilding, this, building);
             this._walkTarget = startPosition;

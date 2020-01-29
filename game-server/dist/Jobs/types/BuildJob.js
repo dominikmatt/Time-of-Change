@@ -15,6 +15,7 @@ class BuildJob extends Job_1.default {
         this._targetBuilding = targetBuilding;
         this._character = character;
     }
+    beforeDestroy() { }
     toJSON() {
         return JSON.stringify({
             _id: this._id,

@@ -31,6 +31,7 @@ export default class Harvest extends Job implements JobInterface {
         this._field = field;
     }
 
+    protected beforeDestroy() {}
 
     public toJSON(): string {
         return JSON.stringify({
