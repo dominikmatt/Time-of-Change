@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Config = void 0;
 let instance = null;
 class Config {
     constructor() {

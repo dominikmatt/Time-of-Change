@@ -100,6 +100,7 @@ export default class GameScene {
     }
 
     public updateCoordinate(data: any) {
+        console.log(data)
         /**
          * Fixme: Replace this function with a global library.
          * @param number

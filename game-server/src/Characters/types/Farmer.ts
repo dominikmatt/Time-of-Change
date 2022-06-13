@@ -24,7 +24,7 @@ export default class Farmer extends Character implements CharacterInterface {
         }
 
         this._walkTarget = this._building.doorPosition;
-        this._building.nextJob.character = this;
+        // this._building.nextJob.character = this;
         this._job = this._building.nextJob;
     }
 }

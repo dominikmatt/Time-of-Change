@@ -168,7 +168,8 @@ export default class Character {
         this._walkingDebugPath = BABYLON.Mesh.CreateLines(
             `walkAnimationDebugPath${this._id}`,
             catmullRom.getPoints(),
-            game.gameScene.scene
+            game.gameScene.scene,
+          true
         );
 
 

@@ -124,7 +124,7 @@ class Character {
             // https://github.com/Temechon/ms-experiences16/tree/master/ts
         });
         // Print debug walking path.
-        this._walkingDebugPath = BABYLON.Mesh.CreateLines(`walkAnimationDebugPath${this._id}`, catmullRom.getPoints(), Game_1.default.gameScene.scene);
+        this._walkingDebugPath = BABYLON.Mesh.CreateLines(`walkAnimationDebugPath${this._id}`, catmullRom.getPoints(), Game_1.default.gameScene.scene, true);
         if (1 === keys.length) {
             return;
         }

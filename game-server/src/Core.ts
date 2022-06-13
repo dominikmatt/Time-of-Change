@@ -17,29 +17,26 @@ class Core {
     private static instance: Core;
     private _currentTick: Tick;
     private _players: PlayerObject = {};
-    private readonly _db: Redis;
+    private _db: Redis;
     private _gameState: GameStates = GameStates.WaitingForPlayers;
 
-    constructor() {
-        this._db = new Redis(0);
-        this._db.flushdb()
-            .then(() => console.log('database cleared'))
-            .catch((error) => { throw new Error(error); });
-        const player1redis = new Redis(1);
-        player1redis.flushdb()
-            .then(() => console.log('database cleared player 1'))
-            .catch((error) => { throw new Error(error); });
-        const player2redis = new Redis(1);
-        player2redis.flushdb()
-            .then(() => console.log('database cleared player 2'))
-            .catch((error) => { throw new Error(error); });
+    public async bootstrap() {
+        this._db = new Redis();
+        await this._db.connect(0);
 
-        // Start game immediately in development mode
-        if (Environments.development === process.env.NODE_ENV) {
-            this.gameState = GameStates.Started;
-        } else {
-            setTimeout(() => this.gameState = GameStates.Started, 300000);
-        }
+;        this._db.flushdb()
+          .then(() => console.log('database cleared'))
+          .catch((error) => { throw new Error(error); });
+        const player1redis = new Redis();
+        await player1redis.connect(0)
+        player1redis.flushdb()
+          .then(() => console.log('database cleared player 1'))
+          .catch((error) => { throw new Error(error); });
+        const player2redis = new Redis();
+        await player2redis.connect(1)
+        player2redis.flushdb()
+          .then(() => console.log('database cleared player 2'))
+          .catch((error) => { throw new Error(error); });
     }
 
     addPlayer(player: Player) {

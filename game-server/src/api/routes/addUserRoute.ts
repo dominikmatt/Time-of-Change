@@ -16,7 +16,6 @@ const addUserToGame = (req: express.Request, res: express.Response): void => {
     const gameToken = body.gameToken;
     const username = body.username;
 
-
     Core.db.hset(`players:${gameToken}`, 'username', username,);
     Core.db.hset(`players:${gameToken}`, 'token', token,);
 

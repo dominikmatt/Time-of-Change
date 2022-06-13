@@ -22,7 +22,7 @@ export default class Camera {
             scene
         );
 
-        this._camera.attachControl(this._canvas, false, false, 3);
+        this._camera.attachControl(this._canvas, false, false);
         this._camera.inputs.removeByType('ArcRotateCameraKeyboardMoveInput');
         this._camera.inputs.addMouseWheel();
         this._camera.inputs.addPointers();

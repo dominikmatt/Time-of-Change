@@ -1,171 +1,109 @@
-import redis from "redis";
+import { createClient, RedisClientType } from 'redis';
 
 /**
  * This is a wrapping class for redis to implement Promise callbacks.
  */
 export default class Redis {
-    private _client: any;
+  private _client: RedisClientType;
 
-    constructor(index: number) {
-        this.connect(index);
+  constructor() {
+
+  }
+
+  public async connect(index: number): Promise<void> {
+    this._client = createClient({
+      url: 'redis://localhost:6379',
+      commandsQueueMaxLength: 1000000
+    });
+
+    this._client.on('error', (error: string) => {
+      throw new Error(error);
+    });
+
+    await this._client
+      .connect()
+      .catch((error) => console.log(error));
+
+    return await this._client.select(index);
+  }
+
+  public async flushdb() {
+
+    return await this._client.flushDb();
+  }
+
+  public async keys(key: string) {
+      return await this._client.keys(key);
+  }
+
+  public set(key: string, value: any) {
+    this._client.set(key, value);
+  }
+
+  public async hset(key: string, field: string, value: string | Buffer) {
+    try {
+      return await this._client.sendCommand(['hset', key, field, value]);
+
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    private connect(index: number) {
-        this._client = redis.createClient({
-            port: 9990,
-            host: process.env.REDIS_HOST
+  public async rpush(key: string, value: any) {
+    return await this._client.rPush(key, value);
+  }
+
+  public async sadd(key: string, value: any) {
+    return await this._client.sAdd(key, value);
+  }
+
+  public async lpop(key: string) {
+    return await this._client.lPop(key);
+  }
+
+  public async lrange(key: string, from: number, to: number) {
+    return await this._client.lRange(key, from, to);
+  }
+
+  public async spop(key: string) {
+    return await this._client.sPop(key);
+  }
+
+  public hget(key: string, field: string) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const values = await this._client.hGet(key, field);
+
+        resolve(values);
+      } catch (error) {
+        reject(error);
+      }
+    })
+  }
+
+  public async hgetall(key: string) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const values = await this._client.hGetAll(key);
+        resolve(values);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  public del(key: string) {
+    this._client.del(key);
+  }
+
+  public on(key: string) {
+    return new Promise((resolve, reject) => {
+      this._client.on(key, function (channel: string, message: string) {
+        resolve({
+          channel,
+          message,
         });
-        this._client.select(index);
-
-        this._client.on('error', (error: string) => {
-            throw new Error(error);
-        });
-    }
-
-    public flushdb() {
-        return new Promise((resolve, reject) => {
-            this._client.flushdb( (error: any, succeeded: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(succeeded);
-            });
-        });
-    }
-
-    public keys(key: string) {
-        return new Promise((resolve, reject) => {
-            this._client.keys(key, (error: any, value: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(value);
-            });
-        });
-    }
-
-    public scan(key: string) {
-        return new Promise((resolve, reject) => {
-            this._client.scan(key, (error: any, value: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(value);
-            });
-        });
-    }
-
-    public set(key: string, value: any) {
-        this._client.set(key, value);
-    }
-
-    public hset(key: string, field: string, value: any) {
-        this._client.hset(key, field, value);
-    }
-
-    public rpush(key: string, value: any) {
-        this._client.rpush(key, value);
-    }
-
-    public sadd(key: string, value: any) {
-        this._client.sadd(key, value);
-    }
-
-    public lpop(key: string) {
-        return new Promise((resolve, reject) => {
-            this._client.lpop(key, (error: any, value: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(value);
-            });
-        });
-    }
-
-    public lrange(key: string, from: number, to: number) {
-        return new Promise((resolve, reject) => {
-            this._client.lrange(key, from, to, (error: any, value: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(value);
-            });
-        });
-    }
-
-    public spop(key: string) {
-        return new Promise((resolve, reject) => {
-            this._client.spop(key, (error: any, value: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(value);
-            });
-        });
-    }
-
-    public hget(key: string, field: string) {
-        return new Promise((resolve, reject) => {
-            this._client.hget(key, field, (error: any, data: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(data);
-            });
-        });
-    }
-
-    public hgetall(key: string) {
-        return new Promise((resolve, reject) => {
-            this._client.hgetall(key, (error: any, data: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(data);
-            });
-        });
-    }
-
-    public zadd(values: any[]) {
-        return new Promise((resolve, reject) => {
-            this._client.zadd(values, (error: any, succeeded: any) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve(succeeded);
-            });
-        });
-    }
-
-    public del(key: string) {
-        this._client.del(key);
-    }
-
-    public on(key: string) {
-        return new Promise((resolve, reject) => {
-            this._client.on(key, function(channel: string, message: string) {
-                resolve({
-                    channel,
-                    message
-                });
-            });
-        });
-    }
-
-    public subscribe(key: string, callback: Function) {
-        this._client.subscribe(key, callback);
-    }
-
-    public publish(key: string, value: any) {
-        this._client.publish(key, value);
-    }
+      });
+    });
+  }
 }
