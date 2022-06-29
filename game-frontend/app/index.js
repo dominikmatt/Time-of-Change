@@ -8,7 +8,6 @@ const AssetsManager_1 = require("./AssetsManager");
 new GameUi_1.default();
 Game_1.default.initialize();
 AddUser_1.default.addCallBack((options) => {
-    console.log(options);
     AssetsManager_1.default.initialize()
         .then(() => {
         connection_1.default

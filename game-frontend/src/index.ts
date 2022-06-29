@@ -10,7 +10,6 @@ game.initialize();
 
 addUserEvent.addCallBack(
     (options: AddUserOptionsInterface) => {
-        console.log(options)
         assetsManager.initialize()
             .then(() => {
                 connectionService

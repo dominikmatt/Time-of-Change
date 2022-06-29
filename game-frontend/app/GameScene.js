@@ -64,7 +64,6 @@ class GameScene {
         });
     }
     updateCoordinate(data) {
-        console.log(data);
         /**
          * Fixme: Replace this function with a global library.
          * @param number

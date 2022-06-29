@@ -114,6 +114,7 @@ class Character {
             const vector = new Vector3(point.x + 0.5, Game_1.default.gameScene.terrain.getHeight(point.x, point.z, true), point.z + 0.5);
             path.push(vector);
         });
+        console.log(path);
         let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 30);
         catmullRom.getPoints().forEach((point, frame) => {
             // Add walking point to walk animation.

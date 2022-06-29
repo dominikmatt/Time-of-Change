@@ -5,9 +5,9 @@
   "main": "./app/main.js",
   "scripts": {
     "build:js": "node_modules/typescript/bin/tsc",
-    "start:tsc": "node_modules/typescript/bin/tsc --watch",
+    "start:watch": "node_modules/typescript/bin/tsc --watch",
+    "start:dev": "ELECTRON_ENV=dev electron ./app/main.js",
     "build": "ELECTRON_ENV=prod electron-builder -mwl",
-    "start": "ELECTRON_ENV=dev electron ./app/main.js",
     "dist": "ELECTRON_ENV=prod npm run build"
   },
   "author": "Dominik Matt <mail@matt-dominik.at>",

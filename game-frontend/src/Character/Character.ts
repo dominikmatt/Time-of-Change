@@ -151,6 +151,7 @@ export default class Character {
             path.push(vector);
         });
 
+        console.log(path)
         let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 30);
 
         catmullRom.getPoints().forEach((point: BABYLON.Vector3, frame: number) => {
