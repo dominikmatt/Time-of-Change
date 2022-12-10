@@ -22,7 +22,7 @@
     "concurrently": "4.1.1",
     "cors": "^2.8.5",
     "ejs": "^2.7.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "node": "10.11.0",
     "pathfinding": "^0.4.18",
     "redis": "^2.8.0",
