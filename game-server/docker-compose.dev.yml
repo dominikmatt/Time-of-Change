@@ -1,27 +1,12 @@
 version: '3.7'
 services:
-    web:
-        image: domready/tocgs:0.1.4
-        build:
-            context: ""
-            dockerfile: Dockerfile-dev
-        ports:
-            - "9100:9100"
-        environment:
-            - REDIS_HOST=redis
-        env_file:
-            - game.env
-        restart: always
-        command: "npm run start:dev"
-        volumes:
-            - ./src:/usr/src/game-server/src
-            - ./dist:/usr/src/game-server/dist
-            - ./views:/usr/src/game-server/views
-            - ./tsconfig.json:/usr/src/game-server/tsconfig.json
-        depends_on:
-          - redis
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
 
-    redis:
-        image: redis:alpine
-        ports:
-            - "9990:6379"
+    command: >
+      --maxclients 10000
+      --timeout 0
+      --tcp-keepalive 0
+            

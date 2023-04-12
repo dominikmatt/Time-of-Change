@@ -59,7 +59,6 @@ export default class Character implements DestroyAbleInterface {
         }
 
         if (null !== this._building) {
-            console.log('remove from building');
             this._building.character = null;
         }
     }

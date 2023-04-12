@@ -114,6 +114,7 @@ class Character {
             const vector = new Vector3(point.x + 0.5, Game_1.default.gameScene.terrain.getHeight(point.x, point.z, true), point.z + 0.5);
             path.push(vector);
         });
+        console.log(path);
         let catmullRom = BABYLON.Curve3.CreateCatmullRomSpline(path, 30);
         catmullRom.getPoints().forEach((point, frame) => {
             // Add walking point to walk animation.
@@ -124,7 +125,7 @@ class Character {
             // https://github.com/Temechon/ms-experiences16/tree/master/ts
         });
         // Print debug walking path.
-        this._walkingDebugPath = BABYLON.Mesh.CreateLines(`walkAnimationDebugPath${this._id}`, catmullRom.getPoints(), Game_1.default.gameScene.scene);
+        this._walkingDebugPath = BABYLON.Mesh.CreateLines(`walkAnimationDebugPath${this._id}`, catmullRom.getPoints(), Game_1.default.gameScene.scene, true);
         if (1 === keys.length) {
             return;
         }

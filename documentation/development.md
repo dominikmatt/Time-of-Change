@@ -1,16 +1,33 @@
 # Development
 
 ## Start
-#### Start Game-Server
-Goto `dev-infra`
-Run `docker-compose up`
-Goto `game-server`
-Run `NODE_ENV=development npm run start:dev`
+### Start Game-Server
+- goto game server package
+  ```shell
+    cd game-server
+  ```  
+- Start all services for game server
+  ```shell
+    docker-compose -f docker-compose.dev.yml up
+   ```  
+- Start Game Server
+  ```shell
+    NODE_ENV=development npm run start:dev
+  ```
 
-#### Start Game Frontend 
-Goto `game-frontend`
-Run `npm run start:tsc`
-Run `ELECTRON_ENV=dev npm run start`
+### Start Game Frontend 
+- goto game client package
+  ```shell
+    cd game-frontend
+  ```  
+- Watch for file changes
+  ```shell
+    npm run start:watch
+   ```  
+- Start Client
+  ```shell
+    npm run start:dev
+  ```
 
 ### Start Lobby
 Goto `lobby`

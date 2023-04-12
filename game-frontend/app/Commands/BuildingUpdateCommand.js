@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.builtBuildings = void 0;
 const Command_1 = require("./Command");
 const buildingMapping_1 = require("../Buildings/buildingMapping");
 ;

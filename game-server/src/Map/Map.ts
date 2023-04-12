@@ -32,8 +32,10 @@ class Map {
         this.generateMatrix();
 
         this._mapGenerator = new MapGenerator(this);
+    }
 
-        this._mapGenerator.generate();
+    public async generateMap() {
+        return this._mapGenerator.generate();
     }
 
     public static get Instance() {
@@ -72,40 +74,51 @@ class Map {
     /**
      * Update a coordinate with the given data.
      */
-    public updateCoordinate(x: number, z: number, data: any) {
-        Object.keys(data).forEach((key: string) => {
-            const value: any = data[key];
+    public async updateCoordinate(x: number, z: number, data: any) {
+        const promises: unknown[] = [];
 
-            Core.db.hset(`map:[${x},${z}]`, key, value);
+        try {
+            Object.keys(data).forEach((key: string) => {
+                const value: any = data[key];
 
-            if ('runnable' === key) {
-                this._runnableGrid.setWalkableAt(x, z, value);
-            }
+                if (null !== value) { // @fixme Save null values on redis
+                    promises.push(Core.db.hset(`map:[${x},${z}]`, key, value.toString()))
+                }
 
-            if ('street' === key) {
-                this._streetMatrix[x][z] = value ? 1 : 0;
-            }
+                if ('runnable' === key) {
+                    this._runnableGrid.setWalkableAt(x, z, value);
+                }
 
-            if ('hasTree' === key) {
-                this._treeMatrix[x][z] = value ? 1 : 0;
-            }
+                if ('street' === key) {
+                    this._streetMatrix[x][z] = value ? 1 : 0;
+                }
 
-            if ('hasStone' === key) {
-                this._stoneMatrix[x][z] = value ? 1 : 0;
-            }
+                if ('hasTree' === key) {
+                    this._treeMatrix[x][z] = value ? 1 : 0;
+                }
 
-            if ('hasField' === key) {
-                this._fieldMatrix[x][z] = value;
-            }
-        });
+                if ('hasStone' === key) {
+                    this._stoneMatrix[x][z] = value ? 1 : 0;
+                }
 
-        const eventData: MapDataInterface = {
-            x: x,
-            z: z,
-            ...data,
-        };
+                if ('hasField' === key) {
+                    this._fieldMatrix[x][z] = value;
+                }
+            });
 
-        Core.emitAll('map.update', eventData);
+            const eventData: MapDataInterface = {
+                x: x,
+                z: z,
+                ...data,
+            };
+
+            Core.emitAll('map.update', eventData);
+
+            return Promise.all(promises);
+        } catch (error) {
+            console.error(error);
+            console.error(`Not able to update coordinates with data (${x}:${z}, ${JSON.stringify(data)})`)
+        }
     }
 
     /**

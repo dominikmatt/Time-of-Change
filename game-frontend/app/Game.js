@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Game = void 0;
 const GameScene_1 = require("./GameScene");
 let instance = null;
 class Game {

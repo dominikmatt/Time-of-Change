@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameStates = void 0;
 var GameStates;
 (function (GameStates) {
     GameStates["WaitingForPlayers"] = "WaitingForPlayers";

@@ -30,7 +30,7 @@ export default class Player {
     private readonly _buildingManager: BuildingManager;
     private _panel: Panel;
 
-    private readonly _db: Redis;
+    private _db: Redis;
 
     private readonly _playerId: number;
 
@@ -43,20 +43,23 @@ export default class Player {
     constructor(name: string, token: string, playerId: number) {
         this._name = name;
         this._token = token;
-        this._db = new Redis(Object.keys(Core.players).length + 1);
         this._jobStore = new JobStore(this);
         this._buildingManager = new BuildingManager(this);
         this._playerId = playerId;
         this._index = this._playerId - 1;
+    }
+
+    public async createDb() {
+        this._db = new Redis();
+        await this._db.connect(Object.keys(Core.players).length + 1);
 
         this._db.flushdb()
-            .then(() => console.log('database cleared for player ', this._playerId))
-            .catch((error) => {
-                throw new Error(error);
-            });
+          .then(() => console.log('database cleared for player ', this._playerId))
+          .catch((error) => {
+              throw new Error(error);
+          });
 
-
-        Core.db.hset(`players:${this._token}`, 'isMaster', Object.keys(Core.players).length === 0);
+        Core.db.hset(`players:${this._token}`, 'isMaster', (Object.keys(Core.players).length === 0).toString());
     }
 
     public initializeTown() {

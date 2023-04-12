@@ -41,7 +41,7 @@ class Map {
     updateCoordinate(x, z, data) {
         Object.keys(data).forEach((key) => {
             const value = data[key];
-            Core_1.default.db.hset(`map:[${x},${z}]`, key, value);
+            Core_1.default.db.hset(`map:[${x},${z}]`, key, value.toString());
             if ('runnable' === key) {
                 this._runnableGrid.setWalkableAt(x, z, value);
             }

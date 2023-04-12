@@ -15,11 +15,32 @@ class ConnectionService {
             console.info(`ToC:  Connected to game-server. ${config_1.default.get('connection').ws}`);
             this._socket = io(config_1.default.get('connection').ws, {
                 secure: config_1.default.get('connection').ssl,
+                transports: ['websocket'],
                 query: {
                     token: token
-                }
+                },
             });
-            this._socket.on('connect', resolve);
+            // @ts-ignore
+            this._socket.on("error", (error) => {
+                console.log(error);
+            });
+            // @ts-ignore
+            this._socket.on("connect_error", (error) => {
+                console.log(error);
+            });
+            // @ts-ignore
+            this._socket.on("connect_timeout", (error) => {
+                console.log(error);
+            });
+            // @ts-ignore
+            this._socket.on("connecting", (error) => {
+                console.log(error);
+            });
+            // @ts-ignore
+            this._socket.on('connect', (args) => {
+                console.log('connected');
+                resolve(args);
+            });
         });
     }
     get socket() {

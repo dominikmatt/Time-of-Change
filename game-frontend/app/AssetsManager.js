@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AssetsManager = void 0;
 const Game_1 = require("./Game");
 const BABYLON = require("babylonjs");
 let instance = null;
